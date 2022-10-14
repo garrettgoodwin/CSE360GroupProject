@@ -25,11 +25,8 @@ import javafx.stage.Window;
  
 public class App extends Application
 {
-    //All current test scenes
+    //All current test scenes >All pretty much temporary
     Scene scene1, scene2, scene3, scene4, scene5, scene6, scene7, scene8;
-
-    ComboBox<String> comboBox;
-
 
     public static void main(String[] args) {
         launch(args);
@@ -38,12 +35,12 @@ public class App extends Application
     @Override
     public void start(Stage primaryStage) {
 
+        //Switch between two different scenes
+        //Added labels to differenitaite between scenes
         Label lbl = new Label();
         lbl.setText("FIrst Scene");
-
         Label lbl2 = new Label();
         lbl2.setText("Second Scene");
-
 
         Button btn = new Button();
         btn.setText("Go to Scene 2");
@@ -53,8 +50,11 @@ public class App extends Application
         btn2.setText("Go to Scene 1");
         btn2.setOnAction(e -> primaryStage.setScene(scene1));
 
+
+        //Displays a popup window that must be closed before proceeding to original window
         Button btn3 = new Button();
         btn3.setOnAction(e -> AlertBox.Display("Alert", "A good ole' popup"));
+
 
         Button btn4 = new Button();
         btn4.setOnAction(e -> 
@@ -65,27 +65,28 @@ public class App extends Application
 
 
 
-        //Will deal with saving while exiting
+        //Deals with prompting the user if htey meant to exit the program
+        //Also could be used to save something before exiting the program
         primaryStage.setOnCloseRequest(e ->
         {
             e.consume();
             CloseProgram();
         });
-
         Button btn5 = new Button();
         btn5.setOnAction(e -> CloseProgram());
 
-        //Layout 1
+
+        //Define scene 1
         VBox layout = new VBox(20);
         layout.getChildren().addAll(lbl, btn, btn3, btn5);
         scene1 = new Scene(layout, 500, 500);
 
-        //layout 2
+        //Define Scene 2 -StackPane
         StackPane layout2 = new StackPane();
         layout2.getChildren().addAll(lbl2, btn2, btn4);
         scene2 = new Scene(layout2, 500, 500);
 
-        //Embedded layout -Scene 3
+        //Define Scene 3 -BorderPane (Embedded layout)
         HBox topLayout = new HBox();
         Button btn6 = new Button("File");
         btn6.setOnAction(e -> System.out.print("File"));
@@ -111,10 +112,12 @@ public class App extends Application
         scene3 = new Scene(borderPane, 600, 600);
 
 
-        //GridPane
+        //Define Scene 4 -GridPane (Embedded Layout)
         GridPane gridLayout = new GridPane();
+
         //Gridpane spacing
         gridLayout.setPadding(new Insets(10,10,10,10));
+        
         //Individual cell spacing
         gridLayout.setVgap(8);
         gridLayout.setHgap(10);
@@ -146,6 +149,7 @@ public class App extends Application
         scene4 = new Scene(gridLayout, 600, 600);
 
 
+        //Define Scene 5
         //Checkbox scene
         CheckBox option1CB = new CheckBox("Option #1");
         CheckBox option2CB = new CheckBox("Option #2");
@@ -160,20 +164,24 @@ public class App extends Application
         scene5 = new Scene(checkBoxLayout, 600, 600);
 
 
-        //
+        //Define Scene 6
+        //ChoiceBoxes seem to be a worse version of a combobox
         ChoiceBox<String> dropDownMenu = new ChoiceBox<>();
         dropDownMenu.getItems().addAll("A", "B", "C", "D");
         dropDownMenu.setValue("A");
         Button btn13 = new Button("Confirm");
         btn13.setOnAction(e -> GetChoice(dropDownMenu));
 
-        //Listen for shoicebox selection change
+        //Listen for choicebox selection change
         dropDownMenu.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> System.out.println(newValue));
         VBox choiceBoxLayout = new VBox(10);
         choiceBoxLayout.getChildren().addAll(dropDownMenu, btn13);
         scene6 = new Scene(choiceBoxLayout, 600, 600);
 
-        comboBox = new ComboBox<>();
+
+        //Define Scene 7
+        //Better than ChoiceBox as it does not need a listener and has other functionalities
+        ComboBox<String> comboBox = new ComboBox<>();
         comboBox.getItems().addAll("A", "B", "C", "D");
         comboBox.setPromptText("Choose Letter");
         comboBox.setOnAction(e ->
@@ -191,18 +199,19 @@ public class App extends Application
         scene7 = new Scene(comboBoxLayout, 600, 600);
 
 
-
-
-
-        
-
+        //Initializes the first Scene on the stage (window), sets name on window, and displays 
+        //stage to user 
+        //For testing purpses, I was just throwing in the scene I wasnted to view
+        //in here. This will be changed when they all get linked together and we start actually creating
+        //scenes
         primaryStage.setScene(scene7);
         primaryStage.setTitle("Hello World!");
-        primaryStage.show();    //Displays screen to user
+        primaryStage.show();
     }
 
 
     //Gets the vlaue of a choicebox with a button event
+    //Function is pretty much useless as the combobox arg one is much better
     private void GetChoice(ChoiceBox<String> dropDownMenu)
     {
         String option = dropDownMenu.getValue();
@@ -227,6 +236,7 @@ public class App extends Application
     }
 
 
+    //Displays what 
     private void HandleOptions(CheckBox optionOne, CheckBox optionTwo)
     {
         String message = "";
