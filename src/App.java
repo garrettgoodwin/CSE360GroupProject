@@ -1,3 +1,4 @@
+import java.security.Principal;
 import java.util.Optional;
 
 import javax.management.OperationsException;
@@ -37,31 +38,30 @@ public class App extends Application
 
         //Switch between two different scenes
         //Added labels to differenitaite between scenes
-        Label lbl = new Label();
-        lbl.setText("FIrst Scene");
-        Label lbl2 = new Label();
-        lbl2.setText("Second Scene");
+        //Label lbl = new Label();
+        //lbl.setText("FIrst Scene");
+        //Label lbl2 = new Label();
+        //lbl2.setText("Second Scene");
 
-        Button btn = new Button();
-        btn.setText("Go to Scene 2");
-        btn.setOnAction(e -> primaryStage.setScene(scene2));
+        //Button btn = new Button();
+        //btn.setText("Go to Scene 2");
+        //btn.setOnAction(e -> primaryStage.setScene(scene2));
 
-        Button btn2 = new Button();
-        btn2.setText("Go to Scene 1");
-        btn2.setOnAction(e -> primaryStage.setScene(scene1));
+        //Button btn2 = new Button();
+        //btn2.setText("Go to Scene 1");
+        //btn2.setOnAction(e -> primaryStage.setScene(scene1));
 
 
         //Displays a popup window that must be closed before proceeding to original window
-        Button btn3 = new Button();
-        btn3.setOnAction(e -> AlertBox.Display("Alert", "A good ole' popup"));
+        //Button btn3 = new Button();
+        //btn3.setOnAction(e -> AlertBox.Display("Alert", "A good ole' popup"));
 
-
-        Button btn4 = new Button();
-        btn4.setOnAction(e -> 
-        {
-            boolean answer = ConfirmBox.Display("Option", "Pick Yes or No");
-            System.out.println(answer);
-        });
+        //Button btn4 = new Button();
+        //btn4.setOnAction(e -> 
+        //{
+        //    boolean answer = ConfirmBox.Display("Option", "Pick Yes or No");
+        //    System.out.println(answer);
+        //});
 
 
 
@@ -77,14 +77,14 @@ public class App extends Application
 
 
         //Define scene 1
-        VBox layout = new VBox(20);
-        layout.getChildren().addAll(lbl, btn, btn3, btn5);
-        scene1 = new Scene(layout, 500, 500);
+        //VBox layout = new VBox(20);
+        //layout.getChildren().addAll(lbl, btn, btn3, btn5);
+        //scene1 = new Scene(layout, 500, 500);
 
         //Define Scene 2 -StackPane
-        StackPane layout2 = new StackPane();
-        layout2.getChildren().addAll(lbl2, btn2, btn4);
-        scene2 = new Scene(layout2, 500, 500);
+        //StackPane layout2 = new StackPane();
+        //layout2.getChildren().addAll(lbl2, btn2, btn4);
+        //scene2 = new Scene(layout2, 500, 500);
 
         //Define Scene 3 -BorderPane (Embedded layout)
         HBox topLayout = new HBox();
@@ -191,11 +191,35 @@ public class App extends Application
         Button btn14 = new Button("Confirm");
         btn14.setOnAction(e -> GetChoice(comboBox));
 
+        Button btn15 = new Button("Login as Customer");
+        btn15.setOnAction(e ->
+        {
+            Customer customer = new Customer();
+            int numb = customer.getCustomerNumb();
+            System.out.println(numb);
+        });
+
+        Button btn16 = new Button("Login as Chef");
+        btn16.setOnAction(e ->
+        {
+            Chef chef = new Chef();
+            int numb = chef.getPersonNumb();
+            System.out.println(numb);
+        });
+
+        Button btn17 = new Button("Login as Order Proccessor");
+        btn17.setOnAction(e ->
+        {
+            OrderProccessor orderProccessor = new OrderProccessor();
+            int numb = orderProccessor.getOrderProccessorNumb();
+            System.out.println(numb);
+        });
+
         //Can also make a combobox editable
         //comboBox.setEditable(true);
 
         VBox comboBoxLayout = new VBox(10);
-        comboBoxLayout.getChildren().addAll(comboBox, btn14);
+        comboBoxLayout.getChildren().addAll(comboBox, btn14, btn15, btn16, btn17);
         scene7 = new Scene(comboBoxLayout, 600, 600);
 
 
@@ -204,7 +228,8 @@ public class App extends Application
         //For testing purpses, I was just throwing in the scene I wasnted to view
         //in here. This will be changed when they all get linked together and we start actually creating
         //scenes
-        primaryStage.setScene(scene7);
+        LandingPage landPage = new LandingPage(primaryStage);
+        primaryStage.setScene(landPage.scene1);
         primaryStage.setTitle("Hello World!");
         primaryStage.show();
     }
@@ -224,9 +249,8 @@ public class App extends Application
         System.out.println(option);
     }
 
-
     //Function prompts the user if they are sure that they want to exit the program
-    private void CloseProgram()
+    public void CloseProgram()
     {
         Boolean answer = ConfirmBox.Display("Exit Program", "Are you sure you would like to exit?");
         if(answer)
