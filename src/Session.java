@@ -15,8 +15,7 @@ public class Session {
         this.isClosed = false;
     }
     public void login(String username, String password) {
-        Database db = new Database();
-        Login login = db.login(username, password);
+        Login login = Database.login(username, password);
         login(login);
     }
     public Response createAccount(String username, String password, String name, String email, int phoneNumber, int asurite) {
@@ -26,8 +25,7 @@ public class Session {
 
 
         // if passes surface tests
-        Database db = new Database();
-        Login login = db.createAccount(username, password, name, email, phoneNumber, asurite);
+        Login login = Database.createAccount(username, password, name, email, phoneNumber, asurite);
         if (login.isAccepted()) {
             login(login);
         }
