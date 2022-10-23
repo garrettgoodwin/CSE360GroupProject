@@ -30,11 +30,10 @@ public class App //extends Application
     // Scene scene1, scene2, scene3, scene4, scene5, scene6, scene7, scene8;
 
     public static void main(String[] args) {
+        // create guest session
         Session session = new Session();
-
-        Database db = new Database();
-        Login login = db.login("CUSTOMER", "123");
-        session.login(login);
+        // log in
+        session.login("CUSTOMER", "password");
 
         System.out.println(session.getUser().getName() + " is Now Logged In.");
         if (session.user.isGuest()) {

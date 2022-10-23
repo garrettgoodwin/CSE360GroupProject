@@ -14,11 +14,10 @@ public class Session {
         this.order = order;
         this.isClosed = false;
     }
-    public void login(Login login) {
-        if (login.isAccepted()) {
-            setId(login.sessionId);
-            setUser(login.userId);
-        }
+    public void login(String username, String password) {
+        Database db = new Database();
+        Login login = db.login(username, password);
+        login(login);
     }
     public int getId() {
         return id;
@@ -31,6 +30,12 @@ public class Session {
     }
     public boolean getIsClosed() {
         return isClosed;
+    }
+    private void login(Login login) {
+        if (login.isAccepted()) {
+            setId(login.sessionId);
+            setUser(login.userId);
+        }
     }
     private void setId(int id) {
         this.id = id;
