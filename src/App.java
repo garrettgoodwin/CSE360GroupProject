@@ -36,22 +36,22 @@ public class App //extends Application
         session.login("CUSTOMER", "password");
 
         System.out.println(session.getUser().getName() + " is Now Logged In.");
-        if (session.user.isGuest()) {
+        if (session.getUser().isGuest()) {
             System.out.println(session.getUser().getName() + " is a guest");
         }
-        if (session.user.isCustomer()) {
+        if (session.getUser().isCustomer()) {
             System.out.println(session.getUser().getName() + " is a customer");
         }
-        if (session.user.isEmployee()) {
+        if (session.getUser().isEmployee()) {
             System.out.println(session.getUser().getName() + " is an employee");
         }
-        if (session.user.isAdmin()) {
+        if (session.getUser().isAdmin()) {
             System.out.println(session.getUser().getName() + " is an admin");
         }
-        if (session.user.isChef()) {
+        if (session.getUser().isChef()) {
             System.out.println(session.getUser().getName() + " is a chef");
         }
-        if (session.user.isOrderProcessor()) {
+        if (session.getUser().isOrderProcessor()) {
             System.out.println(session.getUser().getName() + " is an order processor");
         }
         // launch(args);

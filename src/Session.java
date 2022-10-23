@@ -55,16 +55,14 @@ public class Session {
         this.id = id;
     }
     private void setUser(int userId) {
-        Database db = new Database();
-        User user = db.getUser(userId, this.getId());
+        User user = Database.getUser(userId, this.getId());
         setUser(user);
     }
     private void setUser(User user) {
         this.user = user;
     }
     public Order[] getSavedOrders() {
-        Database db = new Database();
-        Order[] savedOrders = db.getSavedOrders(user.getId(), this.getId());
+        Order[] savedOrders = Database.getSavedOrders(user.getId(), this.getId());
         return savedOrders;
     }
 }

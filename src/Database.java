@@ -30,10 +30,6 @@ public class Database {
     private static String EXTRA_CHEESE = "extra_cheese";
     private static String QUANTITY = "quantity";
 
-    Database() {
-        // initiate connection to database
-    }
-
     /*
      * Public methods should be responsible for exception checking/handling
      */
@@ -41,7 +37,7 @@ public class Database {
     /* public application interface */
     // static
 
-    public Login login(String username, String password) {
+    public static Login login(String username, String password) {
         if (!usernameExists(username)) {
             return Login.deny(Response.NOT_FOUND);
         }
@@ -54,7 +50,7 @@ public class Database {
     }
 
     // create customer account
-    public Login createAccount(String username, String password, String name, String email, int phoneNumber, int asurite) {
+    public static Login createAccount(String username, String password, String name, String email, int phoneNumber, int asurite) {
         if (usernameExists(username)) {
             return Login.deny(Response.PREEXISTING_USERNAME);
         }
@@ -68,7 +64,7 @@ public class Database {
         return Login.accept(sessionId, userId);
     }
 
-    public User getUser(int userId, int sessionId) {
+    public static User getUser(int userId, int sessionId) {
         /* START Prototype Code */
         if (userId == User.GUEST_ID)
             return User.GUEST;
@@ -81,13 +77,13 @@ public class Database {
         if (userId == PrototypeModel.ORDER_PROCESSOR.getId())
             return PrototypeModel.ORDER_PROCESSOR;
         /* END Prototype Code */
-        if (userId == getSession(sessionId).getUser().getId()) {
+        if (hasAccessTo(sessionId, userId)) {
             return getUser(userId);
         }
         return new User();
     }
 
-    public Session getSession(int sessionId) {
+    public static Session getSession(int sessionId) {
         /* START Prototype Code */
         if (sessionId == Session.GUEST_SESSION)
             return new Session();
@@ -100,96 +96,106 @@ public class Database {
         if (sessionId == PrototypeModel.ORDER_PROCESSOR.getId())
             return new Session(sessionId, PrototypeModel.ORDER_PROCESSOR, Order.BLANK);
         /* END Prototype Code */
-        return new Session();
+
+        Connection connection = getConnection();   /* open connection */
+        Session session = connection.getSession(sessionId);
+        connection.close(); /* close connection */
+        return session;
     }
 
-    public boolean usernameExists(String username) {
-        return true;
+    public static boolean usernameExists(String username) {
+        Connection connection = getConnection();   /* open connection */
+        boolean exists = connection.usernameExists(username);
+        connection.close(); /* close connection */
+        return exists;
     }
 
-    public boolean emailExists(String email) {
-        return true;
+    public static boolean emailExists(String email) {
+        Connection connection = getConnection();   /* open connection */
+        boolean exists = connection.emailExists(email);
+        connection.close(); /* close connection */
+        return exists;
     }
 
-    public String getUsername(int userId, int sessionId) {
+    public static String getUsername(int userId, int sessionId) {
         if (hasAccessTo(sessionId, userId)) {
             return getUsername(userId);
         }
         return "no";
     }
 
-    public void setUsername(String username, int userId, int sessionId) {
+    public static void setUsername(String username, int userId, int sessionId) {
         if (hasAccessTo(sessionId, userId)) {
             setUsername(username, userId);
         }
     }
     
-    public String getName(int userId, int sessionId) {
+    public static String getName(int userId, int sessionId) {
         if (hasAccessTo(sessionId, userId)) {
             return getName(userId);
         }
         return "name";
     }
 
-    public void setName(String name, int userId, int sessionId) {
+    public static void setName(String name, int userId, int sessionId) {
         if (hasAccessTo(sessionId, userId)) {
             setName(name, userId);
         }
     }
     
-    public int getType(int userId, int sessionId) {
+    public static int getType(int userId, int sessionId) {
         if (hasAccessTo(sessionId, userId)) {
             return getType(userId);
         }
         return 0;
     }
 
-    public void setType(int type, int userId, int sessionId) {
+    public static void setType(int type, int userId, int sessionId) {
         if (hasAccessTo(sessionId, userId)) {
             setType(type, userId);
         }
     }
 
-    public int getAsurite(int userId, int sessionId) {
+    public static int getAsurite(int userId, int sessionId) {
         if (hasAccessTo(sessionId, userId)) {
             return getAsurite(userId);
         }
         return 0;
     }
 
-    public void setAsurite(int asurite, int userId, int sessionId) {
+    public static void setAsurite(int asurite, int userId, int sessionId) {
         if (hasAccessTo(sessionId, userId)) {
             setAsurite(asurite, userId);
         }
     }
 
-    public String getEmail(int userId, int sessionId) {
+    public static String getEmail(int userId, int sessionId) {
         if (hasAccessTo(sessionId, userId)) {
             return getEmail(userId);
         }
         return "";
     }
 
-    public void setEmail(String email, int userId, int sessionId) {
+    public static void setEmail(String email, int userId, int sessionId) {
         if (hasAccessTo(sessionId, userId)) {
             setEmail(email, userId);
         }
     }
 
-    public int getPhoneNumber(int userId, int sessionId) {
+    public static int getPhoneNumber(int userId, int sessionId) {
         if (hasAccessTo(sessionId, userId)) {
             return getPhoneNumber(userId);
         }
         return 0;
     }
 
-    public void setPhoneNumber(int phoneNumber, int userId, int sessionId) {
+    public static void setPhoneNumber(int phoneNumber, int userId, int sessionId) {
         if (hasAccessTo(sessionId, userId)) {
             setPhoneNumber(phoneNumber, userId);
         }
     }
 
-    public Order[] getSavedOrders(int userId, int sessionId) {
+    public static Order[] getSavedOrders(int userId, int sessionId) {
         if (hasAccessTo(sessionId, userId)) {
             return getSavedOrders(userId);
         }
@@ -197,132 +203,13 @@ public class Database {
     }
 
     /* private */
-    // interface with database
-    // non-static 
-    private class Connection {
-        private boolean connected;
-        Connection() {
-            // connect
-        }
-        public boolean isConnected() {
-            return connected;
-        }
-        public void close() {
-            // close
-        }
-    }
+    // interface with back-end database
 
-    private Connection connect() {
-        return new Connection();
-    }
-
-    public void close() {
-
-    }
-
-    private User getUser(int userId) {
-        /* START Prototype Code */
-        if (userId == User.GUEST_ID)
-            return User.GUEST;
-        if (userId == PrototypeModel.CUSTOMER.getId())
-            return PrototypeModel.CUSTOMER;
-        if (userId == PrototypeModel.ADMIN.getId())
-            return PrototypeModel.ADMIN;
-        if (userId == PrototypeModel.CHEF.getId())
-            return PrototypeModel.CHEF;
-        if (userId == PrototypeModel.ORDER_PROCESSOR.getId())
-            return PrototypeModel.ORDER_PROCESSOR;
-        /* END Prototype Code */
-
-        int id = userId;
-        String username = getUsername(userId);
-        String name = getName(userId);
-        int type = getType(userId);
-        int asurite = getAsurite(userId);
-        String email = getEmail(userId);
-        int phoneNumber = getPhoneNumber(userId);
-        return new User(id, username, name, type, asurite, email, phoneNumber);
-    }
-
-    private String getUsername(int userId) {
-        return "username";
-    }
-
-    private void setUsername(String username, int userId) {
-        userUpdate(Database.USERNAME, username, userId);
-    }
-
-    private String getName(int userId) {
-        return "name";
-    }
-
-    private void setName(String name, int userId) {
-        userUpdate(Database.NAME, name, userId);
-    }
-    
-    private int getType(int userId) {
-        return 0;
-    }
-
-    private void setType(int type, int userId) {
-        userUpdate(Database.USER_TYPE, String.valueOf(type), userId);
-    }
-
-    private int getAsurite(int userId) {
-        return 0;
-    }
-
-    private void setAsurite(int asurite, int userId) {
-        userUpdate(Database.ASURITE, String.valueOf(asurite), userId);
-    }
-
-    private String getEmail(int userId) {
-        return "";
-    }
-
-    private void setEmail(String email, int userId) {
-        userUpdate(Database.EMAIL, email, userId);
-    }
-
-    private int getPhoneNumber(int userId) {
-        return 0;
-    }
-
-    private void setPhoneNumber(int phoneNumber, int userId) {
-        userUpdate(Database.PHONE_NUMBER, String.valueOf(phoneNumber), userId);
-    }
-
-    private Order[] getSavedOrders(int userId) {
-        /* START Prototype Code */
-        if (userId == PrototypeModel.CUSTOMER.getId())
-            return PrototypeModel.ORDERS;
-        /* END Prototype Code */
-        return new Order[0];
-    }
-
-    private int getUserIdFromUsername(String username) {
-        /* START Prototype Code */
-        if (username == User.GUEST_USERNAME)
-            return User.GUEST_ID;
-        if (username == PrototypeModel.CUSTOMER.getUsername())
-            return PrototypeModel.CUSTOMER.getId();
-        if (username == PrototypeModel.ADMIN.getUsername())
-            return PrototypeModel.ADMIN.getId();
-        if (username == PrototypeModel.CHEF.getUsername())
-            return PrototypeModel.CHEF.getId();
-        if (username == PrototypeModel.ORDER_PROCESSOR.getUsername())
-            return PrototypeModel.ORDER_PROCESSOR.getId();
-        /* END Prototype Code */
-        return 0;
-    }
-
-    private User getSessionUser(int sessionId) {
-        Session session = getSession(sessionId);
-        return session.getUser();
-    }
+    /* Database private methods */
+    /* static */
 
     // return sessionId
-    private int createSession(int userId) {
+    private static int createSession(int userId) {
         /* START Prototype Code */
         if (userId == User.GUEST_ID)
             return userId;
@@ -337,100 +224,379 @@ public class Database {
         /* END Prototype Code */
 
         int sessionId = generateRandomId();
-        User user = getUser(userId);
-        // create session
-        Session session = new Session(sessionId, user, Order.BLANK);
-        sessionInsert(sessionId, session);
+
+        Connection connection = getConnection();   /* open connection */
+        connection.createSession(sessionId, userId);
+        connection.close(); /* close connection */
+
         return sessionId;
     }
 
     // return userId
-    private int createUser(String username, String name, int type, int encryptedPassword, String email, int phoneNumber, int asurite) {
+    private static int createUser(String username, String name, int type, int encryptedPassword, String email, int phoneNumber, int asurite) {
         int userId = generateRandomId();
-        userInsert(userId, getValueList(username, name, type, encryptedPassword, email, phoneNumber, asurite));
+
+        Connection connection = getConnection();   /* open connection */
+        connection.createUser(userId, username, name, type, encryptedPassword, email, phoneNumber, asurite);
+        connection.close(); /* close connection */
+
         return userId;
     }
 
-    private int generateRandomId() {
+    private static int generateRandomId() {
         return 12;  // I feel like 12 is pretty random. I just thought of it at the top of my head
     }
 
-    private int getEncryptedPassword(int userId) {
+    private static int getEncryptedPassword(int userId) {
         return 0;
     }
 
-    private boolean isCorrectPassword(String submittedPassword, int userId) {
-        /* comment out */
-        return true;
-        /* uncomment out below */
-        // int encryptedSubmittedPassword = encryptPassword(submittedPassword);
-        // final int REAL_ENCRYPTED_PASSWORD = getEncryptedPassword(userId);
-        // return REAL_ENCRYPTED_PASSWORD == encryptedSubmittedPassword;
+    private static boolean isCorrectPassword(String submittedPassword, int userId) {
+        int encryptedSubmittedPassword = encryptPassword(submittedPassword);
+        final int REAL_ENCRYPTED_PASSWORD = getEncryptedPassword(userId);
+        return REAL_ENCRYPTED_PASSWORD == encryptedSubmittedPassword;
     }
 
-    private int encryptPassword(String password) {
+    private static int encryptPassword(String password) {
         int encryptedPassword = 0;
         return encryptedPassword;
     }
 
-    private boolean hasAccessTo(int sessionId, int userId) {
+    private static boolean hasAccessTo(int sessionId, int userId) {
         User sessionUser = getSessionUser(sessionId);
         return sessionUser.getId() == userId || sessionUser.isAdmin();
     }
 
-    private String getValueList(Object... args) {
-        return "";
+    private static User getSessionUser(int sessionId) {
+        Session session = getSession(sessionId);
+        return session.getUser();
     }
 
-    /* Database Connection */
+    /* Connection interface */
 
-    // need to have similar functions for different return types
-    private void sql(String query) {
-        // send query to db
+    /* Get Open Connection */
+    /* Warning: Make sure to close connection later */
+    private static Connection getConnection() {
+        Database db = new Database();
+        Connection connection = db.new Connection();    
+        connection.connect();  /* open connection */
+        return connection;
     }
 
-    /* INSERT */
+    /* User Getters + Setters */
 
-    private void insertTable(String table, String variableList, String valueList) {
-        // e.g. INSERT INTO cars(MAKE,MODEL,ID) VALUES('Ford','F-150',101);
-        sql("INSERT INTO " + table + "(" + variableList + ") VALUES(" + valueList + ");");
+    private static User getUser(int userId) {
+        Connection connection = getConnection();   /* open connection */
+        User user = connection.getUser(userId);
+        connection.close(); /* close connection */
+        return user;
     }
 
-    private void userInsert(int userId, String valueList) {
-        final String variableList = "username,name,user_type,encrypted_password,asurite,email,phone_number,session_id";
-        insertTable(Database.USER_TABLE, variableList, valueList);
+    private static String getUsername(int userId) {
+        Connection connection = getConnection();   /* open connection */
+        String username = connection.getUsername(userId);
+        connection.close(); /* close connection */
+        return username;
     }
 
-    private void sessionInsert(int sessionId, Session session) {
-        final String variableList = "user_id,is_closed";
-        String valueList = getValueList(session.getId(), session.getIsClosed());
+    private static void setUsername(String username, int userId) {
+        Connection connection = getConnection();   /* open connection */
+        connection.setUsername(username, userId);
+        connection.close(); /* close connection */
     }
 
-    /* UPDATE */
-
-    private void updateTable(String table, String column, String value, int id) {
-        // e.g. UPDATE cars set make = ford where ID = 101;
-        sql("UPDATE " + table + " set " + column + " = " + value + " where ID = " + id +";");
+    private static String getName(int userId) {
+        Connection connection = getConnection();   /* open connection */
+        String name = connection.getName(userId);
+        connection.close(); /* close connection */
+        return name;
     }
 
-    private void sessionUpdate(String column, String value, int id) {
-        updateTable(Database.SESSION_TABLE, column, value, id);
+    private static void setName(String name, int userId) {
+        Connection connection = getConnection();   /* open connection */
+        connection.setName(name, userId);
+        connection.close(); /* close connection */
+    }
+    
+    private static int getType(int userId) {
+        Connection connection = getConnection();   /* open connection */
+        int type = connection.getType(userId);
+        connection.close(); /* close connection */
+        return type;
     }
 
-    private void userUpdate(String column, String value, int id) {
-        updateTable(Database.USER_TABLE, column, value, id);
+    private static void setType(int type, int userId) {
+        Connection connection = getConnection();   /* open connection */
+        connection.setType(type, userId);
+        connection.close(); /* close connection */
     }
 
-    private void orderUpdate(String column, String value, int id) {
-        updateTable(Database.ORDER_TABLE, column, value, id);
+    private static int getAsurite(int userId) {
+        Connection connection = getConnection();   /* open connection */
+        int asurite = connection.getAsurite(userId);
+        connection.close(); /* close connection */
+        return asurite;
     }
 
-    private void pizzaUpdate(String column, String value, int id) {
-        updateTable(Database.PIZZA_TABLE, column, value, id);
+    private static void setAsurite(int asurite, int userId) {
+        Connection connection = getConnection();   /* open connection */
+        connection.setAsurite(asurite, userId);
+        connection.close(); /* close connection */
     }
 
-    /* SELECT */
+    private static String getEmail(int userId) {
+        Connection connection = getConnection();   /* open connection */
+        String email = connection.getEmail(userId);
+        connection.close(); /* close connection */
+        return email;
+    }
 
-    /* DELETE */
+    private static void setEmail(String email, int userId) {
+        Connection connection = getConnection();   /* open connection */
+        connection.setEmail(email, userId);
+        connection.close(); /* close connection */
+    }
+
+    private static int getPhoneNumber(int userId) {
+        Connection connection = getConnection();   /* open connection */
+        int phoneNumber = connection.getPhoneNumber(userId);
+        connection.close(); /* close connection */
+        return phoneNumber;
+    }
+
+    private static void setPhoneNumber(int phoneNumber, int userId) {
+        Connection connection = getConnection();   /* open connection */
+        connection.setPhoneNumber(phoneNumber, userId);
+        connection.close(); /* close connection */
+    }
+
+    private static Order[] getSavedOrders(int userId) {
+        /* START Prototype Code */
+        if (userId == PrototypeModel.CUSTOMER.getId())
+            return PrototypeModel.ORDERS;
+        /* END Prototype Code */
+
+        Connection connection = getConnection();
+        connection.connect();   /* open connection */
+        Order[] savedOrders = connection.getSavedOrders(userId);
+        connection.close(); /* close connection */
+        return savedOrders;
+    }
+
+    private static int getUserIdFromUsername(String username) {
+        /* START Prototype Code */
+        if (username == User.GUEST_USERNAME)
+            return User.GUEST_ID;
+        if (username == PrototypeModel.CUSTOMER.getUsername())
+            return PrototypeModel.CUSTOMER.getId();
+        if (username == PrototypeModel.ADMIN.getUsername())
+            return PrototypeModel.ADMIN.getId();
+        if (username == PrototypeModel.CHEF.getUsername())
+            return PrototypeModel.CHEF.getId();
+        if (username == PrototypeModel.ORDER_PROCESSOR.getUsername())
+            return PrototypeModel.ORDER_PROCESSOR.getId();
+        /* END Prototype Code */
+        
+        Connection connection = getConnection();   /* open connection */
+        int userId = connection.getUserIdFromUsername(username);
+        connection.close(); /* close connection */
+        return userId;
+    }
+
+
+    /* Connection */
+    /* non-static */
+    private class Connection {
+        private boolean connected;
+        Connection() {
+            this.connected = false;
+        }
+
+        /* managing connection */
+        public boolean connect() {
+            this.connected = true;
+            // connect
+            return isConnected();
+        }
+        public void close() {
+            // close
+            this.connected = false;
+        }
+        public boolean isConnected() {
+            return connected;
+        }
+        public boolean isClosed() {
+            return !isConnected();
+        }
+
+        /* database manipulation interface */
+
+        public User getUser(int userId) {
+            String username = getUsername(userId);
+            String name = getName(userId);
+            int type = getType(userId);
+            int asurite = getAsurite(userId);
+            String email = getEmail(userId);
+            int phoneNumber = getPhoneNumber(userId);
+
+            return User.GUEST;
+        }
+
+        public Session getSession(int sessionId) {
+            return new Session();
+        }
+
+        public boolean usernameExists(String username) {
+            return true;
+        }
+
+        public boolean emailExists(String username) {
+            return true;
+        }
+        
+        public String getUsername(int userId) {
+            return "username";
+        }
+    
+        public void setUsername(String username, int userId) {
+            userUpdate(Database.USERNAME, username, userId);
+        }
+    
+        public String getName(int userId) {
+            return "name";
+        }
+    
+        public void setName(String name, int userId) {
+            userUpdate(Database.NAME, name, userId);
+        }
+        
+        public int getType(int userId) {
+            return 0;
+        }
+    
+        public void setType(int type, int userId) {
+            userUpdate(Database.USER_TYPE, String.valueOf(type), userId);
+        }
+    
+        public int getAsurite(int userId) {
+            return 0;
+        }
+    
+        public void setAsurite(int asurite, int userId) {
+            userUpdate(Database.ASURITE, String.valueOf(asurite), userId);
+        }
+    
+        public String getEmail(int userId) {
+            return "";
+        }
+    
+        public void setEmail(String email, int userId) {
+            userUpdate(Database.EMAIL, email, userId);
+        }
+    
+        public int getPhoneNumber(int userId) {
+            return 0;
+        }
+    
+        public void setPhoneNumber(int phoneNumber, int userId) {
+            userUpdate(Database.PHONE_NUMBER, String.valueOf(phoneNumber), userId);
+        }
+    
+        public Order[] getSavedOrders(int userId) {
+            /* START Prototype Code */
+            if (userId == PrototypeModel.CUSTOMER.getId())
+                return PrototypeModel.ORDERS;
+            /* END Prototype Code */
+            return new Order[0];
+        }
+    
+        public int getUserIdFromUsername(String username) {
+            /* START Prototype Code */
+            if (username == User.GUEST_USERNAME)
+                return User.GUEST_ID;
+            if (username == PrototypeModel.CUSTOMER.getUsername())
+                return PrototypeModel.CUSTOMER.getId();
+            if (username == PrototypeModel.ADMIN.getUsername())
+                return PrototypeModel.ADMIN.getId();
+            if (username == PrototypeModel.CHEF.getUsername())
+                return PrototypeModel.CHEF.getId();
+            if (username == PrototypeModel.ORDER_PROCESSOR.getUsername())
+                return PrototypeModel.ORDER_PROCESSOR.getId();
+            /* END Prototype Code */
+            return 0;
+        }
+    
+        public User getSessionUser(int sessionId) {
+            Session session = getSession(sessionId);
+            return session.getUser();
+        }
+    
+        public String getValueList(Object... args) {
+            return "";
+        }
+
+        // return sessionId
+        public int createSession(int sessionId, int userId) {
+            return sessionId;
+        }
+
+        // return userId
+        public int createUser(int userId, String username, String name, int type, int encryptedPassword, String email, int phoneNumber, int asurite) {
+            return userId;
+        }
+    
+        /* Database Querying */
+        /* Private */
+    
+        // need to have similar functions for different return types
+        private void sql(String query) {
+            // send query to db
+        }
+    
+        /* INSERT */
+    
+        private void insertTable(String table, String variableList, String valueList) {
+            // e.g. INSERT INTO cars(MAKE,MODEL,ID) VALUES('Ford','F-150',101);
+            sql("INSERT INTO " + table + "(" + variableList + ") VALUES(" + valueList + ");");
+        }
+    
+        private void userInsert(int userId, String valueList) {
+            final String variableList = "username,name,user_type,encrypted_password,asurite,email,phone_number,session_id";
+            insertTable(Database.USER_TABLE, variableList, valueList);
+        }
+    
+        private void sessionInsert(int sessionId, Session session) {
+            final String variableList = "user_id,is_closed";
+            String valueList = getValueList(session.getId(), session.getIsClosed());
+        }
+    
+        /* UPDATE */
+    
+        private void updateTable(String table, String column, String value, int id) {
+            // e.g. UPDATE cars set make = ford where ID = 101;
+            sql("UPDATE " + table + " set " + column + " = " + value + " where ID = " + id +";");
+        }
+    
+        private void sessionUpdate(String column, String value, int id) {
+            updateTable(Database.SESSION_TABLE, column, value, id);
+        }
+    
+        private void userUpdate(String column, String value, int id) {
+            updateTable(Database.USER_TABLE, column, value, id);
+        }
+    
+        private void orderUpdate(String column, String value, int id) {
+            updateTable(Database.ORDER_TABLE, column, value, id);
+        }
+    
+        private void pizzaUpdate(String column, String value, int id) {
+            updateTable(Database.PIZZA_TABLE, column, value, id);
+        }
+    
+        /* SELECT */
+    
+        /* DELETE */
+    
+    }   // end of Connection
 
 }
