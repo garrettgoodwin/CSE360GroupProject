@@ -71,12 +71,12 @@ public class User {
         return this.type == User.GUEST_TYPE;
     }
 
-    public boolean isCustomer() {
-        return isGuest() || this.type == Customer.TYPE;
-    }
-
     public boolean isLoggedIn() {
         return !isGuest();
+    }
+    
+    public boolean isCustomer() {
+        return isGuest() || this.type == Customer.TYPE;
     }
 
     public boolean isAdmin() {

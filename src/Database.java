@@ -30,7 +30,6 @@ public class Database {
     private static String EXTRA_CHEESE = "extra_cheese";
     private static String QUANTITY = "quantity";
 
-
     Database() {
         // initiate connection to database
     }
@@ -39,7 +38,8 @@ public class Database {
      * Public methods should be responsible for exception checking/handling
      */
 
-    /* public */
+    /* public application interface */
+    // static
 
     public Login login(String username, String password) {
         if (!usernameExists(username)) {
@@ -196,15 +196,29 @@ public class Database {
         return new Order[0];
     }
 
-    /* 
-    I think we may need to explicitly call close() after using 
-    the database when it's actually implemented 
-    */
+    /* private */
+    // interface with database
+    // non-static 
+    private class Connection {
+        private boolean connected;
+        Connection() {
+            // connect
+        }
+        public boolean isConnected() {
+            return connected;
+        }
+        public void close() {
+            // close
+        }
+    }
+
+    private Connection connect() {
+        return new Connection();
+    }
+
     public void close() {
 
     }
-
-    /* private */
 
     private User getUser(int userId) {
         /* START Prototype Code */

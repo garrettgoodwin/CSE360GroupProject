@@ -1,9 +1,9 @@
 public class Session {
     public static final int GUEST_SESSION = 0;
-    protected int id;
-    protected User user;
-    protected Order order;
-    protected boolean isClosed;
+    private int id;
+    private User user;
+    private Order order;
+    private boolean isClosed;
     // guest session
     Session() {
         this(GUEST_SESSION, User.GUEST, Order.BLANK);
@@ -18,6 +18,20 @@ public class Session {
         Database db = new Database();
         Login login = db.login(username, password);
         login(login);
+    }
+    public Response createAccount(String username, String password, String name, String email, int phoneNumber, int asurite) {
+        // check for non-database-related valid entered information (e.g. username length, etc)
+        // Database.createAccount will conduct database-related exception checking
+        //      (e.g. username already exists in database)
+
+
+        // if passes surface tests
+        Database db = new Database();
+        Login login = db.createAccount(username, password, name, email, phoneNumber, asurite);
+        if (login.isAccepted()) {
+            login(login);
+        }
+        return login.getResponse();
     }
     public int getId() {
         return id;

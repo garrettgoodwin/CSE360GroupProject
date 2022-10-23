@@ -13,6 +13,10 @@ public class Login {
         return this.response == Response.OK;
     }
 
+    public Response getResponse() {
+        return this.response;
+    }
+
     public String getResponseMessage() {
         return this.response.message;
     }
