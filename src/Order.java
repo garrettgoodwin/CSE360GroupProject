@@ -13,14 +13,21 @@ public class Order {
 
     private ArrayList<Pizza> pizzas;
     private int status;
-    // creating new order
+    private int userId;
+
+    // creating new order as guest
     Order() {
-        this(new ArrayList<Pizza>(), Order.NOT_YET_PLACED);
+        this(User.GUEST_ID);
+    }
+    // creating new order while logged in
+    Order(int userId) {
+        this(new ArrayList<Pizza>(), Order.NOT_YET_PLACED, userId);
     }
     // pulling up saved orders
-    Order(ArrayList<Pizza> pizzas, int status) {
+    Order(ArrayList<Pizza> pizzas, int status, int userId) {
         this.pizzas = pizzas;
         this.status = status;
+        this.userId = userId;
     }
     
     public void addPizza(Pizza pizza) {
@@ -41,6 +48,12 @@ public class Order {
             count += pizzas.get(i).getQuantity(); 
         }
         return count;
+    }
+    public void setUser(int userId) {
+        this.userId = userId;
+    }
+    public boolean isUser(int userId, int sessionId) {
+        return this.userId == userId;
     }
     /* Status checks */
     public boolean isPlaced() {

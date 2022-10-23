@@ -31,9 +31,9 @@ public class App //extends Application
 
     public static void main(String[] args) {
         Session session = new Session();
-        
+
         Database db = new Database();
-        Login login = db.login("PROCESSOR", "123");
+        Login login = db.login("CUSTOMER", "123");
         session.login(login);
 
         System.out.println(session.getUser().getName() + " is Now Logged In.");

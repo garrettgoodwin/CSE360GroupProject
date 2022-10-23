@@ -43,4 +43,9 @@ public class Session {
     private void setUser(User user) {
         this.user = user;
     }
+    public Order[] getSavedOrders() {
+        Database db = new Database();
+        Order[] savedOrders = db.getSavedOrders(user.getId(), this.getId());
+        return savedOrders;
+    }
 }

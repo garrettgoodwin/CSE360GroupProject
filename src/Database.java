@@ -88,6 +88,18 @@ public class Database {
     }
 
     public Session getSession(int sessionId) {
+        /* START Prototype Code */
+        if (sessionId == Session.GUEST_SESSION)
+            return new Session();
+        if (sessionId == PrototypeModel.CUSTOMER.getId())
+            return new Session(sessionId, PrototypeModel.CUSTOMER, Order.BLANK);
+        if (sessionId == PrototypeModel.ADMIN.getId())
+            return new Session(sessionId, PrototypeModel.ADMIN, Order.BLANK);
+        if (sessionId == PrototypeModel.CHEF.getId())
+            return new Session(sessionId, PrototypeModel.CHEF, Order.BLANK);
+        if (sessionId == PrototypeModel.ORDER_PROCESSOR.getId())
+            return new Session(sessionId, PrototypeModel.ORDER_PROCESSOR, Order.BLANK);
+        /* END Prototype Code */
         return new Session();
     }
 
@@ -100,81 +112,96 @@ public class Database {
     }
 
     public String getUsername(int userId, int sessionId) {
-        if (hasAuthorityOver(sessionId, userId)) {
+        if (hasAccessTo(sessionId, userId)) {
             return getUsername(userId);
         }
         return "no";
     }
 
     public void setUsername(String username, int userId, int sessionId) {
-        if (hasAuthorityOver(sessionId, userId)) {
+        if (hasAccessTo(sessionId, userId)) {
             setUsername(username, userId);
         }
     }
     
     public String getName(int userId, int sessionId) {
-        if (hasAuthorityOver(sessionId, userId)) {
+        if (hasAccessTo(sessionId, userId)) {
             return getName(userId);
         }
         return "name";
     }
 
     public void setName(String name, int userId, int sessionId) {
-        if (hasAuthorityOver(sessionId, userId)) {
+        if (hasAccessTo(sessionId, userId)) {
             setName(name, userId);
         }
     }
     
     public int getType(int userId, int sessionId) {
-        if (hasAuthorityOver(sessionId, userId)) {
+        if (hasAccessTo(sessionId, userId)) {
             return getType(userId);
         }
         return 0;
     }
 
     public void setType(int type, int userId, int sessionId) {
-        if (hasAuthorityOver(sessionId, userId)) {
+        if (hasAccessTo(sessionId, userId)) {
             setType(type, userId);
         }
     }
 
     public int getAsurite(int userId, int sessionId) {
-        if (hasAuthorityOver(sessionId, userId)) {
+        if (hasAccessTo(sessionId, userId)) {
             return getAsurite(userId);
         }
         return 0;
     }
 
     public void setAsurite(int asurite, int userId, int sessionId) {
-        if (hasAuthorityOver(sessionId, userId)) {
+        if (hasAccessTo(sessionId, userId)) {
             setAsurite(asurite, userId);
         }
     }
 
     public String getEmail(int userId, int sessionId) {
-        if (hasAuthorityOver(sessionId, userId)) {
+        if (hasAccessTo(sessionId, userId)) {
             return getEmail(userId);
         }
         return "";
     }
 
     public void setEmail(String email, int userId, int sessionId) {
-        if (hasAuthorityOver(sessionId, userId)) {
+        if (hasAccessTo(sessionId, userId)) {
             setEmail(email, userId);
         }
     }
 
     public int getPhoneNumber(int userId, int sessionId) {
-        if (hasAuthorityOver(sessionId, userId)) {
+        if (hasAccessTo(sessionId, userId)) {
             return getPhoneNumber(userId);
         }
         return 0;
     }
 
     public void setPhoneNumber(int phoneNumber, int userId, int sessionId) {
-        if (hasAuthorityOver(sessionId, userId)) {
+        if (hasAccessTo(sessionId, userId)) {
             setPhoneNumber(phoneNumber, userId);
         }
+    }
+
+    public Order[] getSavedOrders(int userId, int sessionId) {
+        if (hasAccessTo(sessionId, userId)) {
+            return getSavedOrders(userId);
+        }
+        return new Order[0];
+    }
+
+    /* 
+    I think we may need to explicitly call close() after using 
+    the database when it's actually implemented 
+    */
+    public void close() {
+
     }
 
     /* private */
@@ -251,6 +278,14 @@ public class Database {
         userUpdate(Database.PHONE_NUMBER, String.valueOf(phoneNumber), userId);
     }
 
+    private Order[] getSavedOrders(int userId) {
+        /* START Prototype Code */
+        if (userId == PrototypeModel.CUSTOMER.getId())
+            return PrototypeModel.ORDERS;
+        /* END Prototype Code */
+        return new Order[0];
+    }
+
     private int getUserIdFromUsername(String username) {
         /* START Prototype Code */
         if (username == User.GUEST_USERNAME)
@@ -324,13 +359,9 @@ public class Database {
         return encryptedPassword;
     }
 
-    private boolean hasAuthorityOver(int sessionId, int userId) {
+    private boolean hasAccessTo(int sessionId, int userId) {
         User sessionUser = getSessionUser(sessionId);
         return sessionUser.getId() == userId || sessionUser.isAdmin();
-    }
-
-    protected void finalize() {
-        System.out.println("Goodbye");
     }
 
     private String getValueList(Object... args) {
