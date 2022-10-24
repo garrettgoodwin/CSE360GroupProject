@@ -10,7 +10,7 @@ public class Login {
     }
 
     public boolean isAccepted() {
-        return this.response == Response.OK;
+        return Response.ok(response);
     }
 
     public Response getResponse() {

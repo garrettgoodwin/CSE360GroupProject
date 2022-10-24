@@ -1,3 +1,5 @@
+import java.util.regex.Pattern;   // regex
+
 public class User {
     /* values for guest / inexplicitly assigned values */
     public static User GUEST = new User();
@@ -109,6 +111,52 @@ public class User {
                 return "GUEST";
         }
         return "NULL";
+    }
+
+    /* Static */
+
+    /* Valid Data Creation */
+
+    public static class Password {
+        public static final int MIN_LENGTH = 8;
+        public static final int MAX_LENGTH = 80;
+        public static Response validate(String password) {
+
+            if (password.length() < MIN_LENGTH)
+                return Response.SHORT_PASSWORD;
+
+            if (password.length() > MAX_LENGTH)
+                return Response.LONG_PASSWORD;
+
+            /* includes necessary characters */
+            /* one upper case, one lower case, one number, one special character */
+
+            /* excludes forbidden characters */
+            
+            // all tests passed
+            return Response.OK;
+        }
+    }
+
+    public static class Username {
+        public static final int MIN_LENGTH = 3;
+        public static final int MAX_LENGTH = 20;
+        public static Response validate(String password) {
+
+            // all tests passed
+            return Response.OK;
+        }
+    }
+
+    public static class Email {
+        public static Response validate(String password) {
+            String validEmailRegex = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+            if (!Pattern.matches(validEmailRegex, password)) {
+                return Response.INVALID_EMAIL;
+            }
+            // all tests passed
+            return Response.OK;
+        }
     }
 
 }

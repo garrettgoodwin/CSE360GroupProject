@@ -22,7 +22,19 @@ public class Session {
         // check for non-database-related valid entered information (e.g. username length, etc)
         // Database.createAccount will conduct database-related exception checking
         //      (e.g. username already exists in database)
-
+        Response response;
+        response = User.Username.validate(username);
+        if (!Response.ok(response)) {
+            return response;
+        }
+        response = User.Email.validate(email);
+        if (!Response.ok(response)) {
+            return response;
+        }
+        response = User.Password.validate(password);
+        if (!Response.ok(response)) {
+            return response;
+        }
 
         // if passes surface tests
         Login login = Database.createAccount(username, password, name, email, phoneNumber, asurite);
