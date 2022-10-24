@@ -202,6 +202,13 @@ public class Database {
         return new Order[0];
     }
 
+    public static Order[] getOrdersForProcessing(int sessionId) {
+        if (isAdmin(sessionId) || isOrderProcessor(sessionId)) {
+            return getOrdersForProcessing();
+        }
+        return new Order[0];
+    }
+
     /* private */
     // interface with back-end database
 
@@ -265,6 +272,26 @@ public class Database {
     private static boolean hasAccessTo(int sessionId, int userId) {
         User sessionUser = getSessionUser(sessionId);
         return sessionUser.getId() == userId || sessionUser.isAdmin();
+    }
+
+    private static boolean isCustomer(int sessionId) {
+        User sessionUser = getSessionUser(sessionId);
+        return sessionUser.isCustomer();
+    }
+
+    private static boolean isOrderProcessor(int sessionId) {
+        User sessionUser = getSessionUser(sessionId);
+        return sessionUser.isOrderProcessor();
+    }
+
+    private static boolean isChef(int sessionId) {
+        User sessionUser = getSessionUser(sessionId);
+        return sessionUser.isChef();
+    }
+
+    private static boolean isAdmin(int sessionId) {
+        User sessionUser = getSessionUser(sessionId);
+        return sessionUser.isAdmin();
     }
 
     private static User getSessionUser(int sessionId) {
@@ -373,7 +400,7 @@ public class Database {
     private static Order[] getSavedOrders(int userId) {
         /* START Prototype Code */
         if (userId == PrototypeModel.CUSTOMER.getId())
-            return PrototypeModel.ORDERS;
+            return PrototypeModel.SAVED_ORDERS;
         /* END Prototype Code */
 
         Connection connection = getConnection();
@@ -381,6 +408,22 @@ public class Database {
         Order[] savedOrders = connection.getSavedOrders(userId);
         connection.close(); /* close connection */
         return savedOrders;
+    }
+
+    private static Order[] getOrdersForProcessing() {
+        Connection connection = getConnection();
+        connection.connect();   /* open connection */
+        Order[] orders = connection.getOrdersForProcessing();
+        connection.close(); /* close connection */
+        return orders;
+    }
+
+    private static Order[] getOrdersForCooking() {
+        Connection connection = getConnection();
+        connection.connect();   /* open connection */
+        Order[] orders = connection.getOrdersForCooking();
+        connection.close(); /* close connection */
+        return orders;
     }
 
     private static int getUserIdFromUsername(String username) {
@@ -505,9 +548,25 @@ public class Database {
         public Order[] getSavedOrders(int userId) {
             /* START Prototype Code */
             if (userId == PrototypeModel.CUSTOMER.getId())
-                return PrototypeModel.ORDERS;
+                return PrototypeModel.SAVED_ORDERS;
             /* END Prototype Code */
             return new Order[0];
+        }
+
+        public Order[] getOrdersForProcessing() {
+            /* START Prototype Code */
+            return PrototypeModel.ACCEPTED_ORDERS;
+            /* END Prototype Code */
+
+            // return new Order[0];
+        }
+
+        public Order[] getOrdersForCooking() {
+            /* START Prototype Code */
+            return PrototypeModel.CHEF_ORDERS;
+            /* END Prototype Code */
+
+            // return new Order[0];
         }
     
         public int getUserIdFromUsername(String username) {
