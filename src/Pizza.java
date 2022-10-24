@@ -1,4 +1,5 @@
 public class Pizza {
+    public static final int BLANK_ID = 0;
     /* Pizza Types */
     public static final int PEPPERONI = 0;
     public static final int VEGETABLE = 1;
@@ -48,5 +49,11 @@ public class Pizza {
     }
     public boolean hasExtraCheese() {
         return this.extraCheese;
+    }
+
+    /* Create new pizza */
+    public static Pizza create(int sessionId, int orderId, int pizzaType, boolean mushrooms, boolean olives, boolean onions, boolean extraCheese, int quantity) {
+        int pizzaId = Database.createPizza(sessionId, orderId, pizzaType, mushrooms, olives, onions, extraCheese, quantity);
+        return new Pizza(pizzaId, pizzaType, mushrooms, olives, onions, extraCheese, quantity);
     }
 }

@@ -64,6 +64,14 @@ public class Database {
         return Login.accept(sessionId, userId);
     }
 
+    // return pizzaId
+    public static int createPizza(int sessionId, int orderId, int pizzaType, boolean mushrooms, boolean olives, boolean onions, boolean extraCheese, int quantity) {
+        if (isAdmin(sessionId) || getSession(sessionId).getOrderId() == orderId) {
+            return createPizza(orderId, pizzaType, mushrooms, olives, onions, extraCheese, quantity);
+        }
+        return Pizza.BLANK_ID;
+    }
+
     public static User getUser(int userId, int sessionId) {
         /* START Prototype Code */
         if (userId == User.GUEST_ID)
@@ -209,6 +217,13 @@ public class Database {
         return new Order[0];
     }
 
+    public static Order[] getOrdersForCooking(int sessionId) {
+        if (isAdmin(sessionId) || isChef(sessionId)) {
+            return getOrdersForCooking();
+        }
+        return new Order[0];
+    }
+
     /* private */
     // interface with back-end database
 
@@ -248,6 +263,17 @@ public class Database {
         connection.close(); /* close connection */
 
         return userId;
+    }
+
+    // return pizzaId
+    private static int createPizza(int orderId, int pizzaType, boolean mushrooms, boolean olives, boolean onions, boolean extraCheese, int quantity) {
+        int pizzaId = generateRandomId();
+
+        Connection connection = getConnection();   /* open connection */
+        connection.createPizza(pizzaId, orderId, pizzaType, mushrooms, olives, onions, extraCheese, quantity);
+        connection.close(); /* close connection */
+
+        return pizzaId;
     }
 
     private static int generateRandomId() {
@@ -602,6 +628,11 @@ public class Database {
         // return userId
         public int createUser(int userId, String username, String name, int type, int encryptedPassword, String email, int phoneNumber, int asurite) {
             return userId;
+        }
+
+        // return pizzaId
+        public int createPizza(int pizzaId, int orderId, int pizzaType, boolean mushrooms, boolean olives, boolean onions, boolean extraCheese, int quantity) {
+            return pizzaId;
         }
     
         /* Database Querying */

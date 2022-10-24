@@ -27,25 +27,25 @@ public class PrototypeModel {
 
     // Orders
     // saved
-    public static Order ORDER1 = new Order(new ArrayList<Pizza>(List.of(PIZZA1)), Order.PICKED_UP, CUSTOMER.getId());
-    public static Order ORDER2 = new Order(new ArrayList<Pizza>(List.of(PIZZA2)), Order.CANCELLED, CUSTOMER.getId());
-    public static Order ORDER3 = new Order(new ArrayList<Pizza>(List.of(PIZZA3, PIZZA4)), Order.PICKED_UP, CUSTOMER.getId());
+    public static Order ORDER1 = new Order(101, new ArrayList<Pizza>(List.of(PIZZA1)), Order.PICKED_UP, CUSTOMER.getId());
+    public static Order ORDER2 = new Order(102, new ArrayList<Pizza>(List.of(PIZZA2)), Order.CANCELLED, CUSTOMER.getId());
+    public static Order ORDER3 = new Order(103, new ArrayList<Pizza>(List.of(PIZZA3, PIZZA4)), Order.PICKED_UP, CUSTOMER.getId());
     public static Order[] SAVED_ORDERS = {
         PrototypeModel.ORDER1,
         PrototypeModel.ORDER2,
         PrototypeModel.ORDER3
     };
     // for order processor
-    public static Order ORDER4 = new Order(new ArrayList<Pizza>(List.of(PIZZA6)), Order.ACCEPTED, CUSTOMER.getId());
-    public static Order ORDER5 = new Order(new ArrayList<Pizza>(List.of(PIZZA7)), Order.ACCEPTED, CUSTOMER.getId());
+    public static Order ORDER4 = new Order(104, new ArrayList<Pizza>(List.of(PIZZA6)), Order.ACCEPTED, CUSTOMER.getId());
+    public static Order ORDER5 = new Order(105, new ArrayList<Pizza>(List.of(PIZZA7)), Order.ACCEPTED, CUSTOMER.getId());
     public static Order[] ACCEPTED_ORDERS = {
         PrototypeModel.ORDER4,
         PrototypeModel.ORDER5
     };
     // for chef
-    public static Order ORDER6 = new Order(new ArrayList<Pizza>(List.of(PIZZA8)), Order.READY_TO_COOK, CUSTOMER.getId());
-    public static Order ORDER7 = new Order(new ArrayList<Pizza>(List.of(PIZZA9)), Order.COOKING, CUSTOMER.getId());
-    public static Order ORDER8 = new Order(new ArrayList<Pizza>(List.of(PIZZA10)), Order.COOKING, CUSTOMER.getId());
+    public static Order ORDER6 = new Order(106, new ArrayList<Pizza>(List.of(PIZZA8)), Order.READY_TO_COOK, CUSTOMER.getId());
+    public static Order ORDER7 = new Order(107, new ArrayList<Pizza>(List.of(PIZZA9)), Order.COOKING, CUSTOMER.getId());
+    public static Order ORDER8 = new Order(108, new ArrayList<Pizza>(List.of(PIZZA10)), Order.COOKING, CUSTOMER.getId());
     public static Order[] CHEF_ORDERS = {
         PrototypeModel.ORDER6,
         PrototypeModel.ORDER7,

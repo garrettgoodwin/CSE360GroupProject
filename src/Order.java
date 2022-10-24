@@ -1,6 +1,7 @@
 import java.util.ArrayList; // ArrayList
 
 public class Order {
+    public static int BLANK_ORDER_ID = 0;
     public static Order BLANK = new Order();
     /* Order Statuses */
     public static int NOT_YET_PLACED = 0;
@@ -11,25 +12,30 @@ public class Order {
     public static int PICKED_UP = 5;
     public static int CANCELLED = 6;
 
+    private int id;
     private ArrayList<Pizza> pizzas;
     private int status;
     private int userId;
 
     // creating new order as guest
     Order() {
-        this(User.GUEST_ID);
+        this(Order.BLANK_ORDER_ID, User.GUEST_ID);
     }
     // creating new order while logged in
-    Order(int userId) {
-        this(new ArrayList<Pizza>(), Order.NOT_YET_PLACED, userId);
+    Order(int id, int userId) {
+        this(id, new ArrayList<Pizza>(), Order.NOT_YET_PLACED, userId);
     }
     // pulling up saved orders
-    Order(ArrayList<Pizza> pizzas, int status, int userId) {
+    Order(int id, ArrayList<Pizza> pizzas, int status, int userId) {
+        this.id = id;
         this.pizzas = pizzas;
         this.status = status;
         this.userId = userId;
     }
     
+    public int getId() {
+        return id;
+    }
     public void addPizza(Pizza pizza) {
         pizzas.add(pizza);
     }

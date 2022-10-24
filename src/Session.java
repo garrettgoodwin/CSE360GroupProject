@@ -14,9 +14,10 @@ public class Session {
         this.order = order;
         this.isClosed = false;
     }
-    public void login(String username, String password) {
+    public Response login(String username, String password) {
         Login login = Database.login(username, password);
         login(login);
+        return login.getResponse();
     }
     public Response createAccount(String username, String password, String name, String email, int phoneNumber, int asurite) {
         // check for non-database-related valid entered information (e.g. username length, etc)
@@ -52,6 +53,9 @@ public class Session {
     public Order getOrder() {
         return order;
     }
+    public int getOrderId() {
+        return order.getId();
+    }
     public boolean getIsClosed() {
         return isClosed;
     }
@@ -71,8 +75,43 @@ public class Session {
     private void setUser(User user) {
         this.user = user;
     }
+    /* user role */
+    public boolean isGuest() {
+        return user.isGuest();
+    }
+    public boolean isLoggedIn() {
+        return user.isLoggedIn();
+    }
+    public boolean isCustomer() {
+        return user.isCustomer();
+    }
+    public boolean isAdmin() {
+        return user.isAdmin();
+    }
+    public boolean isChef() {
+        return user.isChef();
+    }
+    public boolean isOrderProcessor() {
+        return user.isOrderProcessor();
+    }
+    public boolean isEmployee() {
+        return user.isEmployee();
+    }
+    /* pizza customization */
+    public void addPizza(int pizzaType, boolean mushrooms, boolean olives, boolean onions, boolean extraCheese, int quantity) {
+        Pizza pizza = Pizza.create(getId(), getOrderId(), pizzaType, mushrooms, olives, onions, extraCheese, quantity);
+        order.addPizza(pizza);
+    }
+    /* order retreival */
     public Order[] getSavedOrders() {
-        Order[] savedOrders = Database.getSavedOrders(user.getId(), this.getId());
-        return savedOrders;
+        return Database.getSavedOrders(user.getId(), this.getId());
+    }
+    // returns empty [] if not order processor or admin
+    public Order[] getOrdersForProcessing() {
+        return Database.getOrdersForProcessing(this.getId());
+    }
+    // returns empty [] if not chef or admin
+    public Order[] getOrdersForCooking() {
+        return Database.getOrdersForCooking(this.getId());
     }
 }
