@@ -1,15 +1,7 @@
-public class OrderProccessor 
+public class OrderProccessor extends User
 {
-    int personNumb;
-
-    OrderProccessor()
-    {
-        personNumb = 3;
+    public static final int TYPE = 3;
+    OrderProccessor(int id, String username, String name, int asurite, String email, int phoneNumber) {
+        super(id, username, name, OrderProccessor.TYPE, asurite, email, phoneNumber);
     }
-
-    public int getOrderProccessorNumb()
-    {
-        return personNumb;
-    }
-
 }
