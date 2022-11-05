@@ -30,7 +30,6 @@ public class App extends Application
     Scene scene1, scene2, scene3, scene4, scene5, scene6, scene7, scene8;
 
     public static void main(String[] args) {
-        // launch
         launch(args);
     }
     
