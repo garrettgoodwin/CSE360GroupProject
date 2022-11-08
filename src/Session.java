@@ -19,7 +19,7 @@ public class Session {
         login(login);
         return login.getResponse();
     }
-    public Response createAccount(String username, String password, String name, String email, int phoneNumber, int asurite) {
+    public Response createAccount(String username, String password, String name, String email, String phoneNumber, int asurite) {
         // check for non-database-related valid entered information (e.g. username length, etc)
         // Database.createAccount will conduct database-related exception checking
         //      (e.g. username already exists in database)
@@ -53,6 +53,17 @@ public class Session {
     public Order getOrder() {
         return order;
     }
+    public Response placeOrder(String cardNumber, String cardholderName, String exp, int cvv) {
+        Response response = Payment.validate(cardNumber, exp, Integer.toString(cvv));
+        if (Response.ok(response)) {
+            order.setStatus(Order.ACCEPTED);
+            Database.saveOrder(order, this.getId());
+        }
+        return response;
+    }
+    public float calculateTotal() {
+        return order.calculateTotal();
+    }
     public int getOrderId() {
         return order.getId();
     }
@@ -63,6 +74,7 @@ public class Session {
         if (login.isAccepted()) {
             setId(login.sessionId);
             setUser(login.userId);
+            setOrder(login.orderId);
         }
     }
     private void setId(int id) {
@@ -74,6 +86,16 @@ public class Session {
     }
     private void setUser(User user) {
         this.user = user;
+    }
+    private void setOrder(int orderId) {
+        Order order = Database.getOrder(orderId, this.getId());
+        setOrder(order);
+    }
+    private void setOrder(Order order) {
+        this.order = order;
+    }
+    public String getOrderStatusText() {
+        return order.getStatusText();
     }
     /* user role */
     public boolean isGuest() {
@@ -98,9 +120,17 @@ public class Session {
         return user.isEmployee();
     }
     /* pizza customization */
-    public void addPizza(int pizzaType, boolean mushrooms, boolean olives, boolean onions, boolean extraCheese, int quantity) {
+    /* return pizza id */
+    public int addPizza(int pizzaType, boolean mushrooms, boolean olives, boolean onions, boolean extraCheese, int quantity) {
         Pizza pizza = Pizza.create(getId(), getOrderId(), pizzaType, mushrooms, olives, onions, extraCheese, quantity);
         order.addPizza(pizza);
+        return pizza.getId();
+    }
+    public void updatePizza(int pizzaId, int pizzaType, boolean mushrooms, boolean olives, boolean onions, boolean extraCheese, int quantity) {
+        order.updatePizza(pizzaId, pizzaType, mushrooms, olives, onions, extraCheese, quantity);
+    }
+    public void removePizza(int pizzaId) {
+        order.removePizza(pizzaId);
     }
     /* order retreival */
     public Order[] getSavedOrders() {
@@ -113,5 +143,13 @@ public class Session {
     // returns empty [] if not chef or admin
     public Order[] getOrdersForCooking() {
         return Database.getOrdersForCooking(this.getId());
+    }
+    /* saved payment methods */
+    public void savePaymentMethod(String cardNumber, String exp, String cardholderName, int cvv) {
+        Database.createPayment(user.getId(), cardNumber, exp, cardholderName, cvv);
+    }
+
+    public Payment[] getSavedPaymentMethods() {
+        return Database.getSavedPaymentMethods(user.getId(), this.getId());
     }
 }

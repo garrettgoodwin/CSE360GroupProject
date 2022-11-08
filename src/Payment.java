@@ -4,7 +4,7 @@ public class Payment {
     private String cardholderName;
     private String exp;
     private String lastFourDigits;
-    private boolean valid;
+    
     /* MII types */
     private static int VISA_DIGIT = 4;
     private static String VISA = "Visa";
