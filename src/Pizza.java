@@ -5,6 +5,12 @@ public class Pizza {
     public static final int VEGETABLE = 1;
     public static final int CHEESE = 2;
 
+    /* Prices */
+    public static final float TOPPING_PRICE = 1.00f;
+    public static final float CHEESE_PRICE = 10.00f;
+    public static final float PEPPERONI_PRICE = 10.00f;
+    public static final float VEGETABLE_PRICE = 12.00f;
+
     int id;
     int pizzaType;
     boolean mushrooms;
@@ -27,8 +33,40 @@ public class Pizza {
     public int getQuantity() {
         return quantity;
     }
+    public float calculatePrice() {
+        float price = 0.0f;
+        if (isCheese()) {
+            price = CHEESE_PRICE;
+        } else if (isPepperoni()) {
+            price = PEPPERONI_PRICE;
+        } else if (isVegetable()) {
+            price = VEGETABLE_PRICE;
+        }
+        
+        if (hasMushrooms())
+            price += TOPPING_PRICE;
+        if (hasExtraCheese())
+            price += TOPPING_PRICE;
+        if (hasOlives())
+            price += TOPPING_PRICE;
+        if (hasOnions())
+            price += TOPPING_PRICE;
+
+        return price * quantity;
+    }
+    public void update(int pizzaType, boolean mushrooms, boolean olives, boolean onions, boolean extraCheese, int quantity) {
+        this.pizzaType = pizzaType;
+        this.mushrooms = mushrooms;
+        this.olives = olives;
+        this.onions = onions;
+        this.extraCheese = extraCheese;
+        this.quantity = quantity;
+    }
 
     /* Pizza Type & Toppings */
+    public int getType() {
+        return pizzaType;
+    }
     public boolean isPepperoni() {
         return this.pizzaType == Pizza.PEPPERONI;
     }

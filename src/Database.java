@@ -8,6 +8,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList; // ArrayList
 
+import javax.xml.namespace.QName;
+
 import java.sql.Timestamp;  // Timestamp
 
 public class Database {
@@ -30,7 +32,8 @@ public class Database {
         }
 
         int sessionId = createSession(userId);
-        return Login.accept(sessionId, userId);
+        int orderId = createOrder(userId);
+        return Login.accept(sessionId, userId, orderId);
     }
 
     // create customer account
@@ -53,7 +56,8 @@ public class Database {
         String encryptedPassword = encryptPassword(password);
         int userId = createUser(username, name, type, encryptedPassword, email, phoneNumber, asurite);
         int sessionId = createSession(userId);
-        return Login.accept(sessionId, userId);
+        int orderId = createOrder(userId);
+        return Login.accept(sessionId, userId, orderId);
     }
 
     // return pizzaId
@@ -62,6 +66,20 @@ public class Database {
             return createPizza(orderId, pizzaType, mushrooms, olives, onions, extraCheese, quantity);
         }
         return Pizza.BLANK_ID;
+    }
+
+    // return paymentId
+    public static int createPayment(int userId, String cardNumber, String exp, String cardholderName, int cvv) {
+        /* id,time_created,time_updated,user_id,card_number,exp,cardholder_name,cvv */
+        int paymentId = generatePaymentId();
+        Connection.createPayment(paymentId, userId, cardNumber, exp, cardholderName, cvv);
+        return paymentId;
+    }
+
+    public static void saveOrder(Order order, int sessionId) {
+        if (isAdmin(sessionId) || getSession(sessionId).getOrderId() == order.getId()) {
+            saveOrder(order);
+        }
     }
 
     public static User getUser(int userId, int sessionId) {
@@ -161,26 +179,42 @@ public class Database {
         }
     }
 
+    public static Order getOrder(int orderId, int sessionId) {
+        int userId = Connection.getOrderUserId(orderId);
+        if (hasAccessTo(sessionId, userId)) {
+            return getOrder(orderId);
+        }
+        return Order.BLANK;
+    }
+
     public static Order[] getSavedOrders(int userId, int sessionId) {
         if (hasAccessTo(sessionId, userId)) {
             return getSavedOrders(userId);
         }
-        return new Order[0];
+        return new Order[0];  // Access Denied
     }
 
     public static Order[] getOrdersForProcessing(int sessionId) {
         if (isAdmin(sessionId) || isOrderProcessor(sessionId)) {
             return getOrdersForProcessing();
         }
-        return new Order[0];
+        return new Order[0];  // Access Denied
     }
 
     public static Order[] getOrdersForCooking(int sessionId) {
         if (isAdmin(sessionId) || isChef(sessionId)) {
             return getOrdersForCooking();
         }
-        return new Order[0];
+        return new Order[0];  // Access Denied
     }
+
+    public static Payment[] getSavedPaymentMethods(int userId, int sessionId) {
+        if (isAdmin(sessionId) || isChef(sessionId)) {
+            return getSavedPaymentMethods(userId);
+        }
+        return new Payment[0];  // Access Denied
+    }
+
 
     /* private */
     // interface with back-end database
@@ -210,6 +244,29 @@ public class Database {
         Connection.createPizza(pizzaId, orderId, pizzaType, mushrooms, olives, onions, extraCheese, quantity);
 
         return pizzaId;
+    }
+
+    // return orderId
+    private static int createOrder(int userId) {
+        int orderId = generateOrderId();
+        Connection.createOrder(orderId, userId);
+        return orderId;
+    }
+
+    public static void saveOrder(Order order) {
+        Pizza[] pizzas = order.getPizzas();
+        int orderId = order.getId();
+        for (int i = 0; i < pizzas.length; i++) {
+            Pizza pizza = pizzas[i];
+            int pizzaType = pizza.getType();
+            boolean mushrooms = pizza.hasMushrooms();
+            boolean olives = pizza.hasOlives();
+            boolean onions = pizza.hasOnions();
+            boolean extraCheese = pizza.hasExtraCheese();
+            int quantity = pizza.getQuantity();
+
+            createPizza(orderId, pizzaType, mushrooms, olives, onions, extraCheese, quantity);
+        }
     }
 
     private static int generateUserId() {
@@ -344,6 +401,10 @@ public class Database {
         Connection.setPhoneNumber(phoneNumber, userId);
     }
 
+    private static Order getOrder(int orderId) {
+        return Connection.getOrder(orderId);
+    }
+
     private static Order[] getSavedOrders(int userId) {
         return Connection.getSavedOrders(userId);
     }
@@ -364,6 +425,10 @@ public class Database {
             orders[readyToCook.length + i] = cooking[i];
         }
         return orders;
+    }
+
+    private static Payment[] getSavedPaymentMethods(int userId) {
+        return Connection.getSavedPaymentMethods(userId);
     }
 
     private static int getUserIdFromUsername(String username) {        
@@ -545,6 +610,10 @@ public class Database {
         public static void setSessionId(int sessionId, int userId) {
             updateUser(SESSION_ID, Integer.toString(sessionId), userId);
         }
+
+        public static int getOrderUserId(int orderId) {
+            return Integer.parseInt(selectOrder(USER_ID, orderId));
+        }
     
         public static Order[] getSavedOrders(int userId) {
             // saved and unsaved orders
@@ -599,6 +668,15 @@ public class Database {
             }
             return pizzas;
         }
+
+        public static Payment[] getSavedPaymentMethods(int userId) {
+            String[] paymentRows = selectAll(USER_ID, String.valueOf(userId), PAYMENT_TABLE);
+            Payment[] payments = new Payment[paymentRows.length];
+            for (int i = 0; i < payments.length; i++) {
+                payments[i] = parsePayment(paymentRows[i]);
+            }
+            return payments;
+        }
     
         public static int getUserIdFromUsername(String username) {
             String[] users = selectAll(USERNAME, username, USER_TABLE);
@@ -612,8 +690,7 @@ public class Database {
             return session.getUser();
         }
 
-        // return sessionId
-        public static int createSession(int sessionId, int userId) {
+        public static void createSession(int sessionId, int userId) {
             /*id,time_created,time_updated,user_id,order_id,is_closed */
 
             // delete user's last session
@@ -621,28 +698,43 @@ public class Database {
 
             String timeCreated = getTime();
             String timeUpdated = timeCreated;
-            int orderId = Order.BLANK_ORDER_ID;
+            int orderId = Order.BLANK_ID;
             boolean isClosed = false;
             
             insertSession(delimetRow(Integer.toString(sessionId),timeCreated,timeUpdated,Integer.toString(userId),Integer.toString(orderId), Boolean.toString(isClosed)));
-            return sessionId;
         }
 
-        // return userId
-        public static int createUser(int userId, String username, String name, int type, String encryptedPassword, String email, String phoneNumber, int asurite) {
+        public static void createUser(int userId, String username, String name, int type, String encryptedPassword, String email, String phoneNumber, int asurite) {
             /* id,time_created,time_updated,username,name,user_type,encrypted_password,asurite,email,phone_number,session_id */
             String timeCreated = getTime();
             String timeUpdated = timeCreated;
             insertUser(delimetRow(Integer.toString(userId),timeCreated,timeUpdated,username,name,Integer.toString(type),encryptedPassword,Integer.toString(asurite),email,phoneNumber,Integer.toString(Session.GUEST_SESSION)));
 
-            return userId;
         }
 
-        // return pizzaId
-        public static int createPizza(int pizzaId, int orderId, int pizzaType, boolean mushrooms, boolean olives, boolean onions, boolean extraCheese, int quantity) {
-            return pizzaId;
+        public static void createOrder(int orderId, int userId) {
+            /* id,time_created,time_updated,user_id,status,is_saved */
+            String timeCreated = getTime();
+            String timeUpdated = timeCreated;
+            int status = Order.NOT_YET_PLACED;
+            boolean isSaved = false;
+            insertOrder(delimetRow(Integer.toString(orderId),timeCreated,timeUpdated,Integer.toString(userId),Integer.toString(status),Boolean.toString(isSaved)));
         }
 
+        public static void createPizza(int pizzaId, int orderId, int pizzaType, boolean mushrooms, boolean olives, boolean onions, boolean extraCheese, int quantity) {
+            /* id,time_created,time_updated,order_id,pizza_type,mushrooms,olives,onions,extra_cheese,quantity */
+            String timeCreated = getTime();
+            String timeUpdated = timeCreated;
+            insertPizza(delimetRow(Integer.toString(pizzaId),timeCreated,timeUpdated,Integer.toString(orderId),Integer.toString(pizzaType),Boolean.toString(mushrooms),Boolean.toString(olives),Boolean.toString(onions),Boolean.toString(extraCheese),Integer.toString(quantity)));
+        }
+
+        public static void createPayment(int paymentId, int userId, String cardNumber, String exp, String cardholderName, int cvv) {
+            /* id,time_created,time_updated,user_id,card_number,exp,cardholder_name,cvv */
+            String timeCreated = getTime();
+            String timeUpdated = timeCreated;
+            insertPayment(delimetRow(Integer.toString(paymentId),timeCreated,timeUpdated,Integer.toString(userId),cardNumber,exp,cardholderName,Integer.toString(cvv)));
+        }
+        
         private static int generateId(String tableName) {
             // 1 + largest id in table
             String header = getTableHeader(tableName);
@@ -700,10 +792,30 @@ public class Database {
             return new BufferedReader(new FileReader(tableName));
         }
 
+        /* Create table */
+        private static void createTable(String tableName) {
+            if (tableName.equals(SESSION_TABLE))
+                write(SESSION_HEADER, SESSION_TABLE);
+            if (tableName.equals(USER_TABLE))
+                write(USER_HEADER, USER_TABLE);
+            if (tableName.equals(ORDER_TABLE))
+                write(ORDER_HEADER, ORDER_TABLE);
+            if (tableName.equals(PIZZA_TABLE))
+                write(PIZZA_HEADER, PIZZA_TABLE);
+            if (tableName.equals(PAYMENT_TABLE))
+                write(PAYMENT_HEADER, PAYMENT_TABLE);
+        }
+
         /* text parsing */
 
         /* Read all text in table */
         private static String read(String tableName) {
+            return read(tableName, false);
+        }
+
+        /* Read all text in table */
+        /* create table on fail if not tried before */
+        private static String read(String tableName, boolean exceptionCalled) {
             String text = "";
             try {
                 BufferedReader reader = connectReader(tableName);
@@ -715,7 +827,12 @@ public class Database {
                 }
                 reader.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                if (exceptionCalled) {
+                    createTable(tableName);
+                    return read(tableName, true);
+                } else {
+                    e.printStackTrace();
+                }
             }
             return text;
         }
@@ -791,7 +908,7 @@ public class Database {
                 return tableInfo;
             }
             String tableName = tableInfo;
-            
+
             /* Retreive Hardcoded table header */
             if (tableName.equals(SESSION_TABLE))
                 return SESSION_HEADER;
@@ -994,18 +1111,12 @@ public class Database {
         /* insert new row into table */
         private static void insert(String row, String tableName) {
             // "INSERT into <table> (tableHeader) VALUES(row)"
-            try {
-                String text = read(tableName);
-                String tableHeader = getTableHeader(tableName);
-                String rows = textAfterTableHeader(text);
-                rows = row + rows;
-                text = tableHeader + rows;
-                BufferedWriter writer = connectWriter(tableName);
-                writer.write(text);
-                writer.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            String text = read(tableName);
+            String tableHeader = getTableHeader(tableName);
+            String rows = textAfterTableHeader(text);
+            rows = row + rows;
+            text = tableHeader + rows;
+            write(text, tableName);
         }
 
         /* update row in table, by id parsed from row */

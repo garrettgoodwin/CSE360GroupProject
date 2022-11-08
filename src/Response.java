@@ -11,12 +11,15 @@ public class Response {
     /* 46x - invalid */
     public static final Response INVALID_CHAR = new Response(460, "Invalid Character");
     public static final Response INVALID_EMAIL = new Response(461, "Invalid Email");
+    public static final Response INVALID_CARDNUMBER = new Response(468, "Invalid Card Number");
+    public static final Response INVALID_CVV = new Response(469, "Invalid CVV");
     /* 48x - misc. */
     public static final Response MISSING_CHAR = new Response(480, "Missing Required Character");
     public static final Response SHORT_ENTRY = new Response(481, "Entry is Too Short");
     public static final Response LONG_ENTRY = new Response(482, "Entry is Too Long");
     public static final Response SHORT_PASSWORD = new Response(483, "Password Must be at Least " + User.Password.MIN_LENGTH + " Characters");
     public static final Response LONG_PASSWORD = new Response(484, "Password Must be at Most " + User.Password.MAX_LENGTH + " Characters");
+    public static final Response CARD_EXPIRED = new Response(485, "Credit Card is Expired.");
 
     public int code;
     public String message;
@@ -30,6 +33,6 @@ public class Response {
         return this.code == response.code;
     }
     public static boolean ok(Response response) {
-        return response == Response.OK;
+        return response == OK;
     }
 }
