@@ -14,6 +14,10 @@ import java.sql.Timestamp;  // Timestamp
 
 public class Database {
 
+    public static void test() {
+        Connection.test();
+    }
+
     /*
      * Public methods should be responsible for exception checking/handling
      */
@@ -31,8 +35,8 @@ public class Database {
             return Login.deny(Response.UNAUTHORIZED);
         }
 
-        int sessionId = createSession(userId);
         int orderId = createOrder(userId);
+        int sessionId = createSession(userId, orderId);
         return Login.accept(sessionId, userId, orderId);
     }
 
@@ -224,8 +228,12 @@ public class Database {
 
     // return sessionId
     private static int createSession(int userId) {
+        return createSession(userId, Order.BLANK_ID);
+    }
+
+    private static int createSession(int userId, int orderId) {
         int sessionId = generateSessionId();
-        Connection.createSession(sessionId, userId);
+        Connection.createSession(sessionId, userId, orderId);
         Connection.setSessionId(sessionId, userId);
         return sessionId;
     }
@@ -511,6 +519,15 @@ public class Database {
         /* id,time_created,time_updated,user_id,card_number,exp,cardholder_name,cvv */
         private static String PAYMENT_HEADER = delimetRow(ID,TIME_CREATED,TIME_UPDATED,USER_ID,CARD_NUMBER,EXP,CARDHOLDER_NAME,CVV);
 
+        public static void test() {
+            int id = 1;
+            System.out.println(columnAt(USER_HEADER, 1));
+            System.out.println(columnAt(USER_HEADER, 2));
+            System.out.println(columnAt(USER_HEADER, 0));
+            System.out.println(columnAt(USER_HEADER, 10));
+
+        }
+
         /* database manipulation interface */
 
         public static User getUser(int userId) {
@@ -689,15 +706,11 @@ public class Database {
             return getUser(userId);
         }
 
-        public static void createSession(int sessionId, int userId) {
+        public static void createSession(int sessionId, int userId, int orderId) {
             /*id,time_created,time_updated,user_id,order_id,is_closed */
-
-            // delete user's last session
-            deleteSession(USER_ID, Integer.toString(userId));
 
             String timeCreated = getTime();
             String timeUpdated = timeCreated;
-            int orderId = Order.BLANK_ID;
             boolean isClosed = false;
             
             insertSession(delimetRow(Integer.toString(sessionId),timeCreated,timeUpdated,Integer.toString(userId),Integer.toString(orderId), Boolean.toString(isClosed)));
@@ -856,7 +869,7 @@ public class Database {
             return row.substring(0, index);
         }
 
-        private static String nthColumn(String row, int n) {
+        private static String columnAt(String row, int n) {
             for (int i = 0; i < n; i++) {
                 int nextDelimeter = row.indexOf(COLUMN_DELIMETER);
                 if (nextDelimeter == -1) {
@@ -866,13 +879,18 @@ public class Database {
             }
             // found
 
+            // get rid of delimeters right of column
             int nextDelimeter = row.indexOf(COLUMN_DELIMETER);
-            if (nextDelimeter == -1) {
-                // last column in row
-                return row;
+            if (nextDelimeter != -1) {
+                // not column in row
+                row = row.substring(0, nextDelimeter);
             }
-            // not last column in row
-            return row.substring(0, nextDelimeter);
+            nextDelimeter = row.indexOf(ROW_DELIMETER);
+            if (nextDelimeter != -1) {
+                // last column in row
+                row = row.substring(0, nextDelimeter);
+            }
+            return row;
         }
 
         private static String delimetRow(String... args) {
@@ -933,7 +951,7 @@ public class Database {
 
         private static String parseValue(String tableHeader, String row, String column) {
             int n = columnDelimetersBeforeMatch(tableHeader, column);
-            return nthColumn(row, n);
+            return columnAt(row, n);
         }
 
         private static int parseIntegerValue(String tableHeader, String row, String column) {
@@ -950,20 +968,18 @@ public class Database {
             int nextDelimeter;
             for (int i = 0; i < n; i++) {
                 nextDelimeter = row.indexOf(COLUMN_DELIMETER);
-                if (nextDelimeter == -1) {
-                    // error
-                    return "null";
-                }
                 valuesBefore += row.substring(0, nextDelimeter + 1);
                 row = row.substring(nextDelimeter + 1);
             }
             nextDelimeter = row.indexOf(COLUMN_DELIMETER);
             String valuesAfter;
+            
             if (nextDelimeter != -1) {
                 valuesAfter = row.substring(nextDelimeter);
             } else {
                 valuesAfter = Character.toString(ROW_DELIMETER);
             }
+
             return valuesBefore + value + valuesAfter;
         }
 
@@ -973,6 +989,7 @@ public class Database {
             int rowEnd = row.indexOf(ROW_DELIMETER);
             if (rowEnd == -1)
                 rowEnd = Integer.MAX_VALUE;
+
 
             while (nextDelimeter != -1 && nextDelimeter < rowEnd) {
                 String currentColumn = row.substring(0, nextDelimeter);
@@ -986,10 +1003,16 @@ public class Database {
             }
             // no delimeter or not found
 
+            // remove row delimeter
+            rowEnd = row.indexOf(ROW_DELIMETER);
+            if (rowEnd != -1)
+                row = row.substring(0, rowEnd);
+
             // no delimeter, only column in row is match
             if (row.equals(column)) {
-                return 0;
+                return delimeters;
             }
+
             // not found
             return -1;
         }
@@ -1037,13 +1060,13 @@ public class Database {
             return text.substring(index + 1);
         }
 
-        private static Session parseSession(String orderData) {
+        private static Session parseSession(String sessionData) {
             /* id,time_created,time_updated,user_id,order_id,is_closed */
             String header = SESSION_HEADER;
-            int id = parseIntegerValue(header, orderData, ID);
-            int userId = parseIntegerValue(header, orderData, USER_ID);
+            int id = parseId(sessionData, header);
+            int userId = parseIntegerValue(header, sessionData, USER_ID);
             User user = getUser(userId);
-            int orderId = parseIntegerValue(header, orderData, ORDER_ID);
+            int orderId = parseIntegerValue(header, sessionData, ORDER_ID);
             Order order = getOrder(orderId);
 
             return new Session(id, user, order);
@@ -1066,7 +1089,6 @@ public class Database {
         private static Order parseOrder(String orderData) {
             /* id,time_created,time_updated,user_id,status,is_saved */
             String header = ORDER_HEADER;
-
             int id = parseId(orderData, header); 
             ArrayList<Pizza> pizzas = getPizzas(id);
             int userId = parseIntegerValue(header, orderData, USER_ID);
@@ -1085,7 +1107,11 @@ public class Database {
             boolean olives = parseBooleanValue(header, pizzaData, OLIVES);
             boolean onions = parseBooleanValue(header, pizzaData, ONIONS);
             boolean extraCheese = parseBooleanValue(header, pizzaData, EXTRA_CHEESE);
+            System.out.println("HELLO!");
+            System.out.println(pizzaData);
+            System.out.println(header);
             int quantity = parseIntegerValue(header, pizzaData, QUANTITY);
+            System.out.println("IT WORKED!");
             return new Pizza(id, pizzaType, mushrooms, olives, onions, extraCheese, quantity);
         }
 
@@ -1140,7 +1166,7 @@ public class Database {
             int n = columnDelimetersBeforeMatch(tableHeader, ID);
             int nextRow = rows.indexOf(ROW_DELIMETER) + 1;
             while (nextRow > 0) {
-                int rowId = Integer.parseInt(nthColumn(rows, n));
+                int rowId = Integer.parseInt(columnAt(rows, n));
                 if (rowId == id) {
                     return rows.substring(0, nextRow);
                 }
@@ -1162,7 +1188,7 @@ public class Database {
             int nextRow = rows.indexOf(ROW_DELIMETER) + 1;
             String rowsBefore = "";
             while (nextRow > 0) {
-                String rowValue = nthColumn(rows, n);
+                String rowValue = columnAt(rows, n);
                 // terminal case : row found
                 if (rowValue.equals(value)) {
                     String rowsAfter = rows.substring(nextRow);
@@ -1217,7 +1243,7 @@ public class Database {
             int n = columnDelimetersBeforeMatch(tableHeader, column);
             int nextRow = text.indexOf(ROW_DELIMETER) + 1;
             while (nextRow > 0) {
-                String rowValue = nthColumn(text, n);
+                String rowValue = columnAt(text, n);
                 if (rowValue.equals(value)) {
                     rowsList.add(text.substring(0, nextRow));
                 }
@@ -1249,6 +1275,8 @@ public class Database {
         }
 
         private static void insertPizza(String row) {
+            System.out.println("Inserting Pizza");
+            System.out.println(row);
             insert(row, PIZZA_TABLE);
         }
 
