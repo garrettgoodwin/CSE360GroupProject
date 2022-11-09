@@ -19,8 +19,8 @@ public class User {
     private int asurite;
     public static final String GUEST_EMAIL = "GUEST@asu.edu";
     private String email;
-    public static final int GUEST_PHONE_NUMBER = GUEST_INT;
-    private int phoneNumber;
+    public static final String GUEST_PHONE_NUMBER = GUEST_STRING;
+    private String phoneNumber;
 
     // guest
     User() {
@@ -33,7 +33,7 @@ public class User {
         this.phoneNumber = User.GUEST_PHONE_NUMBER;
     }
 
-    User(int id, String username, String name, int type, int asurite, String email, int phoneNumber) {
+    User(int id, String username, String name, int type, int asurite, String email, String phoneNumber) {
         this.id = id;
         this.username = username;
         this.name = name;
@@ -65,8 +65,44 @@ public class User {
         return email;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    // parse phone # x+xxx-xxx-xxxx
+    public String getPhoneNumberString() {
+        String phoneNumber = getPhoneNumber();
+        if (phoneNumber.length() < 10)
+            return phoneNumber;
+        
+        String parsed = "";
+        int digits;
+        int i = phoneNumber.length();
+
+        /*
+         * parse string from back to front (last 4, middle 3, front 3, (optional) country code)
+         */
+
+        // last 4 digits
+        digits = 4;
+        parsed = phoneNumber.substring(i-digits, i);
+        i -= digits;
+
+        // middle 3 digits
+        digits = 3;
+        parsed = phoneNumber.substring(i-digits, i) + "-" + parsed;
+        i -= digits;
+
+        // digits = 3
+        // area code / front 3 digits
+        parsed = phoneNumber.substring(i-digits, i) + "-" + parsed;
+        i -= digits;
+
+        // country code
+        if (i > 0) {
+            parsed = phoneNumber.substring(0, i) + "+" + parsed;
+        }
+        return parsed;
     }
 
     public boolean isGuest() {
@@ -90,7 +126,7 @@ public class User {
     }
 
     public boolean isOrderProcessor() {
-        return this.type == OrderProccessor.TYPE;
+        return this.type == OrderProcessor.TYPE;
     }
 
     public boolean isEmployee() {
@@ -103,7 +139,7 @@ public class User {
                 return "ADMIN";
             case Chef.TYPE:
                 return "CHEF";
-            case OrderProccessor.TYPE:
+            case OrderProcessor.TYPE:
                 return "ORDER PROCESSOR";
             case Customer.TYPE:
                 return "CUSTOMER";
@@ -141,22 +177,47 @@ public class User {
     public static class Username {
         public static final int MIN_LENGTH = 3;
         public static final int MAX_LENGTH = 20;
-        public static Response validate(String password) {
+        public static Response validate(String username) {
 
+            if (username.length() < MIN_LENGTH)
+                return Response.SHORT_PASSWORD;
+
+            if (username.length() > MAX_LENGTH)
+                return Response.LONG_PASSWORD;
+
+            if (Database.usernameExists(username))
+                return Response.PREEXISTING_USERNAME;
+                
             // all tests passed
             return Response.OK;
         }
     }
 
     public static class Email {
-        public static Response validate(String password) {
+        public static Response validate(String email) {
             String validEmailRegex = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
-            if (!Pattern.matches(validEmailRegex, password)) {
+            if (!Pattern.matches(validEmailRegex, email)) {
                 return Response.INVALID_EMAIL;
             }
+
+            if (Database.emailExists(email))
+                return Response.PREEXISTING_EMAIL;
+
             // all tests passed
             return Response.OK;
         }
+    }
+
+    @Override
+    public String toString() {
+        String str = "User #" + getId() + "\n\n";
+        str += "username: " + getUsername() + "\n";
+        str += "name: " + getName() + "\n";
+        str += "type: " + getTypeString() + "\n";
+        str += "asurite: " + getAsurite() + "\n";
+        str += "email: " + getEmail() + "\n";
+        str += "phoneNumber: " + getPhoneNumberString();
+        return str;
     }
 
 }

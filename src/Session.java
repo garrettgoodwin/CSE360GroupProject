@@ -152,4 +152,12 @@ public class Session {
     public Payment[] getSavedPaymentMethods() {
         return Database.getSavedPaymentMethods(user.getId(), this.getId());
     }
+
+    @Override
+    public String toString() {
+        String str = "Session #" + getId() + "\n\n";
+        str += getUser().toString() + "\n\n";
+        str += getOrder().toString();
+        return str;
+    }
 }

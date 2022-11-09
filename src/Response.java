@@ -35,4 +35,9 @@ public class Response {
     public static boolean ok(Response response) {
         return response == OK;
     }
+
+    @Override
+    public String toString() {
+        return code + " " + message;
+    }
 }

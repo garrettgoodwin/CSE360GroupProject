@@ -153,4 +153,24 @@ public class Order {
     public boolean isCancelled() {
         return this.status == Order.CANCELLED;
     }
+
+    private int getUserId() {
+        return userId;
+    }
+
+    @Override
+    public String toString() {
+        String str = "Order #" + getId() + "\n\n";
+        str += "status: " + getStatusText() + "\n";
+        str += "is saved: " + isSaved() + "\n";
+        str += "total: " + calculateTotal() + "\n";
+        str += "Pizzas: ";
+        for (int i = 0; i < pizzas.size(); i++) {
+            str += "\n\n" + pizzas.get(i).toString();
+        }
+        if (pizzas.size() == 0) {
+            str += "No Pizzas";
+        }
+        return str;
+    }
 }
