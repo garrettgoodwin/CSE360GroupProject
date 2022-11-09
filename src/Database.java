@@ -341,8 +341,7 @@ public class Database {
     }
 
     private static User getSessionUser(int sessionId) {
-        Session session = getSession(sessionId);
-        return session.getUser();
+        return Connection.getSessionUser(sessionId);
     }
 
     /* Connection interface */
@@ -686,8 +685,8 @@ public class Database {
         }
     
         public static User getSessionUser(int sessionId) {
-            Session session = getSession(sessionId);
-            return session.getUser();
+            int userId = Integer.parseInt(selectSession(USER_ID, sessionId));
+            return getUser(userId);
         }
 
         public static void createSession(int sessionId, int userId) {
