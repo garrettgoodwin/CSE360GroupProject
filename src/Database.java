@@ -14,6 +14,9 @@ import java.sql.Timestamp;  // Timestamp
 
 public class Database {
 
+    /*
+     * Debug
+     */
     public static void test() {
         Connection.test();
     }
@@ -519,12 +522,10 @@ public class Database {
         /* id,time_created,time_updated,user_id,card_number,exp,cardholder_name,cvv */
         private static String PAYMENT_HEADER = delimetRow(ID,TIME_CREATED,TIME_UPDATED,USER_ID,CARD_NUMBER,EXP,CARDHOLDER_NAME,CVV);
 
+        /*
+         * Debug
+         */
         public static void test() {
-            int id = 1;
-            System.out.println(columnAt(USER_HEADER, 1));
-            System.out.println(columnAt(USER_HEADER, 2));
-            System.out.println(columnAt(USER_HEADER, 0));
-            System.out.println(columnAt(USER_HEADER, 10));
 
         }
 
@@ -1107,11 +1108,7 @@ public class Database {
             boolean olives = parseBooleanValue(header, pizzaData, OLIVES);
             boolean onions = parseBooleanValue(header, pizzaData, ONIONS);
             boolean extraCheese = parseBooleanValue(header, pizzaData, EXTRA_CHEESE);
-            System.out.println("HELLO!");
-            System.out.println(pizzaData);
-            System.out.println(header);
             int quantity = parseIntegerValue(header, pizzaData, QUANTITY);
-            System.out.println("IT WORKED!");
             return new Pizza(id, pizzaType, mushrooms, olives, onions, extraCheese, quantity);
         }
 
@@ -1275,8 +1272,6 @@ public class Database {
         }
 
         private static void insertPizza(String row) {
-            System.out.println("Inserting Pizza");
-            System.out.println(row);
             insert(row, PIZZA_TABLE);
         }
 
