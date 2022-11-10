@@ -156,6 +156,7 @@ public class User {
     public static class Password {
         public static final int MIN_LENGTH = 8;
         public static final int MAX_LENGTH = 80;
+        public static String SPECIAL_CHARACTERS = "!@#$%^&*()_+-={}[]|\\:;\"'<>.?";
         public static Response validate(String password) {
 
             if (password.length() < MIN_LENGTH)
@@ -166,11 +167,39 @@ public class User {
 
             /* includes necessary characters */
             /* one upper case, one lower case, one number, one special character */
+            String upperCaseRegex = "[A-Z]";
+            String lowerCaseRegex = "[a-z]";
+            String numberRegex = "[0-9]";
+            if (!Pattern.matches(upperCaseRegex, password) || 
+                !Pattern.matches(lowerCaseRegex, password) ||
+                !Pattern.matches(numberRegex, password) ||
+                !includesSpecialCharacter(password)) 
+                {
+                return Response.PASSWORD_MISSING_NEEDED_CHARACTER;
+            }
 
-            /* excludes forbidden characters */
+            /* only includes allowed characters */
+            for (int i = 0; i < password.length(); i++) {
+                String s = String.valueOf(password.charAt(i));
+                if (!Pattern.matches(upperCaseRegex, s) && 
+                    !Pattern.matches(lowerCaseRegex, s) &&
+                    !Pattern.matches(numberRegex, s) &&
+                    !includesSpecialCharacter(s)) 
+                    {
+                    return Response.FORBIDDEN_PASSWORD_CHARACTER;
+                }
+            }
             
             // all tests passed
             return Response.OK;
+        }
+
+        private static boolean includesSpecialCharacter(String password) {
+            for (int i = 0; i < password.length(); i++) {
+                if (SPECIAL_CHARACTERS.contains(String.valueOf(password.charAt(i))))
+                    return true;
+            }
+            return false;
         }
     }
 
@@ -188,6 +217,15 @@ public class User {
             if (Database.usernameExists(username))
                 return Response.PREEXISTING_USERNAME;
                 
+            // invalid character
+            // allowed characters: a-zA-Z0-9 -_
+            String allowedCharactersRegex = "[a-zA-Z0-9_-]";
+            for (int i = 0; i < username.length(); i++) {
+                String s = String.valueOf(username.charAt(i));
+                if (!Pattern.matches(allowedCharactersRegex, s))
+                    return Response.FORBIDDEN_USERNAME_CHARACTER;
+            }
+
             // all tests passed
             return Response.OK;
         }
@@ -195,7 +233,7 @@ public class User {
 
     public static class Email {
         public static Response validate(String email) {
-            String validEmailRegex = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+            String validEmailRegex = "[A-Za-z0-9]{1,}@[A-Za-z0-9]{1,}\\.[A-Za-z0-9]{1,}";
             if (!Pattern.matches(validEmailRegex, email)) {
                 return Response.INVALID_EMAIL;
             }
