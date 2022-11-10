@@ -165,54 +165,54 @@ public class User {
             if (password.length() > MAX_LENGTH)
                 return Response.LONG_PASSWORD;
 
-            /* includes necessary characters */
             /* one upper case, one lower case, one number, one special character */
             String upperCaseRegex = "[A-Z]";
             String lowerCaseRegex = "[a-z]";
             String numberRegex = "[0-9]";
-            if (!Pattern.matches(upperCaseRegex, password) || 
-                !Pattern.matches(lowerCaseRegex, password) ||
-                !Pattern.matches(numberRegex, password) ||
-                !includesSpecialCharacter(password)) 
-                {
-                return Response.PASSWORD_MISSING_NEEDED_CHARACTER;
-            }
 
+            boolean upper = false;
+            boolean lower = false;
+            boolean number = false;
+            boolean special = false;
+
+            /* includes necessary characters */
             /* only includes allowed characters */
             for (int i = 0; i < password.length(); i++) {
                 String s = String.valueOf(password.charAt(i));
-                if (!Pattern.matches(upperCaseRegex, s) && 
-                    !Pattern.matches(lowerCaseRegex, s) &&
-                    !Pattern.matches(numberRegex, s) &&
-                    !includesSpecialCharacter(s)) 
-                    {
+                if (Pattern.matches(upperCaseRegex, s)) {
+                    upper = true;
+                } else if (Pattern.matches(lowerCaseRegex, s)) {
+                    lower = true;
+                } else if (Pattern.matches(numberRegex, s)) {
+                    number = true;
+                } else if (SPECIAL_CHARACTERS.contains(s)) {
+                    special = true;
+                } else {
+                    // is not valid character
                     return Response.FORBIDDEN_PASSWORD_CHARACTER;
                 }
+            }
+            if (!upper || !lower || !number || !special) {
+                // does not include ≥1 upper, lower, number, and special character
+                return Response.PASSWORD_MISSING_NEEDED_CHARACTER;
             }
             
             // all tests passed
             return Response.OK;
         }
 
-        private static boolean includesSpecialCharacter(String password) {
-            for (int i = 0; i < password.length(); i++) {
-                if (SPECIAL_CHARACTERS.contains(String.valueOf(password.charAt(i))))
-                    return true;
-            }
-            return false;
-        }
     }
 
     public static class Username {
         public static final int MIN_LENGTH = 3;
-        public static final int MAX_LENGTH = 20;
+        public static final int MAX_LENGTH = 25;
         public static Response validate(String username) {
 
             if (username.length() < MIN_LENGTH)
-                return Response.SHORT_PASSWORD;
+                return Response.SHORT_USERNAME;
 
             if (username.length() > MAX_LENGTH)
-                return Response.LONG_PASSWORD;
+                return Response.LONG_USERNAME;
 
             if (Database.usernameExists(username))
                 return Response.PREEXISTING_USERNAME;
@@ -233,7 +233,8 @@ public class User {
 
     public static class Email {
         public static Response validate(String email) {
-            String validEmailRegex = "[A-Za-z0-9]{1,}@[A-Za-z0-9]{1,}\\.[A-Za-z0-9]{1,}";
+            // String validEmailRegex = "[A-Za-z0-9][A-Za-z0-9\\.]{1,}@[A-Za-z0-9\\.]{1,}\\.[A-Za-z0-9]{1,}";
+            String validEmailRegex = "[A-Za-z][A-Za-z0-9\\.]{1,}@[A-Za-z0-9]{1,}\\.([A-Za-z0-9]\\.)*[A-Za-z0-9]{1,}";
             if (!Pattern.matches(validEmailRegex, email)) {
                 return Response.INVALID_EMAIL;
             }

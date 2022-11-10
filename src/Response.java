@@ -21,8 +21,10 @@ public class Response {
     public static final Response LONG_PASSWORD = new Response(484, "Password Must be at Most " + User.Password.MAX_LENGTH + " Characters");
     public static final Response CARD_EXPIRED = new Response(485, "Credit Card is Expired");
     public static final Response PASSWORD_MISSING_NEEDED_CHARACTER = new Response(486, "Password must include one upper case, lower case, numeric, and special character (" + User.Password.SPECIAL_CHARACTERS + ")");
-    public static final Response FORBIDDEN_PASSWORD_CHARACTER = new Response(487, "Password must only include letters, numbers, or the special characters " + User.Password.SPECIAL_CHARACTERS);
+    public static final Response FORBIDDEN_PASSWORD_CHARACTER = new Response(487, "Password must only include letters, numbers, or the special characters (" + User.Password.SPECIAL_CHARACTERS + ")");
     public static final Response FORBIDDEN_USERNAME_CHARACTER = new Response(487, "Username must only include letters, numbers, dashes, and underscores");
+    public static final Response SHORT_USERNAME = new Response(488, "Username Must be at Least " + User.Username.MIN_LENGTH + " Characters");
+    public static final Response LONG_USERNAME = new Response(489, "Username Must be at Most " + User.Username.MAX_LENGTH + " Characters");
 
 
     public int code;

@@ -1,3 +1,4 @@
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Timestamp; // Timestamp
 import java.time.LocalDate;
 import java.util.Calendar;
@@ -53,13 +54,13 @@ public class Payment {
     }
 
     public static Response validate(String cardNumber, String exp, String cvv) {
-        if (cardNumber.length() != 16) {
+        if (cardNumber.length() != 16 || !isNaturalNumber(cardNumber)) {
             return Response.INVALID_CARDNUMBER;
         }
         if (isExpired(exp)) {
             return Response.CARD_EXPIRED;
         }
-        if (cvv.length() != 3) {
+        if (cvv.length() != 3 || !isNaturalNumber(cvv)) {
             return Response.INVALID_CVV;
         }
         return Response.OK;
@@ -94,15 +95,16 @@ public class Payment {
         }
         // format - yyyy-mm-dd
         final char delimeter = '-';
-        String format = year+delimeter+month+delimeter+day;
-        LocalDate expiration = LocalDate.parse(format);
+        String expDate = year+delimeter+month+delimeter+day;
+        LocalDate expiration = LocalDate.parse(expDate);
         
-        return expiration.compareTo(today) >= 0;
+        return expiration.compareTo(today) <= 0;
     }
     private static boolean isNaturalNumber(String num) {
         try {
             // is a natural number
-            return Integer.parseInt(num) >= 0;
+            // long - credit card's 16 digits > Integer.MAX_VALUE
+            return Long.parseLong(num) > 0;
         } catch (Exception e) {
             // NaN
             return false;
