@@ -8,8 +8,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList; // ArrayList
 
-import javax.xml.namespace.QName;
-
 import java.sql.Timestamp;  // Timestamp
 
 public class Database {
@@ -278,6 +276,14 @@ public class Database {
 
             createPizza(orderId, pizzaType, mushrooms, olives, onions, extraCheese, quantity);
         }
+    }
+
+    public static String encode(String entry) {
+        return Connection.encode(entry);
+    }
+
+    public static String decode(String entry) {
+        return Connection.decode(entry);
     }
 
     private static int generateUserId() {
@@ -710,6 +716,9 @@ public class Database {
         public static void createSession(int sessionId, int userId, int orderId) {
             /*id,time_created,time_updated,user_id,order_id,is_closed */
 
+            // first close last session (set is_closed = false)
+            updateAll(USER_ID, Integer.toString(userId), IS_CLOSED, Boolean.toString(true), SESSION_TABLE);
+
             String timeCreated = getTime();
             String timeUpdated = timeCreated;
             boolean isClosed = false;
@@ -749,11 +758,17 @@ public class Database {
         }
         
         private static int generateId(String tableName) {
-            // 1 + largest id in table
+            // random, min, or max id
+            final int MIN = 0;
+            final int MAX = Integer.MAX_VALUE;
             String header = getTableHeader(tableName);
             String text = read(tableName);
             String rows = textAfterTableHeader(text);
-            int largest = 0;
+            int largest = MIN;
+            int smallest = MAX;
+            // random in middle 80% of possible range
+            int random = (int) (MAX*0.1 + Math.random() * MAX*0.8);
+            boolean randomFound = false;
             int nextRow = rows.indexOf(ROW_DELIMETER) + 1;
             while (nextRow > 0) {
                 String row = rows.substring(0, nextRow);
@@ -761,9 +776,22 @@ public class Database {
                 if (id > largest) {
                     largest = id;
                 }
+                if (id < smallest) {
+                    smallest = id;
+                }
+                if (id == random) {
+                    randomFound = true;
+                }
                 rows = rows.substring(nextRow);
                 nextRow = rows.indexOf(ROW_DELIMETER) + 1;
             }
+            // default to random
+            if (!randomFound)
+                return random;
+            // otherwise default to filling smallest ids in
+            if (smallest > 1)
+                return smallest - 1;
+            // otherwise create largest id
             return largest + 1;
         }
 
@@ -901,10 +929,21 @@ public class Database {
             }
             String row = args[0];
             for (int i = 1; i < args.length; i++) {
-                row += COLUMN_DELIMETER + args[i];
+                // encode any delimeter arg may have
+                row += COLUMN_DELIMETER + encode(args[i]);
             }
             row += ROW_DELIMETER;
             return row;
+        }
+
+        /* encode delimeters so table won't break */
+        public static String encode(String column) {
+            return column.replaceAll(Character.toString(COLUMN_DELIMETER), "%" + (int) COLUMN_DELIMETER).replaceAll(Character.toString(ROW_DELIMETER), "%" + (int) ROW_DELIMETER);
+        }
+
+        /* decode delimeters so table won't break */
+        public static String decode(String column) {
+            return column.replaceAll("%" + (int) COLUMN_DELIMETER, Character.toString(COLUMN_DELIMETER)).replaceAll("%" + (int) ROW_DELIMETER, Character.toString(ROW_DELIMETER));
         }
 
         /*
@@ -1095,7 +1134,7 @@ public class Database {
             int userId = parseIntegerValue(header, orderData, USER_ID);
             int status = parseIntegerValue(header, orderData, STATUS);
             boolean saved = parseBooleanValue(header, orderData, IS_SAVED);
-            return new Order(id, pizzas, userId, status, saved);
+            return new Order(id, pizzas, status, userId, saved);
         }
 
         private static Pizza parsePizza(String pizzaData) {
@@ -1135,6 +1174,9 @@ public class Database {
             // "INSERT into <table> (tableHeader) VALUES(row)"
             String text = read(tableName);
             String tableHeader = getTableHeader(tableName);
+            if (countDelimeters(row) != countDelimeters(tableHeader))
+                return; // error - bad # of delimeters will wonk up the table
+
             String rows = textAfterTableHeader(text);
             rows = row + rows;
             text = tableHeader + rows;
@@ -1214,6 +1256,10 @@ public class Database {
             String row = select(id, tableName);
             String tableHeader = getTableHeader(tableName);
             String newRow = parseRowUpdate(tableHeader, row, column, value);
+            // update time_updated
+            if (!column.equals(TIME_UPDATED)) {
+                newRow = parseRowUpdate(tableHeader, newRow, TIME_UPDATED, getTime());
+            }
             update(newRow, tableName);
         }
 
@@ -1224,6 +1270,8 @@ public class Database {
             String tableHeader = getTableHeader(tableName);
             return parseValue(tableHeader, row, column);
         }
+
+        /* Multi-Row Operations */
 
         /* select all rows in table */
         private static String[] selectAll(String column, String value, String tableName) {
@@ -1253,7 +1301,21 @@ public class Database {
             return rowsList.toArray(rows);
         }
 
-        /* delete by column in table */
+        /* Update all rows in table */
+        private static void updateAll(String selectColumn, String selectValue, String changeColumn, String changeValue, String tableName) {
+            /* Update * rows in tableName where selectColumn=selectValue set changeColumn=changeValue */
+
+            // first select all rows
+            String[] rows = selectAll(selectColumn, selectValue, tableName);
+
+            // for each row
+            for (int i = 0; i < rows.length; i++) {
+                // get row id
+                int id = parseId(rows[i], tableName);
+                // update row
+                update(changeColumn, changeValue, id, tableName);
+            }
+        }
 
         /* INSERT */
 
