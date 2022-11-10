@@ -1,3 +1,7 @@
+import java.sql.Timestamp; // Timestamp
+import java.time.LocalDate;
+import java.util.Calendar;
+
 public class Payment {
     private int userId;
     private String type;
@@ -13,7 +17,6 @@ public class Payment {
     private static int DISCOVER_DIGIT = 6;
     private static String DISCOVER = "Discover";
     private static String UNKNOWN_TYPE = "Unknown Type";
-
 
     Payment() {
         this(User.GUEST_ID, "0000000123456789", "John Cardholder", "01/01");
@@ -63,7 +66,47 @@ public class Payment {
     }
 
     private static boolean isExpired(String exp) {
-        return false;
+        /* Test that exp is valid, get month and date */
+        final String MODEL = "mm/yy";
+        if (exp.length() != MODEL.length())
+            return true;    // length mismatch
+        final char MONTH_YEAR_DELIMETER = '/';
+        int delimeterIndex = exp.indexOf(MONTH_YEAR_DELIMETER);
+        if (delimeterIndex != MODEL.indexOf(MONTH_YEAR_DELIMETER))
+            return true;    // format mismatch
+
+        // month - mm
+        String month = exp.substring(0, delimeterIndex);
+        // year - yyyy
+        String year = "20" + exp.substring(delimeterIndex + 1);
+
+        if (!isNaturalNumber(month) || !isNaturalNumber(year))
+            return true;    // NaN
+
+        LocalDate today = LocalDate.now();
+
+        // month - mm
+        // year - yyyy
+        // day - dd
+        String day = Integer.toString(today.getDayOfMonth());
+        if (day.length() == 1) {
+            day = "0" + day;
+        }
+        // format - yyyy-mm-dd
+        final char delimeter = '-';
+        String format = year+delimeter+month+delimeter+day;
+        LocalDate expiration = LocalDate.parse(format);
+        
+        return expiration.compareTo(today) >= 0;
+    }
+    private static boolean isNaturalNumber(String num) {
+        try {
+            // is a natural number
+            return Integer.parseInt(num) >= 0;
+        } catch (Exception e) {
+            // NaN
+            return false;
+        }
     }
     private static String getType(String cardNumber) {
         int mii = getFirstDigit(cardNumber);
