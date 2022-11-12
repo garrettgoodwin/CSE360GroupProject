@@ -1,0 +1,23 @@
+.root {
+    -fx-background-color:rgb(25, 25, 25);
+}
+.sun-button {
+    -fx-graphic: url('Images\Icons\Cart.png');
+} 
+.toggle-button {
+    -fx-background-color: rgb(0, 0, 0, 0);
+}
+
+.toggle-button:selected {
+    -fx-background-color: rgb(0, 0, 0, .4);
+}
+
+.toggle-button:hover {
+    -fx-background-color: rgb(0, 0, 0, .2);;
+    -fx-scale-y: 1.1;
+}
+
+
+.toggle-button2{
+    -fx-graphic: url('Images\Icons\TempPizza1.jpg');
+}
