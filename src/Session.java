@@ -172,15 +172,32 @@ public class Session {
     public Order[] getOrdersForCooking() {
         return Database.getOrdersForCooking(this.getId());
     }
+
+    /* Order Processor */
+    public void markOrderReadyToCook(int orderId) {
+        Database.markOrderReadyToCook(this.getId(), orderId);
+    }
+    /* Chef */
+    public void markOrderCooking(int orderId) {
+        Database.markOrderCooking(this.getId(), orderId);
+    }
+    /* Chef */
+    public void markOrderReady(int orderId) {
+        Database.markOrderReady(this.getId(), orderId);
+    }
+    /* I don't think this will ever be used in the actual application */
+    public void markOrderPickedUp(int orderId) {
+        Database.markOrderPickedUp(this.getId(), orderId);
+    }
+    
     /* saved payment methods */
     public void savePaymentMethod(String cardNumber, String exp, String cardholderName, int cvv) {
         Database.createPayment(user.getId(), cardNumber, exp, cardholderName, cvv);
     }
-
     public Payment[] getSavedPaymentMethods() {
         return Database.getSavedPaymentMethods(user.getId(), this.getId());
     }
-
+    
     @Override
     public String toString() {
         String str = "Session #" + getId() + "\n\n";

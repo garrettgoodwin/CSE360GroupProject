@@ -16,6 +16,7 @@ public class Database {
      * Debug
      */
     public static void test() {
+        System.out.println(encryptPassword("password"));
         Connection.test();
     }
 
@@ -217,6 +218,33 @@ public class Database {
             return getOrdersForCooking();
         }
         return new Order[0];  // Access Denied
+    }
+
+    /* Order Processor */
+    public static void markOrderReadyToCook(int sessionId, int orderId) {
+        if (isAdmin(sessionId) || isOrderProcessor(sessionId)) {
+            setOrderStatus(orderId, Order.READY_TO_COOK);
+        }
+    }
+
+    /* Chef */
+    public static void markOrderCooking(int sessionId, int orderId) {
+        if (isAdmin(sessionId) || isChef(sessionId)) {
+            setOrderStatus(orderId, Order.COOKING);
+        }
+    }
+
+    /* Chef */
+    public static void markOrderReady(int sessionId, int orderId) {
+        if (isAdmin(sessionId) || isChef(sessionId)) {
+            setOrderStatus(orderId, Order.READY);
+        }
+    }
+
+    public static void markOrderPickedUp(int sessionId, int orderId) {
+        if (isAdmin(sessionId) || isOrderProcessor(sessionId)) {
+            setOrderStatus(orderId, Order.PICKED_UP);
+        }
     }
 
     public static Payment[] getSavedPaymentMethods(int userId, int sessionId) {
@@ -454,6 +482,10 @@ public class Database {
             orders[readyToCook.length + i] = cooking[i];
         }
         return orders;
+    }
+
+    private static void setOrderStatus(int orderId, int status) {
+        Connection.setOrderStatus(orderId, status);
     }
 
     private static Payment[] getSavedPaymentMethods(int userId) {
@@ -703,6 +735,10 @@ public class Database {
                 pizzas.add(parsePizza(pizzaRows[i]));
             }
             return pizzas;
+        }
+
+        public static void setOrderStatus(int orderId, int status) {
+            updateOrder(STATUS, Integer.toString(status), orderId);
         }
 
         public static Payment[] getSavedPaymentMethods(int userId) {
