@@ -25,6 +25,9 @@ public class Response {
     public static final Response FORBIDDEN_USERNAME_CHARACTER = new Response(487, "Username must only include letters, numbers, dashes, and underscores");
     public static final Response SHORT_USERNAME = new Response(488, "Username Must be at Least " + User.Username.MIN_LENGTH + " Characters");
     public static final Response LONG_USERNAME = new Response(489, "Username Must be at Most " + User.Username.MAX_LENGTH + " Characters");
+    public static final Response USERNAME_NOT_FOUND = new Response(490, "Username Does Not Exist");
+    public static final Response EMAIL_NOT_FOUND = new Response(491, "Email Does Not Exist");
+    public static final Response INCORRECT_PASSWORD = new Response(492, "Incorrect Password");
 
 
     public int code;

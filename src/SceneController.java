@@ -82,7 +82,7 @@ public class SceneController
 
     public void SwitchToOrderProcessorPage(ActionEvent event) throws IOException
     {
-        Parent root = FXMLLoader.load(getClass().getResource("OrderProccessorPage.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("OrderProcessorPage.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("Styling.css").toExternalForm());
@@ -139,7 +139,6 @@ public class SceneController
         stage.show();
     }
 
-
 // for (int i=1;i<=5;i++)
 //  {
 //    //Concatinate each loop 
@@ -189,5 +188,13 @@ public class SceneController
     //             System.out.printf("Login Unsuccessful %n");
     //     }
     // }
+
+    public void invalidEntry(TextField textField) {
+        textField.getStyleClass().add("invalid-entry");
+    }
+
+    public void validEntry(TextField textField) {
+        textField.getStyleClass().remove("invalid-entry");
+    }
 
 }

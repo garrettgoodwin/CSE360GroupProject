@@ -201,6 +201,12 @@ public class User {
             return Response.OK;
         }
 
+        public static boolean isPasswordResponse(Response response) {
+            return response == Response.FORBIDDEN_PASSWORD_CHARACTER
+                || response == Response.INCORRECT_PASSWORD
+                || response == Response.PASSWORD_MISSING_NEEDED_CHARACTER;
+        }
+
     }
 
     public static class Username {
@@ -229,6 +235,14 @@ public class User {
             // all tests passed
             return Response.OK;
         }
+
+        public static boolean isUsernameResponse(Response response) {
+            return response == Response.USERNAME_NOT_FOUND
+                || response == Response.SHORT_USERNAME
+                || response == Response.LONG_USERNAME
+                || response == Response.PREEXISTING_USERNAME
+                || response == Response.FORBIDDEN_USERNAME_CHARACTER;
+        }
     }
 
     public static class Email {
@@ -248,6 +262,12 @@ public class User {
 
         public static void sendEmail(String email, String subject, String body) {
             /* Send Email */
+        }
+
+        public static boolean isEmailResponse(Response response) {
+            return response == Response.EMAIL_NOT_FOUND
+                || response == Response.INVALID_EMAIL
+                || response == Response.PREEXISTING_EMAIL;
         }
     }
 

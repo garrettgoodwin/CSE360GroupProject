@@ -44,6 +44,12 @@ public class Session {
         }
         return login.getResponse();
     }
+
+    public void continueAsGuest() {
+        Login login = Database.createGuestSession();
+        login(login);
+    }
+
     /* (Admin) : Create an account of any type */
     /* types: Admin, Chef, OrderProcessor, Customer */
     public Response createAccount(String username, String password, String name, String email, String phoneNumber, int asurite, int type) {

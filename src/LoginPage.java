@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -16,6 +17,7 @@ public class LoginPage extends SceneController
     @FXML
     public TextField username1; //Username input Field
     public TextField password1; //Password Input Field
+    public Label errorLabel;    //Error Label
 
 
     //Function is linked to the button on the LoginPage
@@ -26,44 +28,57 @@ public class LoginPage extends SceneController
     //For Chef, Username: Chef , Password: 3
     public void Login(ActionEvent event) throws IOException
     {
-        System.out.printf("Username : " + username1.getText() + "%n"
-                        + "Password : " + password1.getText() + "%n");
-        validate(event);
-    }
+        String username = username1.getText();
+        String password = password1.getText();
+        Response response = App.session.login(username, password);
 
-    public void validate(ActionEvent event) throws IOException
-    {
-        switch(username1.getText() + " " + password1.getText())
-        {
-            case "Customer 1":
-                System.out.printf("LOGGING IN AS CUSTOMER %n");
-                SwitchToPizzaSelectionPage(event);
-                break;
+        if (Response.ok(response)) {
+            /* Login Successful */
+            /* Determine User Type */
 
-            case "Processor 2":
-                System.out.printf("LOGGING IN AS PROCCESSOR %n");
-                SwitchToOrderProcessorPage(event);
-                break;
-
-            case "Chef 3":
-                System.out.printf("LOGGING IN AS CHEF %n");
+            // Chef
+            if (App.session.isChef()) {
                 SwitchToChefPage(event);
-                //SwitchToChefPage(event);
-                break;
-
-            default:
-                System.out.printf("Login Unsuccessful %n");
+                return;
+            }
+            // Order Processor
+            if (App.session.isOrderProcessor()) {
+                SwitchToOrderProcessorPage(event);
+                return;
+            }
+            // Admin
+            if (App.session.isAdmin()) {
+                SwitchToOrderProcessorPage(event);
+                return;
+            }
+            // Customer
+            SwitchToPizzaSelectionPage(event);
+        } else {
+            /* Invalid Login Attempt */
+            invalidLogin(response);
         }
     }
 
-    // public static boolean isValidEmailAddress(String email) {
-    //     boolean result = true;
-    //     try {
-    //        InternetAddress emailAddr = new InternetAddress(email);
-    //        emailAddr.validate();
-    //     } catch (AddressException ex) {
-    //        result = false;
-    //     }
-    //     return result;
-    //  }
+    public void OrderAsGuest(ActionEvent event) throws IOException 
+    {
+        App.session.continueAsGuest();
+        SwitchToPizzaSelectionPage(event);
+    }
+
+    private void invalidLogin(Response response)
+    {
+        /* reset styling */
+        validEntry(username1);
+        validEntry(password1);
+        /* feedback on entry */
+        if (User.Username.isUsernameResponse(response)) {
+            invalidEntry(username1);
+        }
+        if (User.Password.isPasswordResponse(response)) {
+            invalidEntry(password1);
+        }
+        /* feedback message */
+        errorLabel.setText(response.message);
+    }
+
 }

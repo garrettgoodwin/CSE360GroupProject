@@ -13,10 +13,18 @@
 }
 
 .toggle-button:hover {
-    -fx-background-color: rgb(0, 0, 0, .2);;
+    -fx-background-color: rgb(0, 0, 0, .2);
     -fx-scale-y: 1.1;
 }
 
+.invalid-entry {
+    -fx-background-color: rgb(255, 202, 202);
+}
+
+.error-label {
+    -fx-text-fill: #ff5959;
+    -fx-font-size: 14px;
+}
 
 .toggle-button2{
     -fx-graphic: url('Images\Icons\TempPizza1.jpg');

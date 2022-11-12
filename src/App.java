@@ -1,4 +1,5 @@
 import java.security.Principal;
+import java.security.KeyStore.TrustedCertificateEntry;
 import java.util.Optional;
 import javax.management.OperationsException;
 import org.w3c.dom.html.HTMLTableRowElement;
@@ -23,39 +24,46 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+
  
 public class App extends Application
 {
     // All current test scenes >All pretty much temporary
     Scene scene1, scene2, scene3, scene4, scene5, scene6, scene7, scene8;
+    static Session session = new Session();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) 
+    {
+        Session session = new Session();
+        // session.login("customer", "password");
+        // int orderId = session.getOrderId();
+        // session.addPizza(Pizza.VEGETABLE, true, true, false, false, 1);
+        // session.addPizza(Pizza.PEPPERONI, false, false, false, true, 2);
+        // session.placeOrder("1234123412341234", "John Customer", "10/24", 123);
+        session.login("chef", "password");
+        session.markOrderReady(1562530141);
         launch(args);
     }
     
     @Override
     public void start(Stage primaryStage) {
 
+        //ButtonHandler btnHandler = new ButtonHandler(primaryStage);
         //Switch between two different scenes
         //Added labels to differenitaite between scenes
         //Label lbl = new Label();
         //lbl.setText("FIrst Scene");
         //Label lbl2 = new Label();
         //lbl2.setText("Second Scene");
-
         //Button btn = new Button();
         //btn.setText("Go to Scene 2");
         //btn.setOnAction(e -> primaryStage.setScene(scene2));
-
         //Button btn2 = new Button();
         //btn2.setText("Go to Scene 1");
         //btn2.setOnAction(e -> primaryStage.setScene(scene1));
-
-
         //Displays a popup window that must be closed before proceeding to original window
         //Button btn3 = new Button();
         //btn3.setOnAction(e -> AlertBox.Display("Alert", "A good ole' popup"));
-
         //Button btn4 = new Button();
         //btn4.setOnAction(e -> 
         //{
@@ -135,7 +143,6 @@ public class App extends Application
         //gridLayout.getChildren().addAll(usernameLabel, usernameInput, passwordInput, passwordLabel, loginButton);
         //scene4 = new Scene(gridLayout, 600, 600);
 
-
         //Define Scene 5
         //Checkbox sceneS
         // CheckBox option1CB = new CheckBox("Option #1");
@@ -194,11 +201,11 @@ public class App extends Application
         //     System.out.println(numb);
         // });
 
-        // Button btn17 = new Button("Login as Order Proccessor");
+        // Button btn17 = new Button("Login as Order Processor");
         // btn17.setOnAction(e ->
         // {
-        //     OrderProccessor orderProccessor = new OrderProccessor();
-        //     int numb = orderProccessor.getOrderProccessorNumb();
+        //     OrderProcessor orderProcessor = new OrderProcessor();
+        //     int numb = orderProcessor.getOrderProcessorNumb();
         //     System.out.println(numb);
         // });
 
@@ -219,10 +226,10 @@ public class App extends Application
        //Deals with prompting the user if htey meant to exit the program
         //Also could be used to save something before exiting the program
         // primaryStage.setOnCloseRequest(e ->
-        // {
-        //     e.consume();
-        //     CloseProgram();
-        // });
+        //  {
+        //      e.consume();
+        //      CloseProgram();
+        //  });
         // Button btn5 = new Button();
         // btn5.setOnAction(e -> CloseProgram());
 
@@ -232,11 +239,19 @@ public class App extends Application
         //LandingPage landingPage = new LandingPage();
         try
         {
+            //OrderProcessorPage
             Parent root = FXMLLoader.load(getClass().getResource("LandingPage.fxml"));
+            //getClass().getClassLoader().getResource("ui_layout.fxml")
+            //Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("OrderProcessorPage.fxml"));
+            System.out.println("GOT TO THIS POINT 1");
             Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("Styling.css").toExternalForm());
+
             //Scenes sceneTest = new Scenes();
             primaryStage.setScene(scene);
             primaryStage.setTitle("SunDevil's Pizza");
+            primaryStage.setMaximized(true);
+            //primaryStage.setFullScreen(true);
             primaryStage.show();
         }
         catch(Exception e)

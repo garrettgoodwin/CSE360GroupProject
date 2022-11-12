@@ -29,12 +29,12 @@ public class Database {
 
     public static Login login(String username, String password) {
         if (!usernameExists(username)) {
-            return Login.deny(Response.NOT_FOUND);
+            return Login.deny(Response.USERNAME_NOT_FOUND);
         }
 
         int userId = getUserIdFromUsername(username);
         if (!isCorrectPassword(password, userId)) {
-            return Login.deny(Response.UNAUTHORIZED);
+            return Login.deny(Response.INCORRECT_PASSWORD);
         }
 
         int orderId = createOrder(userId);
@@ -47,6 +47,13 @@ public class Database {
         int type = Customer.TYPE;
         String encryptedPassword = encryptPassword(password);
         int userId = createUser(username, name, type, encryptedPassword, email, phoneNumber, asurite);
+        int sessionId = createSession(userId);
+        int orderId = createOrder(userId);
+        return Login.accept(sessionId, userId, orderId);
+    }
+
+    public static Login createGuestSession() {
+        int userId = createGuest();
         int sessionId = createSession(userId);
         int orderId = createOrder(userId);
         return Login.accept(sessionId, userId, orderId);
@@ -300,6 +307,18 @@ public class Database {
         Connection.createUser(userId, username, name, type, encryptedPassword, email, phoneNumber, asurite);
 
         return userId;
+    }
+
+    // return guestId
+    private static int createGuest() {
+        String username = User.GUEST_USERNAME;
+        String name = User.GUEST_NAME;
+        int type = User.GUEST_TYPE;
+        String encryptedPassword = "null";
+        String email = User.GUEST_EMAIL;
+        String phoneNumber = User.GUEST_PHONE_NUMBER;
+        int asurite = User.NO_ASURITE;
+        return createUser(username, name, type, encryptedPassword, email, phoneNumber, asurite);
     }
 
     // return pizzaId
