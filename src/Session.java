@@ -175,19 +175,20 @@ public class Session {
 
     /* Order Processor */
     public void markOrderReadyToCook(int orderId) {
-        Database.markOrderReadyToCook(this.getId(), orderId);
+        Database.markOrderReadyToCook(orderId, this.getId());
     }
     /* Chef */
     public void markOrderCooking(int orderId) {
-        Database.markOrderCooking(this.getId(), orderId);
+        Database.markOrderCooking(orderId, this.getId());
     }
     /* Chef */
     public void markOrderReady(int orderId) {
-        Database.markOrderReady(this.getId(), orderId);
+        Database.markOrderReady(orderId, this.getId());
+        sendEmailToCustomer(orderId);
     }
     /* I don't think this will ever be used in the actual application */
     public void markOrderPickedUp(int orderId) {
-        Database.markOrderPickedUp(this.getId(), orderId);
+        Database.markOrderPickedUp(orderId, this.getId());
     }
     
     /* saved payment methods */
@@ -196,6 +197,18 @@ public class Session {
     }
     public Payment[] getSavedPaymentMethods() {
         return Database.getSavedPaymentMethods(user.getId(), this.getId());
+    }
+
+    public void sendEmailToCustomer(int orderId) {
+        Order order = Database.getOrder(orderId, this.getId());
+        String email = Database.getOrderCustomerEmail(orderId, this.getId());
+        String name = Database.getOrderCustomerName(orderId, this.getId());
+        String status = order.getStatusText();
+        String subject = "SunDevil Pizza: Your Order is " + status;
+        String body = name + ",\n"
+            + "your SunDevil Pizza order is " + status + ".\n"
+            + order.getReceipt();
+        User.Email.sendEmail(email, subject, body);
     }
     
     @Override

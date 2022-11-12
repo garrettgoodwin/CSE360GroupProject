@@ -193,7 +193,7 @@ public class Database {
 
     public static Order getOrder(int orderId, int sessionId) {
         int userId = Connection.getOrderUserId(orderId);
-        if (hasAccessTo(sessionId, userId)) {
+        if (hasAccessTo(sessionId, userId) || isChef(sessionId) || isOrderProcessor(sessionId)) {
             return getOrder(orderId);
         }
         return Order.BLANK;
@@ -221,30 +221,44 @@ public class Database {
     }
 
     /* Order Processor */
-    public static void markOrderReadyToCook(int sessionId, int orderId) {
+    public static void markOrderReadyToCook(int orderId, int sessionId) {
         if (isAdmin(sessionId) || isOrderProcessor(sessionId)) {
             setOrderStatus(orderId, Order.READY_TO_COOK);
         }
     }
 
     /* Chef */
-    public static void markOrderCooking(int sessionId, int orderId) {
+    public static void markOrderCooking(int orderId, int sessionId) {
         if (isAdmin(sessionId) || isChef(sessionId)) {
             setOrderStatus(orderId, Order.COOKING);
         }
     }
 
     /* Chef */
-    public static void markOrderReady(int sessionId, int orderId) {
+    public static void markOrderReady(int orderId, int sessionId) {
         if (isAdmin(sessionId) || isChef(sessionId)) {
             setOrderStatus(orderId, Order.READY);
         }
     }
 
-    public static void markOrderPickedUp(int sessionId, int orderId) {
+    public static void markOrderPickedUp(int orderId, int sessionId) {
         if (isAdmin(sessionId) || isOrderProcessor(sessionId)) {
             setOrderStatus(orderId, Order.PICKED_UP);
         }
+    }
+
+    public static String getOrderCustomerEmail(int orderId, int sessionId) {
+        if (isAdmin(sessionId) || isChef(sessionId) || isOrderProcessor(sessionId)) {
+            return getOrderCustomerEmail(orderId);
+        }
+        return User.GUEST_EMAIL;
+    }
+
+    public static String getOrderCustomerName(int orderId, int sessionId) {
+        if (isAdmin(sessionId) || isChef(sessionId) || isOrderProcessor(sessionId)) {
+            return getOrderCustomerName(orderId);
+        }
+        return User.GUEST_NAME;
     }
 
     public static Payment[] getSavedPaymentMethods(int userId, int sessionId) {
@@ -373,6 +387,11 @@ public class Database {
         return encryptedPassword;
     }
 
+    private static boolean isUser(int sessionId, int userId) {
+        User sessionUser = getSessionUser(sessionId);
+        return sessionUser.getId() == userId;
+    }
+
     private static boolean hasAccessTo(int sessionId, int userId) {
         User sessionUser = getSessionUser(sessionId);
         return sessionUser.getId() == userId || sessionUser.isAdmin();
@@ -486,6 +505,14 @@ public class Database {
 
     private static void setOrderStatus(int orderId, int status) {
         Connection.setOrderStatus(orderId, status);
+    }
+
+    private static String getOrderCustomerEmail(int orderId) {
+        return Connection.getOrderCustomerEmail(orderId);
+    }
+
+    private static String getOrderCustomerName(int orderId) {
+        return Connection.getOrderCustomerName(orderId);
     }
 
     private static Payment[] getSavedPaymentMethods(int userId) {
@@ -762,6 +789,18 @@ public class Database {
             if (users.length != 1)
                 return 0;
             return parseId(users[0], USER_TABLE);
+        }
+
+        public static String getOrderCustomerEmail(int orderId) {
+            int userId = getOrderUserId(orderId);
+            User user = getUser(userId);
+            return user.getEmail();
+        }
+
+        public static String getOrderCustomerName(int orderId) {
+            int userId = getOrderUserId(orderId);
+            User user = getUser(userId);
+            return user.getName();
         }
 
         // change user type via email

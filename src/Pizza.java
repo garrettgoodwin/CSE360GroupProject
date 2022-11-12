@@ -1,3 +1,5 @@
+import java.text.NumberFormat;
+
 public class Pizza {
     public static final int BLANK_ID = 0;
     /* Pizza Types */
@@ -64,6 +66,12 @@ public class Pizza {
 
         return price * quantity;
     }
+    
+    public String getPriceText() {
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        return formatter.format(calculatePrice());
+    }
+
     public void update(int pizzaType, boolean mushrooms, boolean olives, boolean onions, boolean extraCheese, int quantity) {
         this.pizzaType = pizzaType;
         this.mushrooms = mushrooms;
@@ -134,6 +142,10 @@ public class Pizza {
     public static Pizza create(int sessionId, int orderId, int pizzaType, boolean mushrooms, boolean olives, boolean onions, boolean extraCheese, int quantity) {
         int pizzaId = Database.createPizza(sessionId, orderId, pizzaType, mushrooms, olives, onions, extraCheese, quantity);
         return new Pizza(pizzaId, pizzaType, mushrooms, olives, onions, extraCheese, quantity);
+    }
+
+    public String getReceiptText() {
+        return getTypeText() + " toppings: " + getToppingsText() + " qty: " + getQuantity() + " price: " + getPriceText();
     }
 
     @Override

@@ -1,3 +1,4 @@
+import java.text.NumberFormat;
 import java.util.ArrayList; // ArrayList
 
 public class Order {
@@ -97,6 +98,10 @@ public class Order {
         }
         return price;
     }
+    public String getTotalText() {
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        return formatter.format(calculateTotal());
+    }
     public void setUser(int userId) {
         this.userId = userId;
     }
@@ -158,12 +163,22 @@ public class Order {
         return userId;
     }
 
+    /* Receipt Text */
+    public String getReceipt() {
+        String str = "";
+        for (int i = 0; i < pizzas.size(); i++) {
+            str += pizzas.get(i).getReceiptText() + "\n";
+        }
+        str += "Total: " + getTotalText();
+        return str;
+    }
+
     @Override
     public String toString() {
         String str = "Order #" + getId() + "\n\n";
         str += "status: " + getStatusText() + "\n";
         str += "is saved: " + isSaved() + "\n";
-        str += "total: " + calculateTotal() + "\n";
+        str += "total: " + getTotalText() + "\n";
         str += "Pizzas: ";
         for (int i = 0; i < pizzas.size(); i++) {
             str += "\n\n" + pizzas.get(i).toString();
