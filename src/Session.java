@@ -44,6 +44,34 @@ public class Session {
         }
         return login.getResponse();
     }
+    /* (Admin) : Create an account of any type */
+    /* types: Admin, Chef, OrderProcessor, Customer */
+    public Response createAccount(String username, String password, String name, String email, String phoneNumber, int asurite, int type) {
+        // check for non-database-related valid entered information (e.g. username length, etc)
+        // Database.createAccount will conduct database-related exception checking
+        //      (e.g. username already exists in database)
+        Response response;
+        response = User.Username.validate(username);
+        if (!Response.ok(response)) {
+            return response;
+        }
+        response = User.Email.validate(email);
+        if (!Response.ok(response)) {
+            return response;
+        }
+        response = User.Password.validate(password);
+        if (!Response.ok(response)) {
+            return response;
+        }
+
+        return Database.createAccount(this.getId(), username, password, name, email, phoneNumber, asurite, type);
+    }
+
+    /* (Admin) : Give permissions (change type of) an account via User email */
+    public Response givePermissions(String email, int type) {
+        return Database.givePermissions(this.getId(), email, type);
+    }
+
     public int getId() {
         return id;
     }

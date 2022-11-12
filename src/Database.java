@@ -41,22 +41,8 @@ public class Database {
         return Login.accept(sessionId, userId, orderId);
     }
 
-    // create customer account
+    // create customer account, session, and order; return Login
     public static Login createAccount(String username, String password, String name, String email, String phoneNumber, int asurite) {
-        Response response;
-
-        response = User.Username.validate(username);
-        if (!Response.ok(response))
-            return Login.deny(response);
-
-        response = User.Email.validate(email);
-        if (!Response.ok(response))
-            return Login.deny(response);
-
-        response = User.Password.validate(password);
-        if (!Response.ok(response))
-            return Login.deny(response);
-
         int type = Customer.TYPE;
         String encryptedPassword = encryptPassword(password);
         int userId = createUser(username, name, type, encryptedPassword, email, phoneNumber, asurite);
@@ -64,6 +50,26 @@ public class Database {
         int orderId = createOrder(userId);
         return Login.accept(sessionId, userId, orderId);
     }
+
+    // ADMIN ONLY
+    // create any type of account, return Response
+    public static Response createAccount(int sessionId, String username, String password, String name, String email, String phoneNumber, int asurite, int type) {
+        if (isAdmin(sessionId)) {
+            return createAccount(username, password, name, email, phoneNumber, asurite, type);
+        }
+        return Response.UNAUTHORIZED;
+    }
+
+    // ADMIN ONLY
+    // Give permissions (change type of) an account via User email
+    public static Response givePermissions(int sessionId, String email, int type) {
+        if (isAdmin(sessionId)) {
+            givePermissions(email, type);
+            return Response.OK;
+        }
+        return Response.UNAUTHORIZED;
+    }
+
 
     // return pizzaId
     public static int createPizza(int sessionId, int orderId, int pizzaType, boolean mushrooms, boolean olives, boolean onions, boolean extraCheese, int quantity) {
@@ -224,8 +230,15 @@ public class Database {
     /* private */
     // interface with back-end database
 
-    /* Database private methods */
-    /* static */
+    private static Response createAccount(String username, String password, String name, String email, String phoneNumber, int asurite, int type) {
+        String encryptedPassword = encryptPassword(password);
+        createUser(username, name, type, encryptedPassword, email, phoneNumber, asurite);
+        return Response.OK;
+    }
+
+    private static void givePermissions(String email, int type) {
+        Connection.givePermissions(email, type);
+    }
 
     // return sessionId
     private static int createSession(int userId) {
@@ -707,8 +720,24 @@ public class Database {
                 return 0;
             return parseId(users[0], USER_TABLE);
         }
+
+        public static int getUserIdFromEmail(String email) {
+            String[] users = selectAll(EMAIL, email, USER_TABLE);
+            if (users.length != 1)
+                return 0;
+            return parseId(users[0], USER_TABLE);
+        }
+
+        // change user type via email
+        public static void givePermissions(String email, int type) {
+            int id = getUserIdFromEmail(email);
+            updateUser(USER_TYPE, Integer.toString(type), id);
+        }
     
         public static User getSessionUser(int sessionId) {
+            if (sessionId == Session.GUEST_SESSION) {
+                return User.GUEST;
+            }
             int userId = Integer.parseInt(selectSession(USER_ID, sessionId));
             return getUser(userId);
         }
