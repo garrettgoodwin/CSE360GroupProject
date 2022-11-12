@@ -4,31 +4,93 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SceneController">
-   <children>
-      <Label layoutX="238.0" layoutY="23.0" text="Login Page" textAlignment="CENTER">
+<AnchorPane maxHeight="1080.0" maxWidth="1920.0" minHeight="1080.0" minWidth="1920.0" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LoginPage">
+    <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#191919" height="870.0" layoutX="-9.0" layoutY="-26.0" stroke="BLACK" strokeType="INSIDE" width="1543.0" />
+      <Label layoutX="358.0" layoutY="160.0" text="Login" textAlignment="CENTER" textFill="WHITE">
          <font>
-            <Font size="25.0" />
+            <Font name="Orbitron Bold" size="45.0" />
          </font>
       </Label>
-      <Button layoutX="14.0" layoutY="25.0" mnemonicParsing="false" onAction="#SwitchToLandingPage" text="Back" />
-      <Button layoutX="272.0" layoutY="184.0" mnemonicParsing="false" onAction="#SwitchToPizzaSelectionPage" text="Login" />
-      <PasswordField layoutX="211.0" layoutY="152.0" promptText="Password" />
-      <PasswordField layoutX="211.0" layoutY="120.0" promptText="Username" />
-      <Label layoutX="144.0" layoutY="239.0" text="Buttons below are for testing purpises and will be removed" textAlignment="CENTER">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fdc426" height="63.0" layoutX="-25.0" layoutY="-2.0" stroke="BLACK" strokeType="INSIDE" width="637.0" />
+      <Label layoutX="181.0" layoutY="16.0" text="SunDevil's Pizza">
          <font>
-            <Font size="12.0" />
+            <Font name="Orbitron Bold" size="25.0" />
          </font>
       </Label>
-      <Button layoutX="143.0" layoutY="274.0" mnemonicParsing="false" onAction="#SwitchToChefPage" text="Chef" />
-      <Button layoutX="259.0" layoutY="274.0" mnemonicParsing="false" onAction="#SwitchToPizzaSelectionPage" text="Customer" />
-      <Button layoutX="400.0" layoutY="274.0" mnemonicParsing="false" onAction="#SwitchToOrderProcessorPage" text="Order Proccessor" />
-      <Label layoutX="277.0" layoutY="257.0" text="Login as:" textAlignment="CENTER">
+      <Label layoutX="738.0" layoutY="445.0" text="or" textAlignment="CENTER" textFill="WHITE">
          <font>
-            <Font size="12.0" />
+            <Font name="Orbitron Bold" size="50.0" />
          </font>
       </Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="437.0" layoutX="860.0" layoutY="244.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="475.0" />
+      <Label layoutX="218.0" layoutY="82.0" text="Sign in to earn Rewards" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font name="Orbitron Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="958.0" layoutY="166.0" text="Be a Guest" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font name="Orbitron Bold" size="45.0" />
+         </font>
+      </Label>
+      <Button layoutX="14.0" layoutY="16.0" mnemonicParsing="false" onAction="#SwitchToLandingPage" text="Back" />
+      <Button layoutX="963.0" layoutY="367.0" mnemonicParsing="false" onAction="#SwitchToPizzaSelectionPage" prefHeight="55.0" prefWidth="261.0" text="Start Your Order">
+         <font>
+            <Font name="Orbitron Bold" size="24.0" />
+         </font></Button>
+      <Button layoutX="441.0" layoutY="269.0" mnemonicParsing="false" onAction="#SwitchToChefPage" text="Chef" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#8c1d40" height="101.0" layoutX="-1.0" layoutY="24.0" stroke="#fcc02600" strokeType="INSIDE" strokeWidth="0.0" width="1448.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fec426" height="101.0" layoutX="-1.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1539.0" />
+      <Text layoutX="46.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SunDevil's Pizza">
+         <font>
+            <Font name="Orbitron Bold" size="35.0" />
+         </font>
+      </Text>
+      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="1322.0" layoutY="-1.0" mnemonicParsing="false" onAction="#SwitchToLandingPage" prefHeight="100.0" prefWidth="216.0" styleClass="toggle-button" text="Back &gt;" textAlignment="CENTER">
+         <font>
+            <Font name="Orbitron Bold" size="25.0" />
+         </font>
+      </Button>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="437.0" layoutX="200.0" layoutY="245.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="473.0" />
+      <PasswordField fx:id="username1" layoutX="255.0" layoutY="309.0" prefHeight="55.0" prefWidth="363.0" promptText="Username">
+         <font>
+            <Font name="Orbitron Bold" size="25.0" />
+         </font>
+      </PasswordField>
+      <PasswordField fx:id="password1" layoutX="253.0" layoutY="367.0" prefHeight="55.0" prefWidth="363.0" promptText="Password">
+         <font>
+            <Font name="Orbitron Bold" size="25.0" />
+         </font>
+      </PasswordField>
+      <Button layoutX="359.0" layoutY="427.0" mnemonicParsing="false" onAction="#Login" prefHeight="64.0" prefWidth="139.0" text="Login">
+         <font>
+            <Font name="Orbitron Bold" size="20.0" />
+         </font>
+      </Button>
+      <Label layoutX="280.0" layoutY="540.0" text="Dont Have an Account?" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font name="Orbitron Bold" size="25.0" />
+         </font>
+      </Label>
+      <Button layoutX="364.0" layoutY="577.0" mnemonicParsing="false" onAction="#SwitchToSignUpPage" prefHeight="64.0" prefWidth="139.0" text="Sign Up">
+         <font>
+            <Font name="Orbitron Bold" size="22.0" />
+         </font>
+      </Button>
+      <Label layoutX="262.0" layoutY="714.0" text="You can sign up and login with an account to earn rewards and coupons" textFill="WHITE">
+         <font>
+            <Font name="Orbitron Bold" size="25.0" />
+         </font>
+      </Label>
+      <PasswordField layoutX="925.0" layoutY="307.0" prefHeight="55.0" prefWidth="363.0" promptText="Email">
+         <font>
+            <Font name="Orbitron Bold" size="25.0" />
+         </font>
+      </PasswordField>
    </children>
 </AnchorPane>
