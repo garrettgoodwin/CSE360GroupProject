@@ -16,24 +16,19 @@
          </font>
       </Label>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#191919" height="870.0" layoutX="-3.0" layoutY="-15.0" stroke="BLACK" strokeType="INSIDE" width="1543.0" />
-      <Label layoutX="221.0" layoutY="481.0" text="Phase 1" textFill="WHITE">
-         <font>
-            <Font name="Orbitron Bold" size="30.0" />
-         </font>
-      </Label>
-      <Label layoutX="530.0" layoutY="484.0" text="Phase 2" textFill="WHITE">
-         <font>
-            <Font name="Orbitron Bold" size="30.0" />
-         </font>
-      </Label>
-      <Label layoutX="1064.0" layoutY="478.0" text="Phase 4" textFill="WHITE">
+      <Label layoutX="211.0" layoutY="481.0" text="Order Confirmed" textFill="WHITE">
          <font>
             <Font name="Orbitron Bold" size="20.0" />
          </font>
       </Label>
-      <Label layoutX="766.0" layoutY="484.0" text="Phase 3" textFill="WHITE">
+      <Label layoutX="464.0" layoutY="481.0" text="Order Proccessed" textFill="WHITE">
          <font>
-            <Font name="Orbitron Bold" size="30.0" />
+            <Font name="Orbitron Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="751.0" layoutY="481.0" text="Preping/Baking" textFill="WHITE">
+         <font>
+            <Font name="Orbitron Bold" size="20.0" />
          </font>
       </Label>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#8c1d40" height="101.0" layoutX="-4.0" layoutY="25.0" stroke="#fcc02600" strokeType="INSIDE" strokeWidth="0.0" width="1448.0" />
@@ -47,7 +42,7 @@
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="218.0" layoutX="715.0" layoutY="252.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="244.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="218.0" layoutX="446.0" layoutY="254.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="244.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="218.0" layoutX="181.0" layoutY="253.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="244.0" />
-      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="1251.0" layoutY="1.0" mnemonicParsing="false" onAction="#SwitchToLandingPage" prefHeight="101.0" prefWidth="283.0" styleClass="toggle-button" text="Back &gt;" textAlignment="CENTER">
+      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="1320.0" layoutY="1.0" mnemonicParsing="false" onAction="#SwitchToLandingPage" prefHeight="99.0" prefWidth="214.0" styleClass="toggle-button" text="Back &gt;" textAlignment="CENTER">
          <font>
             <Font name="Orbitron Bold" size="30.0" />
          </font>
@@ -66,6 +61,57 @@
       <Label layoutX="63.0" layoutY="711.0" text="Time of Order:" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="Orbitron Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="537.0" layoutY="169.0" text="Order Status" textFill="WHITE">
+         <font>
+            <Font name="Orbitron Bold" size="45.0" />
+         </font>
+      </Label>
+      <Label layoutX="186.0" layoutY="264.0" prefHeight="192.0" prefWidth="234.0" text="Your order has been recieved and is currently in the proccess of being confirmed" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+         <font>
+            <Font name="Orbitron Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="996.0" layoutY="481.0" text="Carryout/Delivery" textFill="WHITE">
+         <font>
+            <Font name="Orbitron Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="451.0" layoutY="267.0" prefHeight="192.0" prefWidth="234.0" text="Your order has been successfully confirmed and is in queue to be prepped for baking" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+         <font>
+            <Font name="Orbitron Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="720.0" layoutY="264.0" prefHeight="192.0" prefWidth="234.0" text="Your order is currently being prepared by our chefs" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+         <font>
+            <Font name="Orbitron Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="982.0" layoutY="264.0" prefHeight="192.0" prefWidth="234.0" text="Your order has been successfully completed and is ready for either carryout or delivery" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+         <font>
+            <Font name="Orbitron Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="428.0" layoutY="332.0" text="&gt;" textAlignment="CENTER" textFill="#fdc426">
+         <font>
+            <Font name="Orbitron Bold" size="30.0" />
+         </font>
+      </Label>
+      <Label layoutX="694.0" layoutY="332.0" text="&gt;" textAlignment="CENTER" textFill="#fdc426">
+         <font>
+            <Font name="Orbitron Bold" size="30.0" />
+         </font>
+      </Label>
+      <Label layoutX="961.0" layoutY="332.0" text="&gt;" textAlignment="CENTER" textFill="#fdc426">
+         <font>
+            <Font name="Orbitron Bold" size="30.0" />
+         </font>
+      </Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="123.0" layoutX="1018.0" layoutY="655.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="446.0" />
+      <Label layoutX="1030.0" layoutY="664.0" prefHeight="113.0" prefWidth="426.0" text="Have questions about your order? Contact us at (555) 555-5555" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+         <font>
+            <Font name="Orbitron Bold" size="22.0" />
          </font>
       </Label>
    </children>

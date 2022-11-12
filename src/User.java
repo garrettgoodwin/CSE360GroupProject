@@ -1,162 +1,262 @@
-import java.util.regex.Pattern;   // regex
+// import java.util.regex.Pattern;   // regex
 
-public class User {
-    /* values for guest / inexplicitly assigned values */
-    public static User GUEST = new User();
+// public class User {
+//     /* values for guest / inexplicitly assigned values */
+//     public static User GUEST = new User();
 
-    private static final int GUEST_INT = 0;
-    private static final String GUEST_STRING = "GUEST";
+//     private static final int GUEST_INT = 0;
+//     private static final String GUEST_STRING = "GUEST";
 
-    public static final int GUEST_ID = GUEST_INT;
-    private int id;
-    public static final String GUEST_USERNAME = GUEST_STRING;
-    private String username;
-    public static final String GUEST_NAME = GUEST_STRING;
-    private String name;
-    public static final int GUEST_TYPE = GUEST_INT;
-    private int type;
-    public static final int NO_ASURITE = 0; // don't need to be a guest to not have an asurite
-    private int asurite;
-    public static final String GUEST_EMAIL = "GUEST@asu.edu";
-    private String email;
-    public static final int GUEST_PHONE_NUMBER = GUEST_INT;
-    private int phoneNumber;
+//     public static final int GUEST_ID = GUEST_INT;
+//     private int id;
+//     public static final String GUEST_USERNAME = GUEST_STRING;
+//     private String username;
+//     public static final String GUEST_NAME = GUEST_STRING;
+//     private String name;
+//     public static final int GUEST_TYPE = GUEST_INT;
+//     private int type;
+//     public static final int NO_ASURITE = 0; // don't need to be a guest to not have an asurite
+//     private int asurite;
+//     public static final String GUEST_EMAIL = "GUEST@asu.edu";
+//     private String email;
+//     public static final String GUEST_PHONE_NUMBER = GUEST_STRING;
+//     private String phoneNumber;
 
-    // guest
-    User() {
-        this.id = User.GUEST_ID;
-        this.username = GUEST_USERNAME;
-        this.name = GUEST_NAME;
-        this.type = User.GUEST_TYPE;
-        this.asurite = User.NO_ASURITE;
-        this.email = User.GUEST_EMAIL;
-        this.phoneNumber = User.GUEST_PHONE_NUMBER;
-    }
+//     // guest
+//     User() {
+//         this.id = User.GUEST_ID;
+//         this.username = GUEST_USERNAME;
+//         this.name = GUEST_NAME;
+//         this.type = User.GUEST_TYPE;
+//         this.asurite = User.NO_ASURITE;
+//         this.email = User.GUEST_EMAIL;
+//         this.phoneNumber = User.GUEST_PHONE_NUMBER;
+//     }
 
-    User(int id, String username, String name, int type, int asurite, String email, int phoneNumber) {
-        this.id = id;
-        this.username = username;
-        this.name = name;
-        this.type = type;
-        this.asurite = asurite;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-    }
+//     User(int id, String username, String name, int type, int asurite, String email, String phoneNumber) {
+//         this.id = id;
+//         this.username = username;
+//         this.name = name;
+//         this.type = type;
+//         this.asurite = asurite;
+//         this.email = email;
+//         this.phoneNumber = phoneNumber;
+//     }
 
-    /* GETTERS */
+//     /* GETTERS */
 
-    public int getId() {
-        return id;
-    }
+//     public int getId() {
+//         return id;
+//     }
 
-    public String getUsername() {
-        return username;
-    }
+//     public String getUsername() {
+//         return username;
+//     }
 
-    public String getName() {
-        return name;
-    }
+//     public String getName() {
+//         return name;
+//     }
 
-    public int getAsurite() {
-        return asurite;
-    }
+//     public int getAsurite() {
+//         return asurite;
+//     }
 
-    public String getEmail() {
-        return email;
-    }
+//     public String getEmail() {
+//         return email;
+//     }
 
-    public int getPhoneNumber() {
-        return phoneNumber;
-    }
+//     public String getPhoneNumber() {
+//         return phoneNumber;
+//     }
 
-    public boolean isGuest() {
-        return this.type == User.GUEST_TYPE;
-    }
+//     // parse phone # x+xxx-xxx-xxxx
+//     public String getPhoneNumberString() {
+//         String phoneNumber = getPhoneNumber();
+//         if (phoneNumber.length() < 10)
+//             return phoneNumber;
+        
+//         String parsed = "";
+//         int digits;
+//         int i = phoneNumber.length();
 
-    public boolean isLoggedIn() {
-        return !isGuest();
-    }
+//         /*
+//          * parse string from back to front (last 4, middle 3, front 3, (optional) country code)
+//          */
+
+//         // last 4 digits
+//         digits = 4;
+//         parsed = phoneNumber.substring(i-digits, i);
+//         i -= digits;
+
+//         // middle 3 digits
+//         digits = 3;
+//         parsed = phoneNumber.substring(i-digits, i) + "-" + parsed;
+//         i -= digits;
+
+//         // digits = 3
+//         // area code / front 3 digits
+//         parsed = phoneNumber.substring(i-digits, i) + "-" + parsed;
+//         i -= digits;
+
+//         // country code
+//         if (i > 0) {
+//             parsed = phoneNumber.substring(0, i) + "+" + parsed;
+//         }
+//         return parsed;
+//     }
+
+//     public boolean isGuest() {
+//         return this.type == User.GUEST_TYPE;
+//     }
+
+//     public boolean isLoggedIn() {
+//         return !isGuest();
+//     }
     
-    public boolean isCustomer() {
-        return isGuest() || this.type == Customer.TYPE;
-    }
+//     public boolean isCustomer() {
+//         return isGuest() || this.type == Customer.TYPE;
+//     }
 
-    public boolean isAdmin() {
-        return this.type == Admin.TYPE;
-    }
+//     public boolean isAdmin() {
+//         return this.type == Admin.TYPE;
+//     }
 
-    public boolean isChef() {
-        return this.type == Chef.TYPE;
-    }
+//     public boolean isChef() {
+//         return this.type == Chef.TYPE;
+//     }
 
-    public boolean isOrderProcessor() {
-        return this.type == OrderProccessor.TYPE;
-    }
+//     public boolean isOrderProcessor() {
+//         return this.type == OrderProccessor.TYPE;
+//     }
 
-    public boolean isEmployee() {
-        return isOrderProcessor() || isChef() || isAdmin();
-    }
+//     public boolean isEmployee() {
+//         return isOrderProcessor() || isChef() || isAdmin();
+//     }
 
-    public String getTypeString() {
-        switch (type) {
-            case Admin.TYPE:
-                return "ADMIN";
-            case Chef.TYPE:
-                return "CHEF";
-            case OrderProccessor.TYPE:
-                return "ORDER PROCESSOR";
-            case Customer.TYPE:
-                return "CUSTOMER";
-            case User.GUEST_TYPE:
-                return "GUEST";
-        }
-        return "NULL";
-    }
+//     public String getTypeString() {
+//         switch (type) {
+//             case Admin.TYPE:
+//                 return "ADMIN";
+//             case Chef.TYPE:
+//                 return "CHEF";
+//             case OrderProccessor.TYPE:
+//                 return "ORDER PROCESSOR";
+//             case Customer.TYPE:
+//                 return "CUSTOMER";
+//             case User.GUEST_TYPE:
+//                 return "GUEST";
+//         }
+//         return "NULL";
+//     }
 
-    /* Static */
+//     /* Static */
 
-    /* Valid Data Creation */
+//     /* Valid Data Creation */
 
-    public static class Password {
-        public static final int MIN_LENGTH = 8;
-        public static final int MAX_LENGTH = 80;
-        public static Response validate(String password) {
+//     public static class Password {
+//         public static final int MIN_LENGTH = 8;
+//         public static final int MAX_LENGTH = 80;
+//         public static String SPECIAL_CHARACTERS = "!@#$%^&*()_+-={}[]|\\:;\"'<>.?";
+//         public static Response validate(String password) {
 
-            if (password.length() < MIN_LENGTH)
-                return Response.SHORT_PASSWORD;
+//             if (password.length() < MIN_LENGTH)
+//                 return Response.SHORT_PASSWORD;
 
-            if (password.length() > MAX_LENGTH)
-                return Response.LONG_PASSWORD;
+//             if (password.length() > MAX_LENGTH)
+//                 return Response.LONG_PASSWORD;
 
-            /* includes necessary characters */
-            /* one upper case, one lower case, one number, one special character */
+//             /* one upper case, one lower case, one number, one special character */
+//             String upperCaseRegex = "[A-Z]";
+//             String lowerCaseRegex = "[a-z]";
+//             String numberRegex = "[0-9]";
 
-            /* excludes forbidden characters */
+//             boolean upper = false;
+//             boolean lower = false;
+//             boolean number = false;
+//             boolean special = false;
+
+//             /* includes necessary characters */
+//             /* only includes allowed characters */
+//             for (int i = 0; i < password.length(); i++) {
+//                 String s = String.valueOf(password.charAt(i));
+//                 if (Pattern.matches(upperCaseRegex, s)) {
+//                     upper = true;
+//                 } else if (Pattern.matches(lowerCaseRegex, s)) {
+//                     lower = true;
+//                 } else if (Pattern.matches(numberRegex, s)) {
+//                     number = true;
+//                 } else if (SPECIAL_CHARACTERS.contains(s)) {
+//                     special = true;
+//                 } else {
+//                     // is not valid character
+//                     return Response.FORBIDDEN_PASSWORD_CHARACTER;
+//                 }
+//             }
+//             if (!upper || !lower || !number || !special) {
+//                 // does not include ≥1 upper, lower, number, and special character
+//                 return Response.PASSWORD_MISSING_NEEDED_CHARACTER;
+//             }
             
-            // all tests passed
-            return Response.OK;
-        }
-    }
+//             // all tests passed
+//             return Response.OK;
+//         }
 
-    public static class Username {
-        public static final int MIN_LENGTH = 3;
-        public static final int MAX_LENGTH = 20;
-        public static Response validate(String password) {
+//     }
 
-            // all tests passed
-            return Response.OK;
-        }
-    }
+//     public static class Username {
+//         public static final int MIN_LENGTH = 3;
+//         public static final int MAX_LENGTH = 25;
+//         public static Response validate(String username) {
 
-    public static class Email {
-        public static Response validate(String password) {
-            String validEmailRegex = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
-            if (!Pattern.matches(validEmailRegex, password)) {
-                return Response.INVALID_EMAIL;
-            }
-            // all tests passed
-            return Response.OK;
-        }
-    }
+//             if (username.length() < MIN_LENGTH)
+//                 return Response.SHORT_USERNAME;
 
-}
+//             if (username.length() > MAX_LENGTH)
+//                 return Response.LONG_USERNAME;
+
+//             if (Database.usernameExists(username))
+//                 return Response.PREEXISTING_USERNAME;
+                
+//             // invalid character
+//             // allowed characters: a-zA-Z0-9 -_
+//             String allowedCharactersRegex = "[a-zA-Z0-9_-]";
+//             for (int i = 0; i < username.length(); i++) {
+//                 String s = String.valueOf(username.charAt(i));
+//                 if (!Pattern.matches(allowedCharactersRegex, s))
+//                     return Response.FORBIDDEN_USERNAME_CHARACTER;
+//             }
+
+//             // all tests passed
+//             return Response.OK;
+//         }
+//     }
+
+//     public static class Email {
+//         public static Response validate(String email) {
+//             // String validEmailRegex = "[A-Za-z0-9][A-Za-z0-9\\.]{1,}@[A-Za-z0-9\\.]{1,}\\.[A-Za-z0-9]{1,}";
+//             String validEmailRegex = "[A-Za-z][A-Za-z0-9\\.]{1,}@[A-Za-z0-9]{1,}\\.([A-Za-z0-9]\\.)*[A-Za-z0-9]{1,}";
+//             if (!Pattern.matches(validEmailRegex, email)) {
+//                 return Response.INVALID_EMAIL;
+//             }
+
+//             if (Database.emailExists(email))
+//                 return Response.PREEXISTING_EMAIL;
+
+//             // all tests passed
+//             return Response.OK;
+//         }
+//     }
+
+//     @Override
+//     public String toString() {
+//         String str = "User #" + getId() + "\n\n";
+//         str += "username: " + getUsername() + "\n";
+//         str += "name: " + getName() + "\n";
+//         str += "type: " + getTypeString() + "\n";
+//         str += "asurite: " + getAsurite() + "\n";
+//         str += "email: " + getEmail() + "\n";
+//         str += "phoneNumber: " + getPhoneNumberString();
+//         return str;
+//     }
+
+// }

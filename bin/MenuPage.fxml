@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="1080.0" maxWidth="1920.0" minHeight="1080.0" minWidth="1920.0" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MenuPage">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#191919" height="870.0" layoutX="1.0" layoutY="-16.0" stroke="BLACK" strokeType="INSIDE" width="1543.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="168.0" layoutX="60.0" layoutY="267.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="1426.0" />
+      <Label layoutX="22.0" layoutY="151.0" text="SunDevil's Pizzas Menu" textFill="WHITE">
+         <font>
+            <Font name="Orbitron Bold" size="35.0" />
+         </font>
+      </Label>
+      <Label layoutX="456.0" layoutY="62.0" text="Your Pizza" textFill="WHITE">
+         <font>
+            <Font name="Orbitron Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="109.0" layoutY="72.0" text="Create Your Own Pizza" textFill="WHITE">
+         <font>
+            <Font name="Orbitron Bold" size="20.0" />
+         </font>
+      </Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#8c1d40" height="101.0" layoutY="24.0" stroke="#fcc02600" strokeType="INSIDE" strokeWidth="0.0" width="1448.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fec426" height="101.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1539.0" />
+      <Text layoutX="47.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SunDevil's Pizza">
+         <font>
+            <Font name="Orbitron Bold" size="35.0" />
+         </font>
+      </Text>
+      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="1325.0" mnemonicParsing="false" onAction="#SwitchToLandingPage" prefHeight="99.0" prefWidth="214.0" styleClass="toggle-button" text="Back &gt;" textAlignment="CENTER">
+         <font>
+            <Font name="Orbitron Bold" size="30.0" />
+         </font>
+      </Button>
+      <Label layoutX="79.0" layoutY="255.0" prefHeight="147.0" prefWidth="1387.0" text="Create your own pizza by choosing a pizza type and toppings! Select from three pizza types and four toppings choices—additional charges for more than 1 topping. Pizza Types: Pepperoni, Cheese, and Vegetables. Toppings: Mushrooms, Onions, Olives, Extra Cheese" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+         <font>
+            <Font name="Orbitron Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="571.0" layoutY="216.0" text="Create Your Own Pizza" textFill="WHITE">
+         <font>
+            <Font name="Orbitron Bold" size="30.0" />
+         </font>
+      </Label>
+      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="691.0" layoutY="383.0" mnemonicParsing="false" onAction="#SwitchToLoginPage" prefHeight="38.0" prefWidth="163.0" text="Order Now" textAlignment="CENTER">
+         <font>
+            <Font name="Orbitron Bold" size="20.0" />
+         </font>
+      </Button>
+   
+   
+   
+   
+   </children>
+</AnchorPane>

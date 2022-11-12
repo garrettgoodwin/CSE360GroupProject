@@ -9,13 +9,31 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.stage.Stage;
 
 public class PizzaSelectionPage extends SceneController
 {
 
+  //These should be toggle buttons but too lazy
+  //to change it rn
     @FXML
-    public Button btn;  //Links ot add pepperoni button
+    public Button removePizzaButton;
+    public Button checkoutButton;
+    public Button addPizzaButton;
+    public ToggleButton pepperoniButton;
+    public ToggleButton cheeseButton;
+    public ToggleButton vegetableButton;
+    public ToggleButton mushroomButton;
+    public ToggleButton onionButton;
+    public ToggleButton extraCheeseButton;
+    public ToggleButton oliveButton;
+
+
+
+
+
+
       //List to link view
     // for (int i=1;i<=5;i++)
     //  {

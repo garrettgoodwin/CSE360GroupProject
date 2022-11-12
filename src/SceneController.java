@@ -68,6 +68,18 @@ public class SceneController
         stage.show();
     }
 
+    public void SwitchToOrderStatusCheckPage(ActionEvent event) throws IOException
+    {
+        Parent root = FXMLLoader.load(getClass().getResource("OrderStatusCheckPage.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("Styling.css").toExternalForm());
+        stage.setScene(scene);
+        stage.setMaximized(true);
+        //stage.setFullScreen(true);
+        stage.show();
+    }
+
     public void SwitchToOrderProcessorPage(ActionEvent event) throws IOException
     {
         Parent root = FXMLLoader.load(getClass().getResource("OrderProccessorPage.fxml"));
@@ -106,6 +118,18 @@ public class SceneController
     public void SwitchToCheckoutPage(ActionEvent event) throws IOException
     {
         Parent root = FXMLLoader.load(getClass().getResource("CheckoutPage.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("Styling.css").toExternalForm());
+        stage.setScene(scene);
+        stage.setMaximized(true);
+        //stage.setFullScreen(true);
+        stage.show();
+    }
+
+    public void SwitchToMenuPage(ActionEvent event) throws IOException
+    {
+        Parent root = FXMLLoader.load(getClass().getResource("MenuPage.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("Styling.css").toExternalForm());

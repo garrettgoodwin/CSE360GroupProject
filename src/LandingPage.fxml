@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="1080.0" maxWidth="1920.0" minHeight="1080.0" minWidth="1920.0" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LandingPage">
+<AnchorPane maxHeight="1080.0" maxWidth="1920.0" minHeight="1080.0" minWidth="1920.0" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SceneController">
     <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#191919" height="870.0" layoutX="-7.0" layoutY="-1.0" stroke="BLACK" strokeType="INSIDE" width="1543.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#8c1d40" height="101.0" layoutX="-2.0" layoutY="24.0" stroke="#fcc02600" strokeType="INSIDE" strokeWidth="0.0" width="1448.0" />
@@ -23,18 +23,18 @@
             <Font name="Orbitron Bold" size="35.0" />
          </font>
       </Text>
-      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="974.0" layoutY="-4.0" mnemonicParsing="false" onAction="#SwitchToLoginPage" prefHeight="101.0" prefWidth="278.0" styleClass="toggle-button" text="Sign In &gt;" textAlignment="CENTER">
+      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="1112.0" layoutY="-3.0" mnemonicParsing="false" onAction="#SwitchToLoginPage" prefHeight="100.0" prefWidth="211.0" styleClass="toggle-button" text="Sign In &gt;" textAlignment="CENTER">
          <font>
-            <Font name="Orbitron Bold" size="30.0" />
+            <Font name="Orbitron Bold" size="25.0" />
          </font>
       </Button>
-      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="1254.0" layoutY="-4.0" mnemonicParsing="false" onAction="#SwitchToLoginPage" prefHeight="101.0" prefWidth="283.0" styleClass="toggle-button" text="Cart &gt;" textAlignment="CENTER">
+      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="1323.0" layoutY="-3.0" mnemonicParsing="false" onAction="#SwitchToCheckoutPage" prefHeight="100.0" prefWidth="211.0" styleClass="toggle-button" text="Cart &gt;" textAlignment="CENTER">
          <font>
-            <Font name="Orbitron Bold" size="30.0" />
+            <Font name="Orbitron Bold" size="25.0" />
          </font></Button>
-      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="689.0" layoutY="-5.0" mnemonicParsing="false" onAction="#SwitchToLoginPage" prefHeight="102.0" prefWidth="283.0" styleClass="toggle-button" text="Menu &gt;" textAlignment="CENTER">
+      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="900.0" layoutY="-3.0" mnemonicParsing="false" onAction="#SwitchToOrderStatusCheckPage" prefHeight="100.0" prefWidth="211.0" styleClass="toggle-button" text="Tracker &gt;" textAlignment="CENTER">
          <font>
-            <Font name="Orbitron Bold" size="30.0" />
+            <Font name="Orbitron Bold" size="25.0" />
          </font>
       </Button>
       <Text fill="WHITE" layoutX="376.0" layoutY="476.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current Deals">
@@ -42,7 +42,7 @@
             <Font name="Orbitron Bold" size="20.0" />
          </font>
       </Text>
-      <Text fill="WHITE" layoutX="131.0" layoutY="209.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SunDevil's Pizza">
+      <Text fill="WHITE" layoutX="129.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SunDevil's Pizza">
          <font>
             <Font name="Orbitron Bold" size="55.0" />
          </font>
@@ -52,54 +52,81 @@
             <Font name="Orbitron Bold" size="45.0" />
          </font>
       </Text>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#8c1d40" height="437.0" layoutX="919.0" layoutY="350.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="546.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fec426" height="473.0" layoutX="938.0" layoutY="293.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="566.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#8c1d40" height="525.0" layoutX="56.0" layoutY="282.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="614.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fec426" height="541.0" layoutX="75.0" layoutY="242.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="653.0" />
-      <Text layoutX="282.0" layoutY="751.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sun: 8am - 12am">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#8c1d40" height="437.0" layoutX="1068.0" layoutY="831.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="546.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fec426" height="473.0" layoutX="1087.0" layoutY="774.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="566.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="437.0" layoutX="47.0" layoutY="217.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="697.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#8c1d40" height="525.0" layoutX="-1.0" layoutY="860.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="614.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fec426" height="541.0" layoutX="18.0" layoutY="820.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="653.0" />
+      <Text fill="WHITE" layoutX="233.0" layoutY="535.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sun: 8am - 12am">
          <font>
             <Font name="Orbitron Bold" size="25.0" />
          </font>
       </Text>
-      <Text layoutX="266.0" layoutY="731.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fri-Sat: 11am - 4am">
+      <Text fill="WHITE" layoutX="234.0" layoutY="500.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fri-Sat: 11am - 4am">
          <font>
             <Font name="Orbitron Bold" size="25.0" />
          </font>
       </Text>
-      <Text layoutX="239.0" layoutY="703.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mon-Thur: 10am - 2am">
+      <Text fill="WHITE" layoutX="233.0" layoutY="468.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mon-Thur: 10am - 2am">
          <font>
             <Font name="Orbitron Bold" size="25.0" />
          </font>
       </Text>
-      <Text layoutX="125.0" layoutY="675.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hours : ">
-         <font>
-            <Font name="Orbitron Bold" size="30.0" />
-         </font>
-      </Text>
-      <Text layoutX="96.0" layoutY="609.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Service options: Pick-Up · Delivery">
-         <font>
-            <Font name="Orbitron Bold" size="30.0" />
-         </font>
-      </Text>
-      <Text layoutX="125.0" layoutY="560.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone : (555) 555-5555">
-         <font>
-            <Font name="Orbitron Bold" size="30.0" />
-         </font>
-      </Text>
-      <Text layoutX="123.0" layoutY="516.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address : ">
-         <font>
-            <Font name="Orbitron Bold" size="30.0" />
-         </font>
-      </Text>
-      <Text layoutX="1063.0" layoutY="357.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create Your Own Pizza">
-         <font>
-            <Font name="Orbitron Bold" size="30.0" />
-         </font>
-      </Text>
-      <Text layoutX="989.0" layoutY="427.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your choice of a pizza">
+      <Text fill="WHITE" layoutX="99.0" layoutY="468.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hours : ">
          <font>
             <Font name="Orbitron Bold" size="25.0" />
          </font>
       </Text>
+      <Text fill="WHITE" layoutX="96.0" layoutY="433.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Service options: Pick-Up · Delivery">
+         <font>
+            <Font name="Orbitron Bold" size="25.0" />
+         </font>
+      </Text>
+      <Text fill="WHITE" layoutX="96.0" layoutY="401.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone : (555) 555-5555">
+         <font>
+            <Font name="Orbitron Bold" size="25.0" />
+         </font>
+      </Text>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="437.0" layoutX="934.0" layoutY="283.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="568.0" />
+      <Text fill="WHITE" layoutX="96.0" layoutY="370.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address : ">
+         <font>
+            <Font name="Orbitron Bold" size="25.0" />
+         </font>
+      </Text>
+      <Text fill="WHITE" layoutX="995.0" layoutY="350.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create Your Own Pizza" textAlignment="CENTER">
+         <font>
+            <Font name="Orbitron Bold" size="35.0" />
+         </font>
+      </Text>
+      <Text fill="WHITE" layoutX="957.0" layoutY="399.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create your own pizza by choosing a pizza type and toppings! Select from three pizza types and four toppings choices—additional charges for more than 1 topping. " textAlignment="CENTER" wrappingWidth="527.0833129882812">
+         <font>
+            <Font name="Orbitron Bold" size="25.0" />
+         </font>
+      </Text>
+      <Text fill="WHITE" layoutX="96.0" layoutY="258.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A Delivery/Carryout restraunt that offers">
+         <font>
+            <Font name="Orbitron Bold" size="25.0" />
+         </font>
+      </Text>
+      <Text fill="WHITE" layoutX="99.0" layoutY="293.0" strokeType="OUTSIDE" strokeWidth="0.0" text="a wide variety of hand-made pizzas">
+         <font>
+            <Font name="Orbitron Bold" size="25.0" />
+         </font>
+      </Text>
+      <Text fill="WHITE" layoutX="942.0" layoutY="545.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pizza Types: Pepperoni, Cheese, Vegetables" textAlignment="CENTER" wrappingWidth="527.0833129882812">
+         <font>
+            <Font name="Orbitron Bold" size="25.0" />
+         </font>
+      </Text>
+      <Text fill="WHITE" layoutX="955.0" layoutY="619.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Toppings: Mushrooms, Onions, Olives, Extra Cheese" textAlignment="CENTER" wrappingWidth="527.0833129882812">
+         <font>
+            <Font name="Orbitron Bold" size="25.0" />
+         </font>
+      </Text>
+      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="688.0" layoutY="-3.0" mnemonicParsing="false" onAction="#SwitchToMenuPage" prefHeight="100.0" prefWidth="211.0" styleClass="toggle-button" text="Menu &gt;" textAlignment="CENTER">
+         <font>
+            <Font name="Orbitron Bold" size="25.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

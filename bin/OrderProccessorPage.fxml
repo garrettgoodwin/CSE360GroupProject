@@ -34,7 +34,7 @@
          </font>
       </Text>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="549.0" layoutX="14.0" layoutY="222.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="1139.0" />
-      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="1255.0" mnemonicParsing="false" onAction="#SwitchToLandingPage" prefHeight="101.0" prefWidth="283.0" styleClass="toggle-button" text="Back &gt;" textAlignment="CENTER">
+      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="1326.0" mnemonicParsing="false" onAction="#SwitchToLandingPage" prefHeight="99.0" prefWidth="212.0" styleClass="toggle-button" text="Back &gt;" textAlignment="CENTER">
          <font>
             <Font name="Orbitron Bold" size="30.0" />
          </font>

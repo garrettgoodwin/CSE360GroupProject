@@ -28,7 +28,7 @@ import javafx.stage.Window;
  
 public class App extends Application
 {
-    // All current test scenes >All pretty much temporary
+    // All current test scsenes >All pretty much temporary
     Scene scene1, scene2, scene3, scene4, scene5, scene6, scene7, scene8;
 
     public static void main(String[] args) 

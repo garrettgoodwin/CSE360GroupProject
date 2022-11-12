@@ -11,9 +11,9 @@
 <AnchorPane maxHeight="1080.0" maxWidth="1920.0" minHeight="1080.0" minWidth="1920.0" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SignUpPage">
     <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#191919" height="870.0" layoutX="-9.0" layoutY="-26.0" stroke="BLACK" strokeType="INSIDE" width="1543.0" />
-      <Label layoutX="592.0" layoutY="158.0" text="Sign Up" textAlignment="CENTER" textFill="WHITE">
+      <Label layoutX="684.0" layoutY="137.0" text="Sign Up" textAlignment="CENTER" textFill="WHITE">
          <font>
-            <Font name="Orbitron Bold" size="60.0" />
+            <Font name="Orbitron Bold" size="45.0" />
          </font>
       </Label>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fdc426" height="63.0" layoutX="-25.0" layoutY="-2.0" stroke="BLACK" strokeType="INSIDE" width="637.0" />
@@ -36,73 +36,93 @@
             <Font name="Orbitron Bold" size="35.0" />
          </font>
       </Text>
-      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="1255.0" layoutY="-1.0" mnemonicParsing="false" onAction="#SwitchToLandingPage" prefHeight="101.0" prefWidth="283.0" styleClass="toggle-button" text="Back &gt;" textAlignment="CENTER">
+      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="1319.0" layoutY="-1.0" mnemonicParsing="false" onAction="#SwitchToLandingPage" prefHeight="100.0" prefWidth="219.0" styleClass="toggle-button" text="Back &gt;" textAlignment="CENTER">
          <font>
             <Font name="Orbitron Bold" size="30.0" />
          </font>
       </Button>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="517.0" layoutX="261.0" layoutY="252.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="998.0" />
-      <PasswordField layoutX="308.0" layoutY="344.0" prefHeight="55.0" prefWidth="363.0" promptText="Username">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="557.0" layoutX="301.0" layoutY="204.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="937.0" />
+      <PasswordField fx:id="firstNameField" layoutX="357.0" layoutY="270.0" prefHeight="55.0" prefWidth="363.0" promptText="First Name...">
          <font>
             <Font name="Orbitron Bold" size="25.0" />
          </font>
       </PasswordField>
-      <PasswordField layoutX="308.0" layoutY="455.0" prefHeight="55.0" prefWidth="363.0" promptText="Password">
+      <PasswordField fx:id="lastNameField" layoutX="357.0" layoutY="381.0" prefHeight="55.0" prefWidth="363.0" promptText="Last Name...">
          <font>
             <Font name="Orbitron Bold" size="25.0" />
          </font>
       </PasswordField>
-      <Button layoutX="870.0" layoutY="603.0" mnemonicParsing="false" onAction="#SwitchToPizzaSelectionPage" prefHeight="91.0" prefWidth="230.0" text="Join Now">
+      <Button fx:id="signUpButton" layoutX="683.0" layoutY="686.0" mnemonicParsing="false" onAction="#SwitchToLandingPage" prefHeight="54.0" prefWidth="162.0" text="Join Now">
          <font>
             <Font name="Orbitron Bold" size="22.0" />
          </font>
       </Button>
-      <Label layoutX="308.0" layoutY="301.0" text="*First Name" textAlignment="CENTER" textFill="WHITE">
+      <Label layoutX="357.0" layoutY="227.0" text="*First Name" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="Orbitron Bold" size="25.0" />
          </font>
       </Label>
-      <Label layoutX="308.0" layoutY="415.0" text="*Last Name" textAlignment="CENTER" textFill="WHITE">
+      <Label layoutX="357.0" layoutY="341.0" text="*Last Name" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="Orbitron Bold" size="25.0" />
          </font>
       </Label>
-      <Label layoutX="310.0" layoutY="524.0" text="*Email Address" textAlignment="CENTER" textFill="WHITE">
+      <Label layoutX="359.0" layoutY="450.0" text="*Email Address" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="Orbitron Bold" size="25.0" />
          </font>
       </Label>
-      <Label layoutX="308.0" layoutY="639.0" text="*Confirm Email Address" textAlignment="CENTER" textFill="WHITE">
+      <Label layoutX="357.0" layoutY="565.0" text="*Phone Number" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="Orbitron Bold" size="25.0" />
          </font>
       </Label>
-      <PasswordField layoutX="308.0" layoutY="567.0" prefHeight="55.0" prefWidth="363.0" promptText="Password">
+      <PasswordField fx:id="emailAddressField" layoutX="357.0" layoutY="493.0" prefHeight="55.0" prefWidth="363.0" promptText="Email Address...">
          <font>
             <Font name="Orbitron Bold" size="25.0" />
          </font>
       </PasswordField>
-      <PasswordField layoutX="308.0" layoutY="678.0" prefHeight="55.0" prefWidth="363.0" promptText="Password">
+      <PasswordField fx:id="phoneNumberField" layoutX="357.0" layoutY="604.0" prefHeight="55.0" prefWidth="363.0" promptText="Phone Number...">
          <font>
             <Font name="Orbitron Bold" size="25.0" />
          </font>
       </PasswordField>
-      <Label layoutX="806.0" layoutY="300.0" text="*Email Address" textAlignment="CENTER" textFill="WHITE">
+      <Label layoutX="810.0" layoutY="225.0" text="*Asurite ID" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="Orbitron Bold" size="25.0" />
          </font>
       </Label>
-      <Label layoutX="804.0" layoutY="415.0" text="*Confirm Email Address" textAlignment="CENTER" textFill="WHITE">
+      <Label layoutX="808.0" layoutY="340.0" text="*Username" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="Orbitron Bold" size="25.0" />
          </font>
       </Label>
-      <PasswordField layoutX="804.0" layoutY="343.0" prefHeight="55.0" prefWidth="363.0" promptText="Password">
+      <PasswordField fx:id="asuriteIDField" layoutX="808.0" layoutY="268.0" prefHeight="55.0" prefWidth="363.0" promptText="Asurite...">
          <font>
             <Font name="Orbitron Bold" size="25.0" />
          </font>
       </PasswordField>
-      <PasswordField layoutX="804.0" layoutY="454.0" prefHeight="55.0" prefWidth="363.0" promptText="Password">
+      <PasswordField fx:id="usernameField" layoutX="808.0" layoutY="379.0" prefHeight="55.0" prefWidth="363.0" promptText="Username...">
+         <font>
+            <Font name="Orbitron Bold" size="25.0" />
+         </font>
+      </PasswordField>
+      <Label layoutX="810.0" layoutY="448.0" text="*Password" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font name="Orbitron Bold" size="25.0" />
+         </font>
+      </Label>
+      <Label layoutX="808.0" layoutY="563.0" text="*Confirm Password" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font name="Orbitron Bold" size="25.0" />
+         </font>
+      </Label>
+      <PasswordField fx:id="passwordField" layoutX="808.0" layoutY="491.0" prefHeight="55.0" prefWidth="363.0" promptText="Password...">
+         <font>
+            <Font name="Orbitron Bold" size="25.0" />
+         </font>
+      </PasswordField>
+      <PasswordField fx:id="confirmPasswordField" layoutX="808.0" layoutY="602.0" prefHeight="55.0" prefWidth="363.0" promptText="Password...">
          <font>
             <Font name="Orbitron Bold" size="25.0" />
          </font>
