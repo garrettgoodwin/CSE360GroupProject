@@ -245,6 +245,10 @@ public class User {
             // all tests passed
             return Response.OK;
         }
+
+        public static void sendEmail(String email, String subject, String body) {
+            /* Send Email */
+        }
     }
 
     @Override
