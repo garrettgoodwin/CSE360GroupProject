@@ -104,6 +104,18 @@ public class SceneController
         stage.show();
     }
 
+    public void SwitchToAdminPage(ActionEvent event) throws IOException
+    {
+        Parent root = FXMLLoader.load(getClass().getResource("AdminPage.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("Styling.css").toExternalForm());
+        stage.setScene(scene);
+        stage.setMaximized(true);
+        //stage.setFullScreen(true);
+        stage.show();
+    }
+
     public void SwitchToSignUpPage(ActionEvent event) throws IOException
     {
         Parent root = FXMLLoader.load(getClass().getResource("SignUpPage.fxml"));

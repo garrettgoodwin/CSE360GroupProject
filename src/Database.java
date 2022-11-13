@@ -36,7 +36,12 @@ public class Database {
         }
 
         int userId = getUserIdFromUsername(username);
-        int orderId = createOrder(userId);
+        int orderId;
+        if (isCustomer(userId)) {
+            orderId = createOrder(userId);
+        } else {
+            orderId = Order.BLANK_ID;
+        }
         int sessionId = createSession(userId, orderId);
         return Login.accept(sessionId, userId, orderId);
     }
@@ -45,10 +50,8 @@ public class Database {
     public static Login createAccount(String username, String password, String name, String email, String phoneNumber, int asurite) {
         int type = Customer.TYPE;
         String encryptedPassword = encryptPassword(password);
-        int userId = createUser(username, name, type, encryptedPassword, email, phoneNumber, asurite);
-        int sessionId = createSession(userId);
-        int orderId = createOrder(userId);
-        return Login.accept(sessionId, userId, orderId);
+        createUser(username, name, type, encryptedPassword, email, phoneNumber, asurite);
+        return login(username, password);
     }
 
     public static Login createGuestSession() {
@@ -71,8 +74,7 @@ public class Database {
     // Give permissions (change type of) an account via User email
     public static Response givePermissions(int sessionId, String email, int type) {
         if (isAdmin(sessionId)) {
-            givePermissions(email, type);
-            return Response.OK;
+            return givePermissions(email, type);
         }
         return Response.UNAUTHORIZED;
     }
@@ -295,8 +297,8 @@ public class Database {
         return Response.OK;
     }
 
-    private static void givePermissions(String email, int type) {
-        Connection.givePermissions(email, type);
+    private static Response givePermissions(String email, int type) {
+        return Connection.givePermissions(email, type);
     }
 
     // return sessionId
@@ -321,12 +323,13 @@ public class Database {
 
     // return guestId
     private static int createGuest() {
-        String username = User.GUEST_USERNAME;
-        String name = User.GUEST_NAME;
+        int userId = generateUserId();
+        String username = User.GUEST_USERNAME + userId;
+        String name = User.GUEST_NAME + userId;
         int type = User.GUEST_TYPE;
         String encryptedPassword = "null";
-        String email = User.GUEST_EMAIL;
-        String phoneNumber = User.GUEST_PHONE_NUMBER;
+        String email = User.GUEST_EMAIL + userId;
+        String phoneNumber = User.GUEST_PHONE_NUMBER + userId;
         int asurite = User.NO_ASURITE;
         return createUser(username, name, type, encryptedPassword, email, phoneNumber, asurite);
     }
@@ -435,9 +438,9 @@ public class Database {
         return sessionUser.getId() == userId || sessionUser.isAdmin();
     }
 
-    private static boolean isCustomer(int sessionId) {
-        User sessionUser = getSessionUser(sessionId);
-        return sessionUser.isCustomer();
+    private static boolean isCustomer(int userId) {
+        User user = getUser(userId);
+        return user.isCustomer();
     }
 
     private static boolean isOrderProcessor(int sessionId) {
@@ -860,9 +863,12 @@ public class Database {
         }
 
         // change user type via email
-        public static void givePermissions(String email, int type) {
+        public static Response givePermissions(String email, int type) {
             int id = getUserIdFromEmail(email);
+            if (id == 0)
+                return Response.EMAIL_NOT_FOUND;
             updateUser(USER_TYPE, Integer.toString(type), id);
+            return Response.OK;
         }
     
         public static User getSessionUser(int sessionId) {

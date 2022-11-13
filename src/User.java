@@ -14,6 +14,7 @@ public class User {
     public static final String GUEST_NAME = GUEST_STRING;
     private String name;
     public static final int GUEST_TYPE = GUEST_INT;
+    public static final String GUEST_TYPE_TEXT = "Guest";
     private int type;
     public static final int NO_ASURITE = 0; // don't need to be a guest to not have an asurite
     private int asurite;
@@ -136,17 +137,33 @@ public class User {
     public String getTypeString() {
         switch (type) {
             case Admin.TYPE:
-                return "ADMIN";
+                return Admin.TYPE_TEXT;
             case Chef.TYPE:
-                return "CHEF";
+                return Chef.TYPE_TEXT;
             case OrderProcessor.TYPE:
-                return "ORDER PROCESSOR";
+                return OrderProcessor.TYPE_TEXT;
             case Customer.TYPE:
-                return "CUSTOMER";
+                return Customer.TYPE_TEXT;
             case User.GUEST_TYPE:
-                return "GUEST";
+                return User.GUEST_TYPE_TEXT;
         }
         return "NULL";
+    }
+
+    public static int textToType(String typeText) {
+        switch (typeText) {
+            case Admin.TYPE_TEXT:
+                return Admin.TYPE;
+            case Chef.TYPE_TEXT:
+                return Chef.TYPE;
+            case OrderProcessor.TYPE_TEXT:
+                return OrderProcessor.TYPE;
+            case Customer.TYPE_TEXT:
+                return Customer.TYPE;
+            case User.GUEST_TYPE_TEXT:
+                return User.GUEST_TYPE;
+        }
+        return -1;
     }
 
     /* Static */

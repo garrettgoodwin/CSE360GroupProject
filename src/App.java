@@ -34,14 +34,6 @@ public class App extends Application
 
     public static void main(String[] args) 
     {
-        Session session = new Session();
-        // session.login("customer", "password");
-        // int orderId = session.getOrderId();
-        // session.addPizza(Pizza.VEGETABLE, true, true, false, false, 1);
-        // session.addPizza(Pizza.PEPPERONI, false, false, false, true, 2);
-        // session.placeOrder("1234123412341234", "John Customer", "10/24", 123);
-        session.login("chef", "password");
-        session.markOrderReady(1562530141);
         launch(args);
     }
     

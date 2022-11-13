@@ -48,7 +48,7 @@ public class LoginPage extends SceneController
             }
             // Admin
             if (App.session.isAdmin()) {
-                SwitchToOrderProcessorPage(event);
+                SwitchToAdminPage(event);
                 return;
             }
             // Customer

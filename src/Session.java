@@ -23,6 +23,43 @@ public class Session {
         // check for non-database-related valid entered information (e.g. username length, etc)
         // Database.createAccount will conduct database-related exception checking
         //      (e.g. username already exists in database)
+        Response response = validate(username, password, name, email, phoneNumber, asurite);
+        if (!Response.ok(response)) {
+            return response;
+        }
+        // if passes surface tests
+        Login login = Database.createAccount(username, password, name, email, phoneNumber, Integer.parseInt(asurite));
+        if (login.isAccepted()) {
+            login(login);
+        }
+        return login.getResponse();
+    }
+
+    public void continueAsGuest() {
+        Login login = Database.createGuestSession();
+        login(login);
+    }
+
+    /* (Admin) : Create an account of any type */
+    /* types: Admin, Chef, OrderProcessor, Customer */
+    public Response createAccount(String username, String password, String name, String email, String phoneNumber, String asurite, int type) {
+        // check for non-database-related valid entered information (e.g. username length, etc)
+        // Database.createAccount will conduct database-related exception checking
+        //      (e.g. username already exists in database)
+        Response response = validate(username, password, name, email, phoneNumber, asurite);
+        if (!Response.ok(response)) {
+            return response;
+        }
+
+        return Database.createAccount(this.getId(), username, password, name, email, phoneNumber, Integer.parseInt(asurite), type);
+    }
+
+    /* (Admin) : Give permissions (change type of) an account via User email */
+    public Response givePermissions(String email, int type) {
+        return Database.givePermissions(this.getId(), email, type);
+    }
+
+    private Response validate(String username, String password, String name, String email, String phoneNumber, String asurite) {
         Response response;
         response = User.Username.validate(username);
         if (!Response.ok(response)) {
@@ -48,45 +85,7 @@ public class Session {
         if (!Response.ok(response)) {
             return response;
         }
-        // if passes surface tests
-        Login login = Database.createAccount(username, password, name, email, phoneNumber, Integer.parseInt(asurite));
-        if (login.isAccepted()) {
-            login(login);
-        }
-        return login.getResponse();
-    }
-
-    public void continueAsGuest() {
-        Login login = Database.createGuestSession();
-        login(login);
-    }
-
-    /* (Admin) : Create an account of any type */
-    /* types: Admin, Chef, OrderProcessor, Customer */
-    public Response createAccount(String username, String password, String name, String email, String phoneNumber, int asurite, int type) {
-        // check for non-database-related valid entered information (e.g. username length, etc)
-        // Database.createAccount will conduct database-related exception checking
-        //      (e.g. username already exists in database)
-        Response response;
-        response = User.Username.validate(username);
-        if (!Response.ok(response)) {
-            return response;
-        }
-        response = User.Email.validate(email);
-        if (!Response.ok(response)) {
-            return response;
-        }
-        response = User.Password.validate(password);
-        if (!Response.ok(response)) {
-            return response;
-        }
-
-        return Database.createAccount(this.getId(), username, password, name, email, phoneNumber, asurite, type);
-    }
-
-    /* (Admin) : Give permissions (change type of) an account via User email */
-    public Response givePermissions(String email, int type) {
-        return Database.givePermissions(this.getId(), email, type);
+        return Response.OK;
     }
 
     public int getId() {
