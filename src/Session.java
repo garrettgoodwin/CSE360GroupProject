@@ -103,6 +103,7 @@ public class Session {
             order.setStatus(Order.ACCEPTED);
             order.setDeliveryMethod(deliveryMethod);
             Database.saveOrder(order, this.getId());
+            savePaymentMethod(cardNumber, exp, cardholderName, cvv);
         }
         return response;
     }
