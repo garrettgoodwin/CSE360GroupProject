@@ -19,6 +19,8 @@ public class Payment {
     private static String DISCOVER = "Discover";
     private static String UNKNOWN_TYPE = "Unknown Type";
 
+    public static Payment BLANK_PAYMENT = new Payment();
+
     Payment() {
         this(User.GUEST_ID, "0000000123456789", "John Cardholder", "01/01");
     }

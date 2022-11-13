@@ -14,5 +14,6 @@ import javafx.stage.Stage;
 public class OrderStatusPage extends SceneController
 {
     @FXML
-    public TextField emailField;
+    public TextField fieldyField1;
+
 }

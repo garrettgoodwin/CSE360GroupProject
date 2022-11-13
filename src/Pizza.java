@@ -23,6 +23,8 @@ public class Pizza {
     public static final float PEPPERONI_PRICE = 10.00f;
     public static final float VEGETABLE_PRICE = 12.00f;
 
+    public static final Pizza BLANK_PIZZA = new Pizza();
+
     int id;
     int pizzaType;
     boolean mushrooms;
@@ -38,6 +40,10 @@ public class Pizza {
         this.onions = onions;
         this.extraCheese = extraCheese;
         this.quantity = quantity;
+    }
+    /* Blank Pizza */
+    private Pizza() {
+        this(BLANK_ID, PEPPERONI, false, false, false, false, 0);
     }
     public int getId() {
         return id;

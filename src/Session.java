@@ -112,6 +112,9 @@ public class Session {
     public int getOrderId() {
         return order.getId();
     }
+    public boolean orderIsBlank() {
+        return getOrder() == Order.BLANK;
+    }
     public boolean getIsClosed() {
         return isClosed;
     }
@@ -133,7 +136,7 @@ public class Session {
         this.user = user;
     }
     private void setOrder(int orderId) {
-        Order order = Database.getOrder(orderId, this.getId());
+        Order order = Database.getOrder(orderId);
         setOrder(order);
     }
     private void setOrder(Order order) {
@@ -217,7 +220,7 @@ public class Session {
     }
 
     public void sendEmailToCustomer(int orderId) {
-        Order order = Database.getOrder(orderId, this.getId());
+        Order order = Database.getOrder(orderId);
         String email = Database.getOrderCustomerEmail(orderId, this.getId());
         String name = Database.getOrderCustomerName(orderId, this.getId());
         String status = order.getStatusText();
@@ -226,6 +229,15 @@ public class Session {
             + "your SunDevil Pizza order is " + status + ".\n"
             + order.getReceipt();
         User.Email.sendEmail(email, subject, body);
+    }
+
+    /* Checking Order Status while not logged in */
+    public void setOrderForStatus(int orderId) {
+        setOrder(Database.getOrder(orderId));
+    }
+
+    public void setOrderForStatus(String username, String password) {
+        setOrder(Database.getLastPlacedOrder(username, password));
     }
     
     @Override

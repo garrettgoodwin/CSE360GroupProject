@@ -16,7 +16,6 @@ public class Database {
      * Debug
      */
     public static void test() {
-        System.out.println(encryptPassword("password"));
         Connection.test();
     }
 
@@ -32,11 +31,11 @@ public class Database {
             return Login.deny(Response.USERNAME_NOT_FOUND);
         }
 
-        int userId = getUserIdFromUsername(username);
-        if (!isCorrectPassword(password, userId)) {
+        if (!isCorrectPassword(password, username)) {
             return Login.deny(Response.INCORRECT_PASSWORD);
         }
 
+        int userId = getUserIdFromUsername(username);
         int orderId = createOrder(userId);
         int sessionId = createSession(userId, orderId);
         return Login.accept(sessionId, userId, orderId);
@@ -104,6 +103,13 @@ public class Database {
     public static User getUser(int userId, int sessionId) {
         if (hasAccessTo(sessionId, userId)) {
             return getUser(userId);
+        }
+        return User.GUEST;
+    }
+
+    public static User getUser(String username, String password) {
+        if (isCorrectPassword(password, username)) {
+            return getUserFromUsername(username);
         }
         return User.GUEST;
     }
@@ -198,10 +204,14 @@ public class Database {
         }
     }
 
-    public static Order getOrder(int orderId, int sessionId) {
-        int userId = Connection.getOrderUserId(orderId);
-        if (hasAccessTo(sessionId, userId) || isChef(sessionId) || isOrderProcessor(sessionId)) {
-            return getOrder(orderId);
+    public static Order getOrder(int orderId) {
+        return Connection.getOrder(orderId);
+    }
+
+    public static Order getLastPlacedOrder(String username, String password) {
+        if (isCorrectPassword(password, username)) {
+            int userId = getUserIdFromUsername(username);
+            return getLastPlacedOrder(userId);
         }
         return Order.BLANK;
     }
@@ -388,6 +398,11 @@ public class Database {
         return Connection.getEncryptedPassword(userId);
     }
 
+    private static boolean isCorrectPassword(String submittedPassword, String username) {
+        int userId = getUserIdFromUsername(username);
+        return isCorrectPassword(submittedPassword, userId);
+    }
+
     private static boolean isCorrectPassword(String submittedPassword, int userId) {
         String encryptedSubmittedPassword = encryptPassword(submittedPassword);
         final String REAL_ENCRYPTED_PASSWORD = getEncryptedPassword(userId);
@@ -452,6 +467,11 @@ public class Database {
         return Connection.getUser(userId);
     }
 
+    private static User getUserFromUsername(String username) {
+        int userId = getUserIdFromUsername(username);
+        return getUser(userId);
+    }
+
     private static String getUsername(int userId) {
         return Connection.getUsername(userId);
     }
@@ -500,8 +520,8 @@ public class Database {
         Connection.setPhoneNumber(phoneNumber, userId);
     }
 
-    private static Order getOrder(int orderId) {
-        return Connection.getOrder(orderId);
+    private static Order getLastPlacedOrder(int userId) {
+        return Connection.getLastPlacedOrder(userId);
     }
 
     private static Order[] getSavedOrders(int userId) {
@@ -732,6 +752,18 @@ public class Database {
         public static int getOrderUserId(int orderId) {
             return Integer.parseInt(selectOrder(USER_ID, orderId));
         }
+
+        public static Order getLastPlacedOrder(int userId) {
+            // all orders
+            ArrayList<Order> allOrders = getUsersOrders(userId);
+            for (int i = 0; i < allOrders.size(); i++) {
+                if (allOrders.get(i).isPlaced()) {
+                    return allOrders.get(i);
+                }
+            }
+            // no placed order
+            return Order.BLANK;
+        }
     
         public static Order[] getSavedOrders(int userId) {
             // saved and unsaved orders
@@ -742,7 +774,7 @@ public class Database {
                     allOrders.remove(i);
                 }
             }
-            // case saved orders to array
+            // cast saved orders to array
             Order[] savedOrders = new Order[allOrders.size()];
             allOrders.toArray(savedOrders);
             return savedOrders;
@@ -1225,6 +1257,10 @@ public class Database {
             return delimeters;
         }
 
+        private static boolean matchingDelimeterCount(String row1, String row2) {
+            return countDelimeters(row1) == countDelimeters(row2);
+        }
+
         /* read row with matching nth entry from table */
 
         private static String textAfterTableHeader(String text) {
@@ -1235,6 +1271,8 @@ public class Database {
         private static Session parseSession(String sessionData) {
             /* id,time_created,time_updated,user_id,order_id,is_closed */
             String header = SESSION_HEADER;
+            if (!matchingDelimeterCount(sessionData, header))
+                return new Session();
             int id = parseId(sessionData, header);
             int userId = parseIntegerValue(header, sessionData, USER_ID);
             User user = getUser(userId);
@@ -1247,6 +1285,8 @@ public class Database {
         private static User parseUser(String userData) {
             /* id,time_created,time_updated,username,name,user_type,encrypted_password,asurite,email,phone_number,session_id */
             String header = USER_HEADER;
+            if (!matchingDelimeterCount(userData, header))
+                return User.GUEST;
             int id = parseIntegerValue(header, userData, ID);
             String username = parseValue(header, userData, USERNAME);
             String name = parseValue(header, userData, NAME);
@@ -1261,6 +1301,8 @@ public class Database {
         private static Order parseOrder(String orderData) {
             /* id,time_created,time_updated,user_id,status,is_saved */
             String header = ORDER_HEADER;
+            if (!matchingDelimeterCount(orderData, header))
+                return Order.BLANK;
             int id = parseId(orderData, header); 
             ArrayList<Pizza> pizzas = getPizzas(id);
             int userId = parseIntegerValue(header, orderData, USER_ID);
@@ -1272,6 +1314,9 @@ public class Database {
         private static Pizza parsePizza(String pizzaData) {
             /* id,time_created,time_updated,order_id,pizza_type,mushrooms,olives,onions,extra_cheese,quantity */
             String header = PIZZA_HEADER;
+
+            if (!matchingDelimeterCount(pizzaData, header))
+                return Pizza.BLANK_PIZZA;
 
             int id = parseId(pizzaData, header);
             int pizzaType = parseIntegerValue(header, pizzaData, PIZZA_TYPE);
@@ -1286,6 +1331,8 @@ public class Database {
         private static Payment parsePayment(String paymentData) {
             /* id,time_created,time_updated,user_id,card_number,exp,cardholder_name,cvv */
             String header = PAYMENT_HEADER;
+            if (!matchingDelimeterCount(paymentData, header))
+                return Payment.BLANK_PAYMENT;
 
             int userId = parseIntegerValue(header, paymentData, USER_ID);
             String cardNumber = parseValue(header, paymentData, CARD_NUMBER);
@@ -1306,7 +1353,7 @@ public class Database {
             // "INSERT into <table> (tableHeader) VALUES(row)"
             String text = read(tableName);
             String tableHeader = getTableHeader(tableName);
-            if (countDelimeters(row) != countDelimeters(tableHeader))
+            if (!matchingDelimeterCount(row, tableHeader))
                 return; // error - bad # of delimeters will wonk up the table
 
             String rows = textAfterTableHeader(text);

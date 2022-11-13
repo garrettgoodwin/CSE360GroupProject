@@ -3,12 +3,13 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="OrderStatusPage">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="OrderStatusCheckPage">
    <children>
       <Button layoutX="430.0" layoutY="353.0" mnemonicParsing="false" onAction="#SwitchToLandingPage" text="Back to Landing Page" />
       <Label layoutX="219.0" layoutY="62.0" text="Order Statues" textAlignment="CENTER" textFill="WHITE">
@@ -16,7 +17,7 @@
             <Font name="Orbitron Bold" size="20.0" />
          </font>
       </Label>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#191919" height="870.0" layoutX="-3.0" layoutY="-15.0" stroke="BLACK" strokeType="INSIDE" width="1543.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#191919" height="870.0" layoutX="-6.0" layoutY="14.0" stroke="BLACK" strokeType="INSIDE" width="1543.0" />
       <Label layoutX="211.0" layoutY="481.0" text="Order Confirmed" textFill="WHITE">
          <font>
             <Font name="Orbitron Bold" size="20.0" />
@@ -109,20 +110,40 @@
             <Font name="Orbitron Bold" size="30.0" />
          </font>
       </Label>
-      <Label layoutX="832.0" layoutY="593.0" text="Enter Email to Track your Order" textFill="WHITE">
+      <Label layoutX="868.0" layoutY="540.0" prefHeight="46.0" prefWidth="606.0" text="Enter your Order ID" textFill="WHITE">
          <font>
-            <Font name="Orbitron Bold" size="30.0" />
+            <Font size="24.0" />
          </font>
       </Label>
-      <PasswordField fx:id="emailField" layoutX="852.0" layoutY="654.0" prefHeight="38.0" prefWidth="363.0" promptText="Email...">
+      <TextField fx:id="orderIdField" layoutX="855.0" layoutY="579.0" prefHeight="38.0" prefWidth="363.0" promptText="Order Id">
          <font>
             <Font name="Orbitron Bold" size="20.0" />
          </font>
-      </PasswordField>
-      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="1222.0" layoutY="654.0" mnemonicParsing="false" onAction="#SwitchToOrderStatusPage" prefHeight="38.0" prefWidth="138.0" styleClass="toggle-button" text="Enter" textAlignment="CENTER">
+      </TextField>
+      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="1102.0" layoutY="773.0" mnemonicParsing="false" onAction="#CheckOrderStatus" prefHeight="38.0" prefWidth="138.0" styleClass="toggle-button" text="Enter" textAlignment="CENTER">
          <font>
             <Font name="Orbitron Bold" size="20.0" />
          </font>
       </Button>
+      <Label layoutX="864.0" layoutY="621.0" prefHeight="46.0" prefWidth="606.0" text="or Log In" textFill="WHITE">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <TextField fx:id="usernameField" layoutX="855.0" layoutY="663.0" prefHeight="38.0" prefWidth="363.0" promptText="Username">
+         <font>
+            <Font name="Orbitron Bold" size="20.0" />
+         </font>
+      </TextField>
+      <PasswordField fx:id="passwordField" layoutX="855.0" layoutY="719.0" prefHeight="38.0" prefWidth="363.0" promptText="Password">
+         <font>
+            <Font name="Orbitron Bold" size="20.0" />
+         </font>
+      </PasswordField>
+      <Label layoutX="854.0" layoutY="772.0" prefHeight="46.0" prefWidth="234.0" text="Track Your Order" textFill="WHITE">
+         <font>
+            <Font name="Orbitron Bold" size="30.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
