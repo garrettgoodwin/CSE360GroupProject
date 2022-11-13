@@ -1,4 +1,4 @@
-import java.text.NumberFormat;
+import java.text.NumberFormat;  // Currency NumberFormat
 import java.util.ArrayList; // ArrayList
 
 public class Order {
@@ -14,16 +14,26 @@ public class Order {
     public static int COOKING = 3;
     public static String COOKING_TEXT = "Cooking";
     public static int READY = 4;
-    public static String READY_TEXT = "Ready For Pick Up";
-    public static int PICKED_UP = 5;
-    public static String PICKED_UP_TEXT = "Picked Up";
+    public static String READY_TEXT = "Ready";
+    public static int COMPLETE = 5;
+    public static String COMPLETE_TEXT = "Complete";
     public static int CANCELLED = 6;
     public static String CANCELLED_TEXT = "Cancelled";
+    public static int OUT_FOR_DELIVERY = 7;
+    public static String OUT_FOR_DELIVERY_TEXT = "Out For Delivery";
+    /* Delivery Methods */
+    public static int PICK_UP = 0;
+    public static String PICK_UP_TEXT = "Pick Up";
+    public static String PICKED_UP_TEXT = "Picked Up";
+    public static int DELIVERY = 1;
+    public static String DELIVERY_TEXT = "Delivery";
+    public static String DELIVERED_TEXT = "Delivered";
 
     private int id;
     private ArrayList<Pizza> pizzas;
     private int status;
     private int userId;
+    private int deliveryMethod;
     private boolean saved;
 
     // creating new order as guest
@@ -32,14 +42,15 @@ public class Order {
     }
     // creating new order while logged in
     Order(int id, int userId) {
-        this(id, new ArrayList<Pizza>(), Order.NOT_YET_PLACED, userId, false);
+        this(id, new ArrayList<Pizza>(), Order.NOT_YET_PLACED, userId, PICK_UP, false);
     }
     // pulling up saved orders
-    Order(int id, ArrayList<Pizza> pizzas, int status, int userId, boolean saved) {
+    Order(int id, ArrayList<Pizza> pizzas, int status, int userId, int deliveryMethod, boolean saved) {
         this.id = id;
         this.pizzas = pizzas;
         this.status = status;
         this.userId = userId;
+        this.deliveryMethod = deliveryMethod;
         this.saved = saved;
     }
     
@@ -108,6 +119,12 @@ public class Order {
     public boolean isUser(int userId, int sessionId) {
         return this.userId == userId;
     }
+    public int getDeliveryMethod() {
+        return deliveryMethod;
+    }
+    public void setDeliveryMethod(int deliveryMethod) {
+        this.deliveryMethod = deliveryMethod;
+    }
     public void setSaved(boolean saved) {
         this.saved = saved;
     } 
@@ -129,13 +146,18 @@ public class Order {
         if (isCooking())
             return Order.COOKING_TEXT;
         if (isReady())
-            return Order.READY_TEXT;
-        if (isPickedUp())
-            return Order.PICKED_UP_TEXT;
+            return getDeliveryMethodText();
+        if (isOutForDelivery())
+            return Order.OUT_FOR_DELIVERY_TEXT;
+        if (isComplete())
+            return Order.COMPLETE_TEXT;
         if (isCancelled())
             return Order.CANCELLED_TEXT;
 
         return Order.NOT_YET_PLACED_TEXT;
+    }
+    public String getReadyText() {
+        return READY_TEXT + " For " + getDeliveryMethodText();
     }
     public boolean isPlaced() {
         return this.status != Order.NOT_YET_PLACED;
@@ -152,11 +174,25 @@ public class Order {
     public boolean isReady() {
         return this.status == Order.READY;
     }
-    public boolean isPickedUp() {
-        return this.status == Order.PICKED_UP;
+    public boolean isOutForDelivery() {
+        return this.status == Order.OUT_FOR_DELIVERY;
+    }
+    public boolean isComplete() {
+        return this.status == Order.COMPLETE;
     }
     public boolean isCancelled() {
         return this.status == Order.CANCELLED;
+    }
+    public boolean isDelivery() {
+        return this.deliveryMethod == Order.DELIVERY;
+    }
+    public boolean isPickUp() {
+        return this.deliveryMethod == Order.PICK_UP;
+    }
+    public String getDeliveryMethodText() {
+        if (isDelivery())
+            return DELIVERY_TEXT;
+        return PICK_UP_TEXT;
     }
 
     private int getUserId() {

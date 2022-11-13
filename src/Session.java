@@ -98,10 +98,11 @@ public class Session {
     public Order getOrder() {
         return order;
     }
-    public Response placeOrder(String cardNumber, String cardholderName, String exp, int cvv) {
+    public Response placeOrder(String cardNumber, String cardholderName, String exp, int cvv, int deliveryMethod) {
         Response response = Payment.validate(cardNumber, exp, Integer.toString(cvv));
         if (Response.ok(response)) {
             order.setStatus(Order.ACCEPTED);
+            order.setDeliveryMethod(deliveryMethod);
             Database.saveOrder(order, this.getId());
         }
         return response;

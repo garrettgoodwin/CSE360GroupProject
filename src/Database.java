@@ -260,7 +260,7 @@ public class Database {
 
     public static void markOrderPickedUp(int orderId, int sessionId) {
         if (isAdmin(sessionId) || isOrderProcessor(sessionId)) {
-            setOrderStatus(orderId, Order.PICKED_UP);
+            setOrderStatus(orderId, Order.COMPLETE);
         }
     }
 
@@ -611,9 +611,10 @@ public class Database {
         /* time_updated */
         /* user_id */
         private static String STATUS = "status";
+        private static String DELIVERY_METHOD = "delivery_method";
         private static String IS_SAVED = "is_saved";
-        /* id,time_created,time_updated,user_id,status,is_saved */
-        private static String ORDER_HEADER = delimetRow(ID,TIME_CREATED,TIME_UPDATED,USER_ID,STATUS,IS_SAVED);
+        /* id,time_created,time_updated,user_id,status,delivery_method,is_saved */
+        private static String ORDER_HEADER = delimetRow(ID,TIME_CREATED,TIME_UPDATED,USER_ID,STATUS,DELIVERY_METHOD,IS_SAVED);
 
         /* Pizza Table */
         private static String PIZZA_TABLE = DATABASE_PATH + "pizzas.csv";
@@ -894,12 +895,13 @@ public class Database {
         }
 
         public static void createOrder(int orderId, int userId) {
-            /* id,time_created,time_updated,user_id,status,is_saved */
+            /* id,time_created,time_updated,user_id,status,delivery_method,is_saved */
             String timeCreated = getTime();
             String timeUpdated = timeCreated;
             int status = Order.NOT_YET_PLACED;
+            int deliveryMethod = Order.PICK_UP;
             boolean isSaved = false;
-            insertOrder(delimetRow(Integer.toString(orderId),timeCreated,timeUpdated,Integer.toString(userId),Integer.toString(status),Boolean.toString(isSaved)));
+            insertOrder(delimetRow(Integer.toString(orderId),timeCreated,timeUpdated,Integer.toString(userId),Integer.toString(status),Integer.toString(deliveryMethod),Boolean.toString(isSaved)));
         }
 
         public static void createPizza(int pizzaId, int orderId, int pizzaType, boolean mushrooms, boolean olives, boolean onions, boolean extraCheese, int quantity) {
@@ -1299,7 +1301,7 @@ public class Database {
         }
 
         private static Order parseOrder(String orderData) {
-            /* id,time_created,time_updated,user_id,status,is_saved */
+            /* id,time_created,time_updated,user_id,status,delivery_method,is_saved */
             String header = ORDER_HEADER;
             if (!matchingDelimeterCount(orderData, header))
                 return Order.BLANK;
@@ -1307,8 +1309,9 @@ public class Database {
             ArrayList<Pizza> pizzas = getPizzas(id);
             int userId = parseIntegerValue(header, orderData, USER_ID);
             int status = parseIntegerValue(header, orderData, STATUS);
+            int deliveryMethod = parseIntegerValue(header, orderData, DELIVERY_METHOD);
             boolean saved = parseBooleanValue(header, orderData, IS_SAVED);
-            return new Order(id, pizzas, status, userId, saved);
+            return new Order(id, pizzas, status, userId,deliveryMethod, saved);
         }
 
         private static Pizza parsePizza(String pizzaData) {
