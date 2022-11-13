@@ -352,6 +352,10 @@ public class Database {
         }
     }
 
+    public static boolean hasForbiddenCharacter(String entry) {
+        return Connection.hasForbiddenCharacter(entry);
+    }
+
     public static String encode(String entry) {
         return Connection.encode(entry);
     }
@@ -1067,6 +1071,11 @@ public class Database {
         /* decode delimeters so table won't break */
         public static String decode(String column) {
             return column.replaceAll("%" + (int) COLUMN_DELIMETER, Character.toString(COLUMN_DELIMETER)).replaceAll("%" + (int) ROW_DELIMETER, Character.toString(ROW_DELIMETER));
+        }
+
+        public static boolean hasForbiddenCharacter(String entry) {
+            return entry.indexOf(COLUMN_DELIMETER) != -1
+                || entry.indexOf(ROW_DELIMETER) != -1;
         }
 
         /*

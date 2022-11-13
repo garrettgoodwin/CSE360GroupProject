@@ -19,7 +19,7 @@ public class Session {
         login(login);
         return login.getResponse();
     }
-    public Response createAccount(String username, String password, String name, String email, String phoneNumber, int asurite) {
+    public Response createAccount(String username, String password, String name, String email, String phoneNumber, String asurite) {
         // check for non-database-related valid entered information (e.g. username length, etc)
         // Database.createAccount will conduct database-related exception checking
         //      (e.g. username already exists in database)
@@ -36,9 +36,20 @@ public class Session {
         if (!Response.ok(response)) {
             return response;
         }
-
+        response = User.PhoneNumber.validate(phoneNumber);
+        if (!Response.ok(response)) {
+            return response;
+        }
+        response = User.Name.validate(name);
+        if (!Response.ok(response)) {
+            return response;
+        }
+        response = User.Asurite.validate(asurite);
+        if (!Response.ok(response)) {
+            return response;
+        }
         // if passes surface tests
-        Login login = Database.createAccount(username, password, name, email, phoneNumber, asurite);
+        Login login = Database.createAccount(username, password, name, email, phoneNumber, Integer.parseInt(asurite));
         if (login.isAccepted()) {
             login(login);
         }

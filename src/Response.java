@@ -28,6 +28,11 @@ public class Response {
     public static final Response USERNAME_NOT_FOUND = new Response(490, "Username Does Not Exist");
     public static final Response EMAIL_NOT_FOUND = new Response(491, "Email Does Not Exist");
     public static final Response INCORRECT_PASSWORD = new Response(492, "Incorrect Password");
+    public static final Response FORBIDDEN_NAME_CHARACTER = new Response(493, "Name Can Only Include Letters, Spaces(⎵) and Dashes(-)");
+    public static final Response INVALID_ASURITE = new Response(494, "Not a Valid Asurite ID");
+    public static final Response INVALID_PHONE_NUMBER = new Response(495, "Not a Valid Phone Number");
+    public static final Response SHORT_NAME = new Response(496, "Name Must be at Least " + User.Name.MIN_LENGTH + " Characters");
+    public static final Response LONG_NAME = new Response(496, "Name Must be at Most " + User.Name.MAX_LENGTH + " Characters");
 
 
     public int code;

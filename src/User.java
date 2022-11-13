@@ -247,8 +247,7 @@ public class User {
 
     public static class Email {
         public static Response validate(String email) {
-            // String validEmailRegex = "[A-Za-z0-9][A-Za-z0-9\\.]{1,}@[A-Za-z0-9\\.]{1,}\\.[A-Za-z0-9]{1,}";
-            String validEmailRegex = "[A-Za-z][A-Za-z0-9\\.]{1,}@[A-Za-z0-9]{1,}\\.([A-Za-z0-9]\\.)*[A-Za-z0-9]{1,}";
+            String validEmailRegex = "[A-Za-z][A-Za-z0-9\\.]{0,}@[A-Za-z0-9]{1,}\\.([A-Za-z0-9]\\.)*[A-Za-z0-9]{1,}";
             if (!Pattern.matches(validEmailRegex, email)) {
                 return Response.INVALID_EMAIL;
             }
@@ -268,6 +267,61 @@ public class User {
             return response == Response.EMAIL_NOT_FOUND
                 || response == Response.INVALID_EMAIL
                 || response == Response.PREEXISTING_EMAIL;
+        }
+    }
+
+    public static class Name {
+        public static int MIN_LENGTH = 3;
+        public static int MAX_LENGTH = 80;
+        public static Response validate(String name) {
+            if (name.length() < MIN_LENGTH)
+                return Response.SHORT_NAME;
+            if (name.length() > MAX_LENGTH)
+                return Response.LONG_NAME;
+
+            // note: space character included
+            String validNameRegex = "[A-Za-z\\- ]*";
+            if (!Pattern.matches(validNameRegex, name)) {
+                return Response.FORBIDDEN_NAME_CHARACTER;
+            }
+            return Response.OK;
+        }
+        public static boolean isNameResponse(Response response) {
+            return response == Response.FORBIDDEN_NAME_CHARACTER
+                || response == Response.SHORT_NAME
+                || response == Response.LONG_NAME;
+        }
+    }
+
+    public static class Asurite {
+        public static Response validate(String asurite) {
+            if (asurite.length() > 0) {
+                try {
+                    if (Integer.parseInt(asurite) >= 0) {
+                        return Response.OK;
+                    }
+                } catch (Exception e) {
+                    return Response.INVALID_ASURITE;
+                }
+            }
+            return Response.OK;
+        }
+        public static boolean isAsuriteResponse(Response response) {
+            return response == Response.INVALID_ASURITE;
+        }
+    }
+
+    public static class PhoneNumber {
+        public static Response validate(String phoneNumber) {
+            try {
+                Long.parseLong(phoneNumber);
+            } catch (Exception e) {
+                return Response.INVALID_PHONE_NUMBER;
+            }
+            return Response.OK;
+        }
+        public static boolean isPhoneNumberResponse(Response response) {
+            return response == Response.INVALID_PHONE_NUMBER;
         }
     }
 
