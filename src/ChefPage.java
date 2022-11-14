@@ -52,10 +52,7 @@ public class ChefPage extends SceneController implements Initializable
 
     public void markToCook(ActionEvent event) {  // marks that chef is cooking the order
         Order clickedOrder = table.getSelectionModel().getSelectedItem();
-        if (clickedOrder == null) {
-            System.out.println("No order selected");
-        }
-        else {
+        if (clickedOrder != null) {
             ObservableList<Order> currentData = table.getItems();
             int currentId = clickedOrder.getOrder();
             for (Order order : currentData) {
@@ -72,10 +69,7 @@ public class ChefPage extends SceneController implements Initializable
 
     public void markReady(ActionEvent event) {  // marks that the order is ready
         Order clickedOrder = table.getSelectionModel().getSelectedItem();
-        if (clickedOrder == null) {
-            System.out.println("No order selected");
-        }
-        else {
+        if (clickedOrder != null) {
             ObservableList<Order> currentData = table.getItems();
             int currentId = clickedOrder.getOrder();
             for (Order order : currentData) {

@@ -70,7 +70,9 @@
             <Font name="Orbitron Bold" size="25.0" />
          </font>
       </Button>
-      <Button fx:id="checkoutButton" layoutX="1181.0" layoutY="780.0" mnemonicParsing="false" onAction="#SwitchToCheckoutPage" prefHeight="48.0" prefWidth="274.0" text="Check Out">
+      <Label fx:id="errorLabel" layoutX="1181.0" layoutY="622.0" prefHeight="46.0" prefWidth="274.0" styleClass="error-label" text="" wrapText="true">
+      </Label>
+      <Button fx:id="checkoutButton" layoutX="1181.0" layoutY="780.0" mnemonicParsing="false" onAction="#CheckOut" prefHeight="48.0" prefWidth="274.0" text="Check Out">
          <font>
             <Font name="Orbitron Bold" size="25.0" />
          </font>
@@ -114,10 +116,6 @@
          <font>
             <Font name="Orbitron Bold" size="30.0" />
          </font>
-      </Label>
-   
-   
-   
-   
+      </Label>   
    </children>
 </AnchorPane>

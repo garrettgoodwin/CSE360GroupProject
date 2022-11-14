@@ -46,6 +46,7 @@ public class PizzaSelectionPage extends SceneController implements Initializable
     public ListView<Pizza> myListView;
     public Label pricePerToppingLabel;
     public Label totalLabel;
+    public Label errorLabel;
 
     public Rectangle pepperoniBox;
     public Rectangle cheeseBox;
@@ -79,6 +80,20 @@ public class PizzaSelectionPage extends SceneController implements Initializable
       myListView.getItems().addAll(App.session.getOrder().getPizzas());
       pepperoniButton.setSelected(true);
       resetSelections();
+    }
+
+    public void CheckOut(ActionEvent event) throws IOException
+    {
+      if (App.session.getOrder().getPizzas().length == 0) {
+        displayError("Please add at least one pizza to your order");
+      } else {
+        SwitchToCheckoutPage(event);
+      }
+
+    }
+
+    private void displayError(String message) {
+      errorLabel.setText(message);
     }
 
 

@@ -104,7 +104,12 @@ public class CheckoutPage extends SceneController implements Initializable
         //place order if its asurite
         if(asuriteField.getText().length() > 0)
         {
-            asuriteNumber = Integer.parseInt(asuriteField.getText());
+            try {
+                asuriteNumber = Integer.parseInt(asuriteField.getText());
+            } catch(Exception e) {
+                invalidAsurite(Response.INVALID_ASURITE);
+                return;
+            }
             response = App.session.placeOrder(asuriteNumber, deliveryMethod);
             if (!Response.ok(response)) {
                 invalidAsurite(response);

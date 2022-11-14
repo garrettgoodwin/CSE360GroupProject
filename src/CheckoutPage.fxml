@@ -133,13 +133,13 @@
          </font>
       </Label>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="60.0" layoutX="1051.0" layoutY="273.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="126.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="60.0" layoutX="1217.0" layoutY="272.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="126.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="60.0" layoutX="1217.0" layoutY="272.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="135.0" />
       <ToggleButton fx:id="deliveryButton" layoutX="1051.0" layoutY="270.0" mnemonicParsing="false" prefHeight="62.0" prefWidth="125.0" text="Delivery" textFill="WHITE">
          <font>
             <Font size="25.0" />
          </font>
       </ToggleButton>
-      <ToggleButton fx:id="carryoutButton" layoutX="1218.0" layoutY="270.0" mnemonicParsing="false" prefHeight="62.0" prefWidth="125.0" text="Carry Out" textFill="WHITE">
+      <ToggleButton fx:id="carryoutButton" layoutX="1218.0" layoutY="270.0" mnemonicParsing="false" prefHeight="62.0" prefWidth="135.0" text="Carry Out" textFill="WHITE">
          <font>
             <Font size="24.0" />
          </font>
