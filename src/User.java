@@ -58,6 +58,20 @@ public class User {
         return name;
     }
 
+    public String getFirstName() {
+        String firstName = getName();
+        int index;
+        index = firstName.indexOf(' ');
+        if (index != -1) {
+            firstName = firstName.substring(0, index);
+        }
+        index = firstName.indexOf('-');
+        if (index != -1) {
+            firstName = firstName.substring(0, index);
+        }
+        return firstName;
+    }
+
     public int getAsurite() {
         return asurite;
     }

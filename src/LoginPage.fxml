@@ -91,10 +91,5 @@
             <Font name="Orbitron Bold" size="22.0" />
          </font>
       </Button>
-      <Label layoutX="262.0" layoutY="714.0" text="You can sign up and login with an account to earn rewards and coupons" textFill="WHITE">
-         <font>
-            <Font name="Orbitron Bold" size="25.0" />
-         </font>
-      </Label>
    </children>
 </AnchorPane>

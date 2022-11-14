@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="1080.0" maxWidth="1920.0" minHeight="1080.0" minWidth="1920.0" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SceneController">
+<AnchorPane maxHeight="1080.0" maxWidth="1920.0" minHeight="1080.0" minWidth="1920.0" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LandingPage">
     <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#191919" height="870.0" layoutX="-7.0" layoutY="-1.0" stroke="BLACK" strokeType="INSIDE" width="1543.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#8c1d40" height="101.0" layoutX="-2.0" layoutY="24.0" stroke="#fcc02600" strokeType="INSIDE" strokeWidth="0.0" width="1448.0" />
@@ -23,7 +23,7 @@
             <Font name="Orbitron Bold" size="35.0" />
          </font>
       </Text>
-      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="1112.0" layoutY="-3.0" mnemonicParsing="false" onAction="#SwitchToLoginPage" prefHeight="100.0" prefWidth="211.0" styleClass="toggle-button" text="Sign In &gt;" textAlignment="CENTER">
+      <Button fx:id="accountButton" alignment="CENTER" contentDisplay="CENTER" layoutX="1112.0" layoutY="-3.0" mnemonicParsing="false" onAction="#AccountButtonPressed" prefHeight="100.0" prefWidth="211.0" styleClass="toggle-button" text="Sign In &gt;" textAlignment="CENTER">
          <font>
             <Font name="Orbitron Bold" size="25.0" />
          </font>
@@ -47,7 +47,7 @@
             <Font name="Orbitron Bold" size="55.0" />
          </font>
       </Text>
-      <Text fill="WHITE" layoutX="1042.0" layoutY="263.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Today's Deals">
+      <Text fill="WHITE" layoutX="1081.0" layoutY="264.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Today's Deal">
          <font>
             <Font name="Orbitron Bold" size="45.0" />
          </font>
@@ -93,14 +93,14 @@
             <Font name="Orbitron Bold" size="25.0" />
          </font>
       </Text>
-      <Text fill="WHITE" layoutX="995.0" layoutY="350.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create Your Own Pizza" textAlignment="CENTER">
+      <Text fill="WHITE" layoutX="1048.0" layoutY="357.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create Your Own Pizza" textAlignment="CENTER">
          <font>
             <Font name="Orbitron Bold" size="35.0" />
          </font>
       </Text>
-      <Text fill="WHITE" layoutX="957.0" layoutY="399.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create your own pizza by choosing a pizza type and toppings! Select from three pizza types and four toppings choices—additional charges for more than 1 topping. " textAlignment="CENTER" wrappingWidth="527.0833129882812">
+      <Text fill="WHITE" layoutX="971.0" layoutY="423.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start your order with a delicious Pepperoni, Cheese, or Vegetable Pizza" textAlignment="CENTER" wrappingWidth="489.7499999999999">
          <font>
-            <Font name="Orbitron Bold" size="25.0" />
+            <Font size="28.0" />
          </font>
       </Text>
       <Text fill="WHITE" layoutX="96.0" layoutY="258.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A Delivery/Carryout restraunt that offers">
@@ -113,16 +113,16 @@
             <Font name="Orbitron Bold" size="25.0" />
          </font>
       </Text>
-      <Text fill="WHITE" layoutX="942.0" layoutY="545.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pizza Types: Pepperoni, Cheese, Vegetables" textAlignment="CENTER" wrappingWidth="527.0833129882812">
+      <Text fill="WHITE" layoutX="963.0" layoutY="545.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Personalize your pizza with a Topping of Mushrooms, Onions, Olives, or Extra Cheese" textAlignment="CENTER" wrappingWidth="527.0833129882812">
          <font>
             <Font name="Orbitron Bold" size="25.0" />
          </font>
       </Text>
-      <Text fill="WHITE" layoutX="955.0" layoutY="619.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Toppings: Mushrooms, Onions, Olives, Extra Cheese" textAlignment="CENTER" wrappingWidth="527.0833129882812">
+      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="938.0" layoutY="304.0" mnemonicParsing="false" onAction="#GoToOrder" prefHeight="394.0" prefWidth="561.0" styleClass="toggle-button" textAlignment="CENTER">
          <font>
             <Font name="Orbitron Bold" size="25.0" />
          </font>
-      </Text>
+      </Button>
       <Button alignment="CENTER" contentDisplay="CENTER" layoutX="688.0" layoutY="-3.0" mnemonicParsing="false" onAction="#SwitchToMenuPage" prefHeight="100.0" prefWidth="211.0" styleClass="toggle-button" text="Menu &gt;" textAlignment="CENTER">
          <font>
             <Font name="Orbitron Bold" size="25.0" />
