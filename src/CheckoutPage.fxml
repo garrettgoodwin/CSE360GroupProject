@@ -2,8 +2,9 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
@@ -13,7 +14,7 @@
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#191919" height="870.0" layoutX="1.0" layoutY="-16.0" stroke="BLACK" strokeType="INSIDE" width="1543.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="307.0" layoutX="921.0" layoutY="346.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="593.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="496.0" layoutX="483.0" layoutY="262.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="421.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="548.0" layoutX="483.0" layoutY="210.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="421.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#8c1d40" height="101.0" layoutY="25.0" stroke="#fcc02600" strokeType="INSIDE" strokeWidth="0.0" width="1448.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fec426" height="101.0" layoutY="1.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1539.0" />
       <Text layoutX="47.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SunDevil's Pizza">
@@ -31,23 +32,12 @@
             <Font name="Orbitron Bold" size="30.0" />
          </font>
       </Label>
-      <Label layoutX="1154.0" layoutY="527.0" text="Would you like a receipt?" textFill="WHITE">
-         <font>
-            <Font name="Orbitron Bold" size="20.0" />
-         </font>
-      </Label>
-      <TextArea layoutX="56.0" layoutY="227.0" prefHeight="530.0" prefWidth="403.0" />
-      <Label layoutX="511.0" layoutY="315.0" text="Pay now with Debit or Credit" textFill="WHITE">
-         <font>
-            <Font name="Orbitron Bold" size="20.0" />
-         </font>
-      </Label>
       <Button fx:id="editOrderButton" layoutX="1117.0" layoutY="663.0" mnemonicParsing="false" onAction="#SwitchToPizzaSelectionPage" prefHeight="9.0" prefWidth="226.0" text="Edit Order">
          <font>
             <Font name="Orbitron Bold" size="20.0" />
          </font>
       </Button>
-      <Button fx:id="placeOrderButton" layoutX="1117.0" layoutY="712.0" mnemonicParsing="false" onAction="#SwitchToOrderStatusPage" prefHeight="10.0" prefWidth="226.0" text="Place Your Order">
+      <Button fx:id="placeOrderButton" layoutX="1117.0" layoutY="712.0" mnemonicParsing="false" onAction="#PlaceOrder" prefHeight="10.0" prefWidth="226.0" text="Place Your Order">
          <font>
             <Font name="Orbitron Bold" size="20.0" />
          </font>
@@ -87,7 +77,7 @@
             <Font name="Orbitron Bold" size="20.0" />
          </font>
       </PasswordField>
-      <Label layoutX="519.0" layoutY="190.0" text="Payment Type" textFill="WHITE">
+      <Label layoutX="483.0" layoutY="154.0" text="Payment Type" textFill="WHITE">
          <font>
             <Font name="Orbitron Bold" size="35.0" />
          </font>
@@ -97,22 +87,17 @@
             <Font name="Orbitron Bold" size="20.0" />
          </font>
       </Label>
-      <Label layoutX="511.0" layoutY="286.0" text="Pay with Asurite" textFill="WHITE">
-         <font>
-            <Font name="Orbitron Bold" size="20.0" />
-         </font>
-      </Label>
       <Label layoutX="518.0" layoutY="446.0" text="Expiration Date" textFill="WHITE">
          <font>
             <Font name="Orbitron Bold" size="20.0" />
          </font>
       </Label>
-      <Label layoutX="518.0" layoutY="553.0" text="Security Code" textFill="WHITE">
+      <Label layoutX="510.0" layoutY="601.0" text="Security Code" textFill="WHITE">
          <font>
             <Font name="Orbitron Bold" size="20.0" />
          </font>
       </Label>
-      <Label layoutX="512.0" layoutY="657.0" text="Billing Zip Code" textFill="WHITE">
+      <Label layoutX="508.0" layoutY="670.0" text="Billing Zip Code" textFill="WHITE">
          <font>
             <Font name="Orbitron Bold" size="20.0" />
          </font>
@@ -132,25 +117,66 @@
             <Font name="Orbitron Bold" size="20.0" />
          </font>
       </PasswordField>
-      <PasswordField fx:id="securityCodeField" layoutX="509.0" layoutY="595.0" prefHeight="38.0" prefWidth="363.0" promptText="Security Code...">
+      <PasswordField fx:id="securityCodeField" layoutX="509.0" layoutY="631.0" prefHeight="38.0" prefWidth="363.0" promptText="Security Code...">
          <font>
             <Font name="Orbitron Bold" size="20.0" />
          </font>
       </PasswordField>
-      <PasswordField fx:id="billingZipCodeField" layoutX="509.0" layoutY="693.0" prefHeight="38.0" prefWidth="363.0" promptText="Billing Zip Code...">
+      <PasswordField fx:id="billingZipCodeField" layoutX="509.0" layoutY="707.0" prefHeight="38.0" prefWidth="363.0" promptText="Billing Zip Code...">
          <font>
             <Font name="Orbitron Bold" size="20.0" />
          </font>
       </PasswordField>
-      <Button fx:id="deliveryButton" layoutX="1015.0" layoutY="275.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="186.0" text="Delivery">
+      <ToggleButton fx:id="deliveryButton" layoutX="1051.0" layoutY="270.0" mnemonicParsing="false" prefHeight="62.0" prefWidth="125.0" text="Delivery" textFill="WHITE">
          <font>
-            <Font name="Orbitron Bold" size="25.0" />
+            <Font size="25.0" />
          </font>
-      </Button>
-      <Button fx:id="carryoutButton" layoutX="1244.0" layoutY="275.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="186.0" text="Carryout">
+      </ToggleButton>
+      <ToggleButton fx:id="carryoutButton" layoutX="1218.0" layoutY="270.0" mnemonicParsing="false" prefHeight="62.0" prefWidth="125.0" text="Caryout" textFill="WHITE">
          <font>
-            <Font name="Orbitron Bold" size="25.0" />
+            <Font size="24.0" />
          </font>
-      </Button>
+      </ToggleButton>
+      <ListView fx:id="myListView" layoutX="19.0" layoutY="215.0" prefHeight="443.0" prefWidth="390.0" />
+      <Label alignment="CENTER" layoutX="38.0" layoutY="680.0" prefHeight="71.0" prefWidth="161.0" text="Total" textFill="WHITE">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
+      <Text fx:id="totalText" fill="WHITE" layoutX="164.0" layoutY="725.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="100.13671875">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Text>
+      <PasswordField fx:id="asuriteField" layoutX="508.0" layoutY="261.0" prefHeight="44.0" prefWidth="371.0" promptText="Asurite Number...">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </PasswordField>
+      <ToggleButton fx:id="payWithAsuriteButton" alignment="CENTER_LEFT" layoutX="505.0" layoutY="215.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="161.0" text="Pay with Asurite" textFill="WHITE">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </ToggleButton>
+      <ToggleButton fx:id="payWithCardButton" alignment="CENTER_LEFT" layoutX="503.0" layoutY="317.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="257.0" text="Pay now with Debit or Credit" textFill="WHITE">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </ToggleButton>
+      <Text fill="WHITE" layoutX="505.0" layoutY="559.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Card Holder Name" wrappingWidth="189.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <PasswordField fx:id="cardholderNameField" layoutX="512.0" layoutY="564.0" prefHeight="38.0" prefWidth="363.0" promptText="Card Holder Name...">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </PasswordField>
+      <ToggleButton fx:id="reciptButton" layoutX="1158.0" layoutY="526.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="245.0" text="Would you like a recipt?" textFill="WHITE">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </ToggleButton>
    </children>
 </AnchorPane>
