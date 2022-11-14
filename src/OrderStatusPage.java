@@ -134,11 +134,11 @@ public class OrderStatusPage extends SceneController implements Initializable
         String delimeter = ", ";
         for (int i = 0; i < pizzas.length; i++) {
             if (pizzas[i].isPepperoni()) {
-                pepperoni += pizzas[i].quantity;
+                pepperoni += pizzas[i].getQuantity();
             } else if (pizzas[i].isCheese()) {
-                cheese += pizzas[i].quantity;
+                cheese += pizzas[i].getQuantity();
             } else if (pizzas[i].isVegetable()) {
-                vegetable += pizzas[i].quantity;
+                vegetable += pizzas[i].getQuantity();
             }
         }
         if (pepperoni > 0) {
