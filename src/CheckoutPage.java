@@ -67,14 +67,7 @@ public class CheckoutPage extends SceneController implements Initializable
         int cvv;
         int deliveryMethod;
 
-        //reset toggle buttons
-        deliveryButton.setSelected(false);
-        carryoutButton.setSelected(false);
-        payWithAsuriteButton.setSelected(false);
-        payWithCardButton.setSelected(false);
-        reciptButton.setSelected(false);
-
-
+        
         //confirm payment option
         if((payWithAsuriteButton.isSelected() && payWithCardButton.isSelected()) || (!payWithAsuriteButton.isSelected() && !payWithCardButton.isSelected()))
         {
@@ -136,6 +129,16 @@ public class CheckoutPage extends SceneController implements Initializable
         {
             App.session.getOrder().getReceipt(); //returns a string
         }
+
+
+
+
+        //reset toggle buttons
+        deliveryButton.setSelected(false);
+        carryoutButton.setSelected(false);
+        payWithAsuriteButton.setSelected(false);
+        payWithCardButton.setSelected(false);
+        reciptButton.setSelected(false);
 
         //move to next page
         SwitchToOrderStatusPage(event);
