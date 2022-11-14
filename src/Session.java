@@ -107,6 +107,15 @@ public class Session {
         }
         return response;
     }
+    public Response placeOrder(int asurite, int deliveryMethod) {
+        Response response = User.Asurite.validate(Integer.toString(asurite));
+        if (Response.ok(response)) {
+            order.setStatus(Order.ACCEPTED);
+            order.setDeliveryMethod(deliveryMethod);
+            Database.saveOrder(order, this.getId());
+        }
+        return response;
+    }
     public float calculateTotal() {
         return order.calculateTotal();
     }
