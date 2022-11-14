@@ -1,6 +1,9 @@
 import java.text.NumberFormat;  // Currency NumberFormat
 import java.util.ArrayList; // ArrayList
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+
 public class Order {
     public static int BLANK_ID = 0;
     public static Order BLANK = new Order();
@@ -35,6 +38,52 @@ public class Order {
     private int userId;
     private int deliveryMethod;
     private boolean saved;
+
+    // for javafx table chef
+    private SimpleIntegerProperty order;
+    private SimpleStringProperty cookingStatus;
+    private SimpleStringProperty pizzaType;
+    private SimpleStringProperty toppings;
+    private SimpleIntegerProperty quantity;
+    // for table in chef page
+    Order(int order, String cookingStatus, String pizzaType, String toppings, int quantity) {
+        this.order = new SimpleIntegerProperty(order);
+        this.cookingStatus = new SimpleStringProperty(cookingStatus);
+        this.pizzaType = new SimpleStringProperty(pizzaType);
+        this.toppings = new SimpleStringProperty(toppings);
+        this.quantity = new SimpleIntegerProperty(quantity);
+    }
+    // getters/setters for table chef
+    public int getOrder() {
+        return order.get();
+    }
+    public void setOrder(int order) {
+        this.order.set(order);
+    }
+    public String getCookingStatus() {
+        return cookingStatus.get();
+    }
+    public void setCookingStatus(String cookingStatus) {
+        this.cookingStatus.set(cookingStatus);
+    }
+    public String getPizzaType() {
+        return pizzaType.get();
+    }
+    public void setPizzaType(String pizzaType) {
+        this.pizzaType.set(pizzaType);
+    }
+    public String getToppings() {
+        return toppings.get();
+    }
+    public void setToppings(String toppings) {
+        this.toppings.set(toppings);
+    }
+    public int getQuantity() {
+        return quantity.get();
+    }
+    public void getQuantity(int quantity) {
+        this.quantity.set(quantity);
+    }
 
     // creating new order as guest
     Order() {

@@ -45,6 +45,7 @@ public class PizzaSelectionPage extends SceneController implements Initializable
     public ToggleButton oliveButton;
     public ListView<Pizza> myListView;
     public Label pricePerToppingLabel;
+    public Label totalLabel;
 
     public Rectangle pepperoniBox;
     public Rectangle cheeseBox;
@@ -73,6 +74,7 @@ public class PizzaSelectionPage extends SceneController implements Initializable
   
     public void updateList()
     {
+      totalLabel.setText("Total: " + App.session.getOrder().getTotalText());
       myListView.getItems().clear();
       myListView.getItems().addAll(App.session.getOrder().getPizzas());
       pepperoniButton.setSelected(true);
@@ -190,7 +192,7 @@ public class PizzaSelectionPage extends SceneController implements Initializable
         resetBox(vegetableBox, vegetableButton);
       }
       if (!cheeseButton.isSelected() && !vegetableButton.isSelected()) {
-        pepperoniButton.setSelected(false);
+        pepperoniButton.setSelected(true);
         resetBox(pepperoniBox, pepperoniButton);
       }
     }
