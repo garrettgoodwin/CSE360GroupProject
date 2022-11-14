@@ -42,16 +42,31 @@
       </Button>
       <TableView fx:id="table" layoutX="58.0" layoutY="242.0" prefHeight="495.0" prefWidth="1042.0">
         <columns>
-          <TableColumn fx:id="column1" prefWidth="150.39999389648438" text="Orders" />
-          <TableColumn fx:id="column" minWidth="0.0" prefWidth="0.0" text="Chef #1" />
-            <TableColumn prefWidth="165.6000213623047" text="Chef #2" />
-            <TableColumn prefWidth="152.0" text="Chef #3" />
-            <TableColumn prefWidth="152.0" text="Chef #4" />
+          <TableColumn fx:id="order" prefWidth="150.39999389648438" text="Order" />
+          <TableColumn fx:id="cookingStatus" minWidth="0.0" prefWidth="0.0" text="Status" />
+            <TableColumn fx:id="pizzaType" prefWidth="165.6000213623047" text="Pizza Type" />
+            <TableColumn fx:id="toppings" prefWidth="152.0" text="Toppings" />
+            <TableColumn fx:id="quantity" prefWidth="152.0" text="Quantity" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
+      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="1325.0" layoutY="620.0" mnemonicParsing="false" onAction="#markToCook" prefHeight="100.0" prefWidth="214.0" styleClass="toggle-button" text="Cook" textAlignment="CENTER">
+         <font>
+            <Font name="Orbitron Bold" size="30.0" />
+         </font>
+      </Button>
+      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="1325.0" layoutY="737.0" mnemonicParsing="false" onAction="#test" prefHeight="100.0" prefWidth="214.0" styleClass="toggle-button" text="test" textAlignment="CENTER">
+         <font>
+            <Font name="Orbitron Bold" size="30.0" />
+         </font>
+      </Button>
+      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="1325.0" layoutY="497.0" mnemonicParsing="false" onAction="#markReady" prefHeight="100.0" prefWidth="214.0" styleClass="toggle-button" text="Ready" textAlignment="CENTER">
+         <font>
+            <Font name="Orbitron Bold" size="30.0" />
+         </font>
+      </Button>
    
    
    
