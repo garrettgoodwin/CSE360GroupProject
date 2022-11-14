@@ -18,17 +18,22 @@
          </font>
       </Label>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#191919" height="870.0" layoutX="-6.0" layoutY="14.0" stroke="BLACK" strokeType="INSIDE" width="1543.0" />
-      <Label layoutX="211.0" layoutY="481.0" text="Order Confirmed" textFill="WHITE">
+      <Label fx:id="acceptedLabel" layoutX="261.0" layoutY="481.0" text="Accepted" textFill="WHITE">
          <font>
             <Font name="Orbitron Bold" size="20.0" />
          </font>
       </Label>
-      <Label layoutX="464.0" layoutY="481.0" text="Order Proccessed" textFill="WHITE">
+      <Label fx:id="readyToCookLabel" layoutX="501.0" layoutY="481.0" text="Ready To Cook" textFill="WHITE">
          <font>
             <Font name="Orbitron Bold" size="20.0" />
          </font>
       </Label>
-      <Label layoutX="751.0" layoutY="481.0" text="Preping/Baking" textFill="WHITE">
+      <Label fx:id="cookingLabel" layoutX="800.0" layoutY="481.0" text="Cooking" textFill="WHITE">
+         <font>
+            <Font name="Orbitron Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="completeLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="982.0" layoutY="481.0" prefHeight="38.0" prefWidth="234.0" text="Complete" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="Orbitron Bold" size="20.0" />
          </font>
@@ -40,10 +45,10 @@
             <Font name="Orbitron Bold" size="35.0" />
          </font>
       </Text>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="218.0" layoutX="978.0" layoutY="251.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="244.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="218.0" layoutX="715.0" layoutY="252.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="244.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="218.0" layoutX="446.0" layoutY="254.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="244.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="218.0" layoutX="181.0" layoutY="253.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="244.0" />
+       <Rectangle fx:id="completeBox" arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="218.0" layoutX="978.0" layoutY="251.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0"  width="244.0" />
+      <Rectangle fx:id="cookingBox" arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="218.0" layoutX="715.0" layoutY="252.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0"  width="244.0" />
+      <Rectangle fx:id="readyToCookBox" arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="218.0" layoutX="446.0" layoutY="254.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0"  width="244.0" />
+      <Rectangle fx:id="acceptedBox" arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="218.0" layoutX="181.0" layoutY="253.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0"  width="244.0" />
       <Button alignment="CENTER" contentDisplay="CENTER" layoutX="1320.0" layoutY="1.0" mnemonicParsing="false" onAction="#SwitchToLandingPage" prefHeight="99.0" prefWidth="214.0" styleClass="toggle-button" text="Back &gt;" textAlignment="CENTER">
          <font>
             <Font name="Orbitron Bold" size="30.0" />
@@ -70,27 +75,22 @@
             <Font name="Orbitron Bold" size="45.0" />
          </font>
       </Label>
-      <Label layoutX="186.0" layoutY="264.0" prefHeight="192.0" prefWidth="234.0" text="Your order has been recieved and is currently in the proccess of being confirmed" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+      <Label fx:id="acceptedDescription" layoutX="186.0" layoutY="264.0" prefHeight="192.0" prefWidth="234.0"  text="Your order has not been accepted" textAlignment="CENTER" textFill="WHITE" wrapText="true">
          <font>
             <Font name="Orbitron Bold" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="996.0" layoutY="481.0" text="Carryout/Delivery" textFill="WHITE">
-         <font>
-            <Font name="Orbitron Bold" size="20.0" />
-         </font>
-      </Label>
-      <Label layoutX="451.0" layoutY="267.0" prefHeight="192.0" prefWidth="234.0" text="Your order has been successfully confirmed and is in queue to be prepped for baking" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+      <Label fx:id="readyToCookDescription" layoutX="451.0" layoutY="267.0" prefHeight="192.0" prefWidth="234.0"  text="Your order will be prepared for cooking" textAlignment="CENTER" textFill="WHITE" wrapText="true">
          <font>
             <Font name="Orbitron Bold" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="720.0" layoutY="264.0" prefHeight="192.0" prefWidth="234.0" text="Your order is currently being prepared by our chefs" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+      <Label fx:id="cookingDescription" layoutX="720.0" layoutY="264.0" prefHeight="192.0" prefWidth="234.0"  text="Your order will be baked by our talented kitchen" textAlignment="CENTER" textFill="WHITE" wrapText="true">
          <font>
             <Font name="Orbitron Bold" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="982.0" layoutY="264.0" prefHeight="192.0" prefWidth="234.0" text="Your order has been successfully completed and is ready for either carryout or delivery" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+      <Label fx:id="completeDescription" layoutX="982.0" layoutY="264.0" prefHeight="192.0" prefWidth="234.0"  text="Your pizza will be in your hands in no time!" textAlignment="CENTER" textFill="WHITE" wrapText="true">
          <font>
             <Font name="Orbitron Bold" size="18.0" />
          </font>

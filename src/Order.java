@@ -211,10 +211,9 @@ public class Order {
 
     @Override
     public String toString() {
-        String str = "Order #" + getId() + "\n\n";
-        str += "status: " + getStatusText() + "\n";
-        str += "is saved: " + isSaved() + "\n";
-        str += "total: " + getTotalText() + "\n";
+        String str = "";
+        str += "Status: " + getStatusText() + "\n";
+        str += "Total: " + getTotalText() + "\n";
         str += "Pizzas: ";
         for (int i = 0; i < pizzas.size(); i++) {
             str += "\n\n" + pizzas.get(i).toString();

@@ -2,13 +2,14 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="1080.0" maxWidth="1920.0" minHeight="1080.0" minWidth="1920.0" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PizzaSelectionPage">
+<AnchorPane fx:id="pizzaListView" maxHeight="1080.0" maxWidth="1920.0" minHeight="1080.0" minWidth="1920.0" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PizzaSelectionPage">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#191919" height="870.0" layoutX="1.0" layoutY="-16.0" stroke="BLACK" strokeType="INSIDE" width="1543.0" />
       <Label layoutX="24.0" layoutY="147.0" text="Pizza Type" textFill="WHITE">
@@ -21,7 +22,7 @@
             <Font name="Orbitron Bold" size="20.0" />
          </font>
       </Label>
-      <Label layoutX="26.0" layoutY="480.0" text="Toppings (+$x.xx per topping)" textFill="WHITE">
+      <Label layoutX="26.0" layoutY="480.0" fx:id="pricePerToppingLabel" text="Toppings (+$x.xx per topping)" textFill="WHITE">
          <font>
             <Font name="Orbitron Bold" size="30.0" />
          </font>
@@ -63,8 +64,8 @@
             <Font name="Orbitron Bold" size="35.0" />
          </font>
       </Text>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="525.0" layoutX="1119.0" layoutY="137.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="401.0" />
-      <Button fx:id="removePizzaButton" layoutX="1181.0" layoutY="724.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="274.0" text="Remove Pizza">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="525.0" layoutX="1118.0" layoutY="137.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="401.0" />
+      <Button fx:id="removePizzaButton" layoutX="1181.0" layoutY="724.0" mnemonicParsing="false" onAction="#RemovePizza" prefHeight="48.0" prefWidth="274.0" text="Remove Pizza">
          <font>
             <Font name="Orbitron Bold" size="25.0" />
          </font>
@@ -74,13 +75,13 @@
             <Font name="Orbitron Bold" size="25.0" />
          </font>
       </Button>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="218.0" layoutX="819.0" layoutY="528.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="244.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="218.0" layoutX="556.0" layoutY="529.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="244.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="218.0" layoutX="287.0" layoutY="531.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="244.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="218.0" layoutX="22.0" layoutY="530.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="244.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="218.0" layoutX="556.0" layoutY="208.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="244.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="218.0" layoutX="287.0" layoutY="210.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="244.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="218.0" layoutX="22.0" layoutY="209.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="244.0" />
+      <Rectangle fx:id="oliveBox" arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="218.0" layoutX="819.0" layoutY="528.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="244.0" />
+      <Rectangle fx:id="extraCheeseBox" arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="218.0" layoutX="556.0" layoutY="529.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="244.0" />
+      <Rectangle fx:id="onionBox" arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="218.0" layoutX="287.0" layoutY="531.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="244.0" />
+      <Rectangle fx:id="mushroomBox" arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="218.0" layoutX="22.0" layoutY="530.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="244.0" />
+      <Rectangle fx:id="vegetableBox" arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="218.0" layoutX="556.0" layoutY="208.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="244.0" />
+      <Rectangle fx:id="cheeseBox" arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="218.0" layoutX="287.0" layoutY="210.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="244.0" />
+      <Rectangle fx:id="pepperoniBox" arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="218.0" layoutX="22.0" layoutY="209.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="244.0" />
       <Label layoutX="96.0" layoutY="432.0" text="Pepperoni" textFill="WHITE">
          <font>
             <Font name="Orbitron Bold" size="20.0" />
@@ -96,18 +97,19 @@
             <Font name="Orbitron Bold" size="30.0" />
          </font>
       </Button>
-      <ToggleButton fx:id="pepperoniButton" layoutX="23.0" layoutY="209.0" mnemonicParsing="false" prefHeight="218.0" prefWidth="240.0" />
-      <ToggleButton fx:id="cheeseButton" layoutX="290.0" layoutY="211.0" mnemonicParsing="false" prefHeight="215.0" prefWidth="240.0" />
-      <ToggleButton fx:id="vegetableButton" layoutX="557.0" layoutY="209.0" mnemonicParsing="false" prefHeight="215.0" prefWidth="240.0" />
-      <ToggleButton fx:id="mushroomButton" layoutX="24.0" layoutY="531.0" mnemonicParsing="false" prefHeight="216.0" prefWidth="238.0" />
-      <ToggleButton fx:id="onionButton" layoutX="289.0" layoutY="532.0" mnemonicParsing="false" prefHeight="214.0" prefWidth="239.0" />
-      <ToggleButton fx:id="extraCheeseButton" layoutX="555.0" layoutY="530.0" mnemonicParsing="false" prefHeight="216.0" prefWidth="246.0" />
-      <ToggleButton fx:id="oliveButton" layoutX="821.0" layoutY="530.0" mnemonicParsing="false" prefHeight="214.0" prefWidth="238.0" />
-      <Button fx:id="addPizzaButton" layoutX="1182.0" layoutY="669.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="274.0" text="Add Pizza">
+      <ToggleButton fx:id="pepperoniButton" onAction="#selectPepperoni" layoutX="23.0" layoutY="209.0" mnemonicParsing="false" prefHeight="218.0" prefWidth="240.0" />
+      <ToggleButton fx:id="cheeseButton" onAction="#selectCheese" layoutX="290.0" layoutY="211.0" mnemonicParsing="false" prefHeight="215.0" prefWidth="240.0" />
+      <ToggleButton fx:id="vegetableButton" onAction="#selectVegetable" layoutX="557.0" layoutY="209.0" mnemonicParsing="false" prefHeight="215.0" prefWidth="240.0" />
+      <ToggleButton fx:id="mushroomButton" onAction="#selectMushroom" layoutX="24.0" layoutY="531.0" mnemonicParsing="false" prefHeight="216.0" prefWidth="238.0" />
+      <ToggleButton fx:id="onionButton" onAction="#selectOnion" layoutX="289.0" layoutY="532.0" mnemonicParsing="false" prefHeight="214.0" prefWidth="239.0" />
+      <ToggleButton fx:id="extraCheeseButton" onAction="#selectExtraCheese" layoutX="555.0" layoutY="530.0" mnemonicParsing="false" prefHeight="216.0" prefWidth="246.0" />
+      <ToggleButton fx:id="oliveButton" onAction="#selectOlive" layoutX="821.0" layoutY="530.0" mnemonicParsing="false" prefHeight="214.0" prefWidth="238.0" />
+      <Button fx:id="addPizzaButton" layoutX="1182.0" layoutY="669.0" mnemonicParsing="false" onAction="#AddPizza" prefHeight="48.0" prefWidth="274.0" text="Add Pizza">
          <font>
             <Font name="Orbitron Bold" size="25.0" />
          </font>
       </Button>
+      <ListView fx:id="myListView" layoutX="1118.0" layoutY="137.0" prefHeight="525.0" prefWidth="401.0" />
    
    
    
