@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.text.NumberFormat;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -7,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class SceneController
@@ -186,7 +188,7 @@ public class SceneController
     //             break;
 
     //         case "Processor 2":
-    //             System.out.printf("LOGGING IN AS PROCCESSOR %n");
+    //             System.out.printf("LOGGING IN AS PROCESSOR %n");
     //             SwitchToOrderProcessorPage(event);
     //             break;
 
@@ -207,6 +209,11 @@ public class SceneController
 
     public void validEntry(TextField textField) {
         textField.getStyleClass().remove("invalid-entry");
+    }
+
+    public String getPriceText(float price) {
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        return formatter.format(price);
     }
 
 }
