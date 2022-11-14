@@ -32,11 +32,16 @@ public class OrderProcessorPage extends SceneController implements Initializable
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
-       Pizza p = new Pizza(0,1,false,false,false,false,2);
-       ArrayList<Pizza> pList = new ArrayList<>();
-       pList.add(p);
-       Order o = new Order(10, pList, 1, 0, true);
-       orders.add(o);
+    //    Pizza p = new Pizza(0,1,false,false,false,false,2);
+    //    ArrayList<Pizza> pList = new ArrayList<>();
+    //    pList.add(p);
+    //    Order o = new Order(10, pList, 1, 0, true);
+    //    orders.add(o);
+       Order[] orderArr = App.session.getOrdersForProcessing();
+       for(int i = 0; i < orderArr.length;i++)
+       {
+        orders.add(orderArr[i]);
+       }
        orderListView1.setItems(orders);
     }
 
@@ -48,25 +53,31 @@ public class OrderProcessorPage extends SceneController implements Initializable
 
     public void AcceptOrder()
     {
-        System.out.print("Accepted Order");
+        Order selectedOrder = orderListView1.getSelectionModel().getSelectedItem();
+        selectedOrder.setStatus(1); //Set to READY
+        orderListView1.getItems().remove(selectedOrder);
+        System.out.print(selectedOrder.toString());
     }
 
     public void DeclineOrder()
     {
-        System.out.print("Declined Order");
+        Order selectedOrder = orderListView1.getSelectionModel().getSelectedItem();
+        selectedOrder.setStatus(6); //Set to CANCELLED
+        orderListView1.getItems().remove(selectedOrder);
+        System.out.print(selectedOrder.toString());
     }
 
 
     public void UpdateOrders()
     {
         // TEST
-        App.session.placeOrder("1111111111111111", "Garrett Goodwin", "12/23", 123);
-        unprocessedOrders = App.session.getOrdersForProcessing();
+        //App.session.placeOrder("1111111111111111", "Garrett Goodwin", "12/23", 123);
+       // unprocessedOrders = App.session.getOrdersForProcessing();
 
-        for(int i = 0; i < unprocessedOrders.length; i++)
-        {
-            unprocessedOrders[i].toString();
-        }
+        //for(int i = 0; i < unprocessedOrders.length; i++)
+        //{
+        //    unprocessedOrders[i].toString();
+        //}
     }
 
     public void AddToListView()
