@@ -32,14 +32,10 @@ public class OrderProcessorPage extends SceneController implements Initializable
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
-    //    Pizza p = new Pizza(0,1,false,false,false,false,2);
-    //    ArrayList<Pizza> pList = new ArrayList<>();
-    //    pList.add(p);
-    //    Order o = new Order(10, pList, 1, 0, true);
-    //    orders.add(o);
        Order[] orderArr = App.session.getOrdersForProcessing();
        for(int i = 0; i < orderArr.length;i++)
        {
+       System.out.println(orderArr[i]);
         orders.add(orderArr[i]);
        }
        orderListView1.setItems(orders);
@@ -54,9 +50,8 @@ public class OrderProcessorPage extends SceneController implements Initializable
     public void AcceptOrder()
     {
         Order selectedOrder = orderListView1.getSelectionModel().getSelectedItem();
-        selectedOrder.setStatus(1); //Set to READY
+        App.session.markOrderReadyToCook(selectedOrder.getId());
         orderListView1.getItems().remove(selectedOrder);
-        System.out.print(selectedOrder.toString());
     }
 
     public void DeclineOrder()
