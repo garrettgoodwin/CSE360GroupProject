@@ -25,13 +25,13 @@ public class Pizza {
 
     public static final Pizza BLANK_PIZZA = new Pizza();
 
-    int id;
-    int pizzaType;
-    boolean mushrooms;
-    boolean olives;
-    boolean onions;
-    boolean extraCheese;
-    int quantity;
+    private int id;
+    private int pizzaType;
+    private boolean mushrooms;
+    private boolean olives;
+    private boolean onions;
+    private boolean extraCheese;
+    private int quantity;
     Pizza(int id, int pizzaType, boolean mushrooms, boolean olives, boolean onions, boolean extraCheese, int quantity) {
         this.id = id;
         this.pizzaType = pizzaType;
@@ -156,11 +156,11 @@ public class Pizza {
 
     @Override
     public String toString() {
-        String str = "Pizza #" + getId() + "\n\n";
-        str += "type: " + getTypeText() + "\n";
-        str += "toppings: " + getToppingsText() + "\n";
-        str += "quantity: " + getQuantity() + "\n";
-        str += "price: " + calculatePrice();
+        String str = "";
+        str += getTypeText() + " Pizza\n";
+        str += "Toppings: " + getToppingsText() + "\n";
+        str += "qty: " + getQuantity() + "\n";
+        str += "price: " + getPriceText();
         return str;
     }
 }

@@ -757,6 +757,16 @@ public class Database {
             return Integer.parseInt(selectOrder(USER_ID, orderId));
         }
 
+        public static Order getLastOrder(int userId) {
+            // all orders
+            ArrayList<Order> allOrders = getUsersOrders(userId);
+            if (allOrders.size() > 0) {
+                return allOrders.get(0);
+            } 
+            // no placed order
+            return Order.BLANK;
+        }
+
         public static Order getLastPlacedOrder(int userId) {
             // all orders
             ArrayList<Order> allOrders = getUsersOrders(userId);
@@ -1284,8 +1294,7 @@ public class Database {
             int id = parseId(sessionData, header);
             int userId = parseIntegerValue(header, sessionData, USER_ID);
             User user = getUser(userId);
-            int orderId = parseIntegerValue(header, sessionData, ORDER_ID);
-            Order order = getOrder(orderId);
+            Order order = getLastOrder(userId);
 
             return new Session(id, user, order);
         }
