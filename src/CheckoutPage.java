@@ -35,9 +35,7 @@ public class CheckoutPage extends SceneController implements Initializable
     public Button placeOrderButton;
     public ToggleButton deliveryButton;
     public ToggleButton carryoutButton;
-    public ToggleButton payWithAsuriteButton;
-    public ToggleButton payWithCardButton;
-    public ToggleButton reciptButton;
+    public ToggleButton receiptButton;
     public ListView<Pizza> myListView;
     public Text totalText;
 
@@ -49,6 +47,7 @@ public class CheckoutPage extends SceneController implements Initializable
     public void initialize(URL location, ResourceBundle resorces)
     {
         updateList();  
+        carryoutButton.setSelected(true);
         totalText.setText(App.session.getOrder().getTotalText());
     }
 
@@ -60,20 +59,14 @@ public class CheckoutPage extends SceneController implements Initializable
     //need to change this event name 
     public void PlaceOrder(ActionEvent event) throws IOException
     {
+        resetUI();
+
         String cardNumber = "";
         String cardholderName = "";
         String exp = "";
         int asuriteNumber;
         int cvv;
         int deliveryMethod;
-
-        
-        //confirm payment option
-        if((payWithAsuriteButton.isSelected() && payWithCardButton.isSelected()) || (!payWithAsuriteButton.isSelected() && !payWithCardButton.isSelected()))
-        {
-            //if both are selected or neither then return 
-            return;
-        }
         
 
 
@@ -87,61 +80,112 @@ public class CheckoutPage extends SceneController implements Initializable
             //get delivery option
             if(deliveryButton.isSelected())
             {
-                deliveryMethod = 1;
+                deliveryMethod = Order.DELIVERY;
+                if (streetAddressField.getText().length() == 0) {
+                    invalidEntry(streetAddressField);
+                    return;
+                }
+                if (zipCodeField.getText().length() == 0) {
+                    invalidEntry(zipCodeField);
+                    return;
+                }
+                if (cityField.getText().length() == 0) {
+                    invalidEntry(cityField);
+                    return;
+                }
             }else
             {
-                deliveryMethod = 0;
+                deliveryMethod = Order.PICK_UP;
             }
         }
 
 
+        Response response;
         //place order if its asurite
-        if(payWithAsuriteButton.isSelected())
+        if(asuriteField.getText().length() > 0)
         {
-            //if field is empty
-            if(asuriteField.getText().equals(null))
-            {
-                return;
-            }
             asuriteNumber = Integer.parseInt(asuriteField.getText());
-            App.session.placeOrder(asuriteNumber, deliveryMethod);
-        }
-
-        //place order if its card
-        if(payWithCardButton.isSelected())
-        {
-            if(cardNumberField.getText().equals(null) || expirationDateMonthField.getText().equals(null) || expirationDateYearField.getText().equals(null)  || securityCodeField.getText().equals(null) || cardholderNameField.getText().equals(null))
-            {
-                //the fields were not filled out
+            response = App.session.placeOrder(asuriteNumber, deliveryMethod);
+            if (!Response.ok(response)) {
+                invalidAsurite(response);
+            }
+        } else {
+            /* Pay with Card */
+            if (cardNumberField.getText().length() == 0) {
+                invalidEntry(cardNumberField);
                 return;
             }
+            if (expirationDateMonthField.getText().length() == 0) {
+                invalidEntry(expirationDateMonthField);
+                return;
+            }
+            if (expirationDateYearField.getText().length() == 0) {
+                invalidEntry(expirationDateYearField);
+                return;
+            }
+            if (cardholderNameField.getText().length() == 0) {
+                invalidEntry(cardholderNameField);
+                return;
+            }
+            if (securityCodeField.getText().length() == 0) {
+                invalidEntry(securityCodeField);
+                return;
+            }
+
             cardNumber = cardNumberField.getText();
             exp = expirationDateMonthField.getText();
-            exp += expirationDateYearField.getText();
+            exp += "/" + expirationDateYearField.getText();
             cardholderName = cardholderNameField.getText();
             cvv = Integer.parseInt(securityCodeField.getText());
             //place order
-            App.session.placeOrder(cardNumber, cardholderName, exp, cvv, deliveryMethod);           
+            response = App.session.placeOrder(cardNumber, cardholderName, exp, cvv, deliveryMethod); 
+            if (!Response.ok(response)) {
+                invalidPaymentMethod(response);
+            }          
         }
 
         //if user wants a recipt
-        if(reciptButton.isSelected())
+        if(receiptButton.isSelected())
         {
-            App.session.getOrder().getReceipt(); //returns a string
+            App.session.sendEmailToCustomer(App.session.getOrderId()); //returns a string
         }
-
-
-
 
         //reset toggle buttons
         deliveryButton.setSelected(false);
         carryoutButton.setSelected(false);
-        payWithAsuriteButton.setSelected(false);
-        payWithCardButton.setSelected(false);
-        reciptButton.setSelected(false);
+        receiptButton.setSelected(false);
 
         //move to next page
-        SwitchToOrderStatusPage(event);
+        if (Response.ok(response)) {
+            SwitchToOrderStatusPage(event);
+        }
+    }
+
+    private void invalidAsurite(Response response) {
+        asuriteField.setText("");
+        invalidEntry(asuriteField);
+    }
+
+    private void invalidPaymentMethod(Response response) {
+        if (response == Response.INVALID_CARDNUMBER) {
+            invalidEntry(cardNumberField);
+        } else if (response == Response.CARD_EXPIRED) {
+            invalidEntry(expirationDateMonthField);
+            invalidEntry(expirationDateYearField);
+        } else if (response == Response.INVALID_CVV) {
+            invalidEntry(securityCodeField);
+        } 
+            
+    }
+
+    private void resetUI() {
+        validEntry(asuriteField);
+        validEntry(cardNumberField);
+        validEntry(expirationDateMonthField);
+        validEntry(expirationDateYearField);
+        validEntry(cardholderNameField);
+        validEntry(securityCodeField);
+        validEntry(billingZipCodeField);
     }
 
 
