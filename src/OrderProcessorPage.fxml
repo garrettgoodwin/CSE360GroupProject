@@ -40,6 +40,60 @@
          </font>
       </Button>
       <ListView fx:id="orderListView" layoutX="26.0" layoutY="236.0" prefHeight="516.0" prefWidth="1112.0" />
+      <AnchorPane layoutX="10.0" layoutY="10.0" maxHeight="1080.0" maxWidth="1920.0" minHeight="1080.0" minWidth="1920.0" prefHeight="1080.0" prefWidth="1920.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#191919" height="870.0" layoutX="1.0" layoutY="-16.0" stroke="BLACK" strokeType="INSIDE" width="1543.0" />
+            <Label layoutX="456.0" layoutY="62.0" text="Your Pizza" textFill="WHITE">
+               <font>
+                  <Font name="Orbitron Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="26.0" layoutY="154.0" text="Incoming Orders" textFill="WHITE">
+               <font>
+                  <Font name="Orbitron Bold" size="30.0" />
+               </font>
+            </Label>
+            <Label layoutX="109.0" layoutY="72.0" text="Create Your Own Pizza" textFill="WHITE">
+               <font>
+                  <Font name="Orbitron Bold" size="20.0" />
+               </font>
+            </Label>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#8c1d40" height="101.0" layoutY="24.0" stroke="#fcc02600" strokeType="INSIDE" strokeWidth="0.0" width="1448.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fec426" height="101.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1539.0" />
+            <Text layoutX="47.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SunDevil's Pizza">
+               <font>
+                  <Font name="Orbitron Bold" size="35.0" />
+               </font>
+            </Text>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#891c40" height="549.0" layoutX="14.0" layoutY="222.0" stroke="#fdc426" strokeType="INSIDE" strokeWidth="2.0" width="1139.0" />
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="1326.0" mnemonicParsing="false" onAction="#SwitchToLandingPage" prefHeight="99.0" prefWidth="212.0" styleClass="toggle-button" text="Back &gt;" textAlignment="CENTER">
+               <font>
+                  <Font name="Orbitron Bold" size="30.0" />
+               </font>
+            </Button>
+            <ListView fx:id="orderListView1" layoutX="26.0" layoutY="236.0" prefHeight="516.0" prefWidth="1112.0" />
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="1258.0" layoutY="222.0" mnemonicParsing="false" onAction="#UpdateOrders" prefHeight="99.0" prefWidth="212.0" styleClass="toggle-button" text="Update" textAlignment="CENTER">
+               <font>
+                  <Font name="Orbitron Bold" size="30.0" />
+               </font>
+            </Button>
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="1258.0" layoutY="369.0" mnemonicParsing="false" onAction="#AddOrderTest" prefHeight="99.0" prefWidth="234.0" styleClass="toggle-button" text="New Order" textAlignment="CENTER">
+               <font>
+                  <Font name="Orbitron Bold" size="30.0" />
+               </font>
+            </Button>
+            <Button fx:id="acceptButton" alignment="CENTER" contentDisplay="CENTER" layoutX="1247.0" layoutY="547.0" mnemonicParsing="false" onAction="#AcceptOrder" prefHeight="99.0" prefWidth="212.0" text="Accept" textAlignment="CENTER">
+               <font>
+                  <Font name="Orbitron Bold" size="30.0" />
+               </font>
+            </Button>
+            <Button fx:id="declineButton" alignment="CENTER" contentDisplay="CENTER" layoutX="1246.0" layoutY="687.0" mnemonicParsing="false" onAction="#DeclineOrder" prefHeight="99.0" prefWidth="212.0" text="Decline" textAlignment="CENTER">
+               <font>
+                  <Font name="Orbitron Bold" size="30.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
    
    
    
