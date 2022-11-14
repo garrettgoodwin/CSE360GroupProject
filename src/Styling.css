@@ -26,6 +26,20 @@
     -fx-font-size: 14px;
 }
 
+.status-not-yet-met {
+    -fx-fill: #2b000e;
+}
+
+.status-not-yet-met-desc {
+    -fx-text-fill: #464646;
+}
+
+.status-in-progress {
+    -fx-stroke: white;
+    -fx-stroke-width: 5px;
+    -fx-stroke-type: outside;
+}
+
 .toggle-button2{
     -fx-graphic: url('Images\Icons\TempPizza1.jpg');
 }
